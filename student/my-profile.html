@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile | CampusConnect</title>
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<!-- Google Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Shared dashboard chrome styles, then this page's own styles -->
+<link rel="stylesheet" href="../assets/css/student/student_dashboard.css">
+<link rel="stylesheet" href="../assets/css/student/my-profile.css">
+
+<!--
+  Page-scroll fix: keep the sidebar/topbar fixed and let ONLY the two
+  profile columns (summary + form) scroll internally.
+  NOTE: this assumes .content / .profile-layout are the same containers as
+  in student_dashboard.css. If your real layout differs, move these rules
+  into my-profile.css and adjust the selectors/heights to match.
+
+  id="my-profile-layout-fix" — required so pjax navigation can find and
+  copy this block into <head> when this page loads via a soft nav instead
+  of a full page load (see syncInlineStyles() in the shared nav script).
+  Without an id there's no reliable way to detect "this style already
+  exists" vs "this is a different page's style," so don't remove it.
+-->
+<style id="my-profile-layout-fix">
+  /*
+    Scoped to body[data-page="my-profile"] and !important throughout: your
+    my-profile.css likely has rules on the same attribute selector, which
+    beat a plain .content/.profile-layout rule on specificity regardless of
+    <link> vs <style> order. This block is written to win no matter what.
+  */
+  html, body { height: 100% !important; }
+
+  body[data-page="my-profile"] .app-shell {
+      height: 100vh !important;
+  }
+  body[data-page="my-profile"] .main-wrapper {
+      height: 100vh !important;
+      display: flex !important;
+      flex-direction: column !important;
+      overflow: hidden !important;
+  }
+  body[data-page="my-profile"] .content {
+      flex: 1 1 auto !important;
+      min-height: 0 !important;
+      overflow: hidden !important;
+      display: flex !important;
+      flex-direction: column !important;
+  }
+  body[data-page="my-profile"] .profile-layout {
+      flex: 1 1 auto !important;
+      min-height: 0 !important;
+      overflow: hidden !important;
+      align-items: flex-start !important;
+  }
+  /* Left summary/progress column: natural height, does NOT scroll unless
+     its own content is taller than the space available. */
+  body[data-page="my-profile"] .profile-summary-col {
+      height: auto !important;
+      max-height: 100% !important;
+      overflow-y: auto !important;
+      flex-shrink: 0 !important;
+  }
+  /* Right form column: this is the one that should scroll. */
+  body[data-page="my-profile"] .profile-form-col {
+      height: 100% !important;
+      overflow-y: auto !important;
+      padding-right: 6px !important;
+      scrollbar-gutter: stable !important;
+  }
+
+  /* Read-only signup fields (PRN / email / phone) */
+  input[readonly] {
+      background-color: #f1f3f5 !important;
+      color: #6c757d;
+      cursor: not-allowed;
+  }
+  /* Locked select (branch) needs its own rule — [readonly] doesn't apply to
+     <select>, only [disabled] does, and browsers style disabled selects
+     inconsistently, so we match the readonly-input look on purpose. */
+  select[disabled] {
+      background-color: #f1f3f5 !important;
+      color: #6c757d;
+      cursor: not-allowed;
+  }
+  .field-locked-hint {
+      display: block;
+      font-size: 0.78rem;
+      color: #868e96;
+      margin-top: 2px;
+  }
+</style>
+</head>
+<body data-page="my-profile">
+
+<div class="app-shell">
+
+  <!-- Sidebar: identical markup to the other student pages so pjax swaps line up -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+      <div class="brand-text">
+        <h1>HireTrack</h1>
+        <span>Student Dashboard</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="student-dashboard.html" class="nav-link" data-page="dashboard">
+        <i class="bi bi-house-door-fill"></i><span>Dashboard</span>
+      </a>
+
+      <p class="nav-heading">Job Portal</p>
+      <a href="search-jobs.html" class="nav-link" data-page="search-jobs">
+        <i class="bi bi-search"></i><span>Search Jobs</span>
+      </a>
+      <a href="applications.html" class="nav-link" data-page="applications">
+        <i class="bi bi-briefcase-fill"></i><span>My Applications</span>
+      </a>
+      <a href="saved-jobs.html" class="nav-link" data-page="saved-jobs">
+        <i class="bi bi-bookmark-fill"></i><span>Saved Jobs</span>
+      </a>
+
+      <p class="nav-heading">Assessments</p>
+      <!-- <a href="aptitude-tests.html" class="nav-link" data-page="aptitude-tests">
+        <i class="bi bi-clipboard-check-fill"></i><span>Aptitude Tests</span>
+      </a> -->
+      <a href="test-schedule.html" class="nav-link" data-page="test-schedule">
+        <i class="bi bi-calendar3"></i><span>Test Schedule</span>
+      </a>
+      <!-- <a href="test-results.html" class="nav-link" data-page="test-results">
+        <i class="bi bi-bar-chart-fill"></i><span>Test Results</span>
+      </a> -->
+
+      <p class="nav-heading">Interviews</p>
+      <!-- <a href="interview-schedule.html" class="nav-link" data-page="interview-schedule">
+        <i class="bi bi-calendar-event-fill"></i><span>Interview Schedule</span>
+      </a> -->
+      <a href="my-interviews.html" class="nav-link active" data-page="my-interviews">
+        <i class="bi bi-people-fill"></i><span>My Interviews</span>
+      </a>
+      <a href="offer-letters.html" class="nav-link" data-page="offer-letters">
+        <i class="bi bi-envelope-fill"></i><span>Offer Letters</span>
+      </a>
+
+      <p class="nav-heading">Profile</p>
+      <a href="my-profile.html" class="nav-link" data-page="my-profile">
+        <i class="bi bi-person-fill"></i><span>My Profile</span>
+      </a>
+      <!-- <a href="resume.html" class="nav-link" data-page="resume">
+        <i class="bi bi-file-earmark-person-fill"></i><span>Resume</span>
+      </a>
+      <a href="skills.html" class="nav-link" data-page="skills">
+        <i class="bi bi-star-fill"></i><span>Skills</span>
+      </a> -->
+
+      <p class="nav-heading">More</p>
+      <a href="notifications.html" class="nav-link" data-page="notifications">
+        <i class="bi bi-bell-fill"></i><span>Notifications</span>
+        <span class="badge-count notif-badge-nav" style="display:none;">0</span>
+      </a>
+      <!-- <a href="help.html" class="nav-link" data-page="help">
+        <i class="bi bi-question-circle-fill"></i><span>Help &amp; Support</span>
+      </a> -->
+    </nav>
+
+    <div class="profile-progress-card">
+      <h6>Complete Your Profile</h6>
+      <p>Get more job recommendations</p>
+      <div class="progress-ring-wrap">
+        <svg class="progress-ring" width="64" height="64" viewBox="0 0 64 64">
+          <circle class="ring-bg" cx="32" cy="32" r="27"></circle>
+          <circle class="ring-fg" id="sidebarRingFg" cx="32" cy="32" r="27"
+            style="stroke-dasharray:169.6; stroke-dashoffset:169.6;"></circle>
+        </svg>
+        <span class="progress-ring-label" id="sidebarRingLabel">0%</span>
+      </div>
+      <button class="btn-complete-profile" id="sidebarCompleteBtn">You're here <i class="bi bi-check2"></i></button>
+    </div>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="topbar">
+      <button class="sidebar-toggle-btn" aria-label="Toggle menu">
+        <i class="bi bi-list"></i>
+      </button>
+      <div class="topbar-search">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="Search for jobs, companies, skills...">
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn notif-btn">
+          <i class="bi bi-bell"></i>
+          <span class="notif-dot">3</span>
+        </button>
+        <div class="profile-chip">
+          <img src="https://i.pravatar.cc/80?img=47" alt="Profile photo">
+          <div class="profile-chip-text">
+            <strong>Student</strong>
+            <span>&nbsp;</span>
+          </div>
+          <i class="bi bi-chevron-down"></i>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <section class="page-header">
+        <div>
+          <h2>My Profile</h2>
+          <p>Keep your details current — recruiters and placement staff see exactly what's here.</p>
+        </div>
+        <button class="btn-outline-teal" id="viewPublicProfileBtn" type="button">
+          <i class="bi bi-eye"></i> Preview
+        </button>
+      </section>
+
+      <!-- Modal can live anywhere in <main> or <body> — doesn't need to be inside page-header -->
+<div class="modal fade" id="profilePreviewModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 480px;">
+    <div class="modal-content preview-modal-content">
+      <button type="button" class="btn-close preview-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+      <div class="preview-header" id="previewHeader">
+        <!-- avatar, name, meta, status chips — filled by JS -->
+      </div>
+
+      <div class="preview-body" id="profilePreviewBody">
+        <!-- sectioned grid — filled by JS -->
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="profile-layout">
+
+        <!-- Left: completion summary + status -->
+        <aside class="profile-summary-col">
+          <div class="profile-summary-card">
+            <div class="summary-avatar" id="summaryAvatar">
+              <i class="bi bi-person-fill"></i>
+            </div>
+            <h5 id="summaryName">Loading…</h5>
+            <p id="summaryMeta">&nbsp;</p>
+
+            <div class="summary-ring-wrap">
+              <svg width="120" height="120" viewBox="0 0 120 120">
+                <circle class="summary-ring-bg" cx="60" cy="60" r="52"></circle>
+                <circle class="summary-ring-fg" id="mainRingFg" cx="60" cy="60" r="52"
+                  style="stroke-dasharray:326.7; stroke-dashoffset:326.7;"></circle>
+              </svg>
+              <div class="summary-ring-center">
+                <strong id="mainRingLabel">0%</strong>
+                <span>Complete</span>
+              </div>
+            </div>
+            <p class="summary-hint" id="summaryHint">Fill in the fields below to raise your profile score.</p>
+
+            <div class="summary-status-row">
+              <span class="status-pill" id="verifiedPill"><i class="bi bi-patch-check"></i> Checking…</span>
+              <span class="status-pill" id="placedPill"><i class="bi bi-briefcase"></i> Checking…</span>
+            </div>
+          </div>
+
+          <div class="profile-summary-card checklist-card">
+            <h6>What's missing</h6>
+            <ul id="missingFieldsList" class="missing-list">
+              <li class="missing-empty">Loading your profile…</li>
+            </ul>
+          </div>
+        </aside>
+
+        <!-- Right: the editable form -->
+        <div class="profile-form-col">
+          <form id="profileForm" novalidate>
+
+            <div class="form-card">
+              <div class="form-card-head">
+                <i class="bi bi-person-vcard"></i>
+                <h5>Identity</h5>
+              </div>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="f_name">Full name</label>
+                  <input type="text" id="f_name" maxlength="100">
+                  <span class="field-error" data-for="f_name"></span>
+                </div>
+                <div class="field">
+                  <label for="f_prn">PRN number</label>
+                  <input type="text" id="f_prn" readonly>
+                  <span class="field-locked-hint">Set at signup — contact support to change this.</span>
+                  <span class="field-error" data-for="f_prn"></span>
+                </div>
+                <div class="field">
+                  <label for="f_branch">Branch</label>
+                  <select id="f_branch" required disabled></select>
+                  <span class="field-locked-hint">Set at signup — contact support to change this.</span>
+                  <span class="field-error" data-for="f_branch"></span>
+                </div>
+                <div class="field">
+                  <label for="f_gender">Gender</label>
+                  <select id="f_gender">
+                    <option value="">Prefer not to say</option>
+                    <option value="MALE">Male</option>
+                    <option value="FEMALE">Female</option>
+                    <option value="OTHER">Other</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="f_dob">Date of birth</label>
+                  <input type="date" id="f_dob">
+                  <span class="field-error" data-for="f_dob"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-card">
+              <div class="form-card-head">
+                <i class="bi bi-telephone"></i>
+                <h5>Contact</h5>
+              </div>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="f_email">Email</label>
+                  <input type="email" id="f_email" readonly>
+                  <span class="field-locked-hint">Set at signup — contact support to change this.</span>
+                  <span class="field-error" data-for="f_email"></span>
+                </div>
+                <div class="field">
+                  <label for="f_phone">Phone</label>
+                  <input type="tel" id="f_phone" maxlength="10" readonly placeholder="9XXXXXXXXX">
+                  <span class="field-locked-hint">Set at signup — contact support to change this.</span>
+                  <span class="field-error" data-for="f_phone"></span>
+                </div>
+                <div class="field">
+                  <label for="f_city">City</label>
+                  <input type="text" id="f_city" maxlength="100">
+                </div>
+                <div class="field">
+                  <label for="f_state">State</label>
+                  <input type="text" id="f_state" maxlength="100">
+                </div>
+                <div class="field field-wide">
+                  <label for="f_address">Address</label>
+                  <textarea id="f_address" rows="2"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-card">
+              <div class="form-card-head">
+                <i class="bi bi-mortarboard"></i>
+                <h5>Academic</h5>
+              </div>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="f_cgpa">CGPA</label>
+                  <input type="number" id="f_cgpa" min="0" max="10" step="0.01">
+                  <span class="field-error" data-for="f_cgpa"></span>
+                </div>
+                <div class="field">
+                  <label for="f_backlogs">Active backlogs</label>
+                  <input type="number" id="f_backlogs" min="0" step="1">
+                  <span class="field-error" data-for="f_backlogs"></span>
+                </div>
+                <div class="field">
+                  <label for="f_gradyear">Graduation year</label>
+                  <input type="number" id="f_gradyear" step="1">
+                  <span class="field-error" data-for="f_gradyear"></span>
+                </div>
+                <div class="field">
+                  <label for="f_duration">Course duration (years)</label>
+                  <input type="number" id="f_duration" min="1" max="10" step="1" required>
+                  <span class="field-error" data-for="f_duration"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-card">
+              <div class="form-card-head">
+                <i class="bi bi-file-earmark-text"></i>
+                <h5>Documents</h5>
+              </div>
+              <div class="form-grid">
+                <div class="field field-wide">
+                  <label for="f_resume_file">Resume</label>
+                  <input type="file" id="f_resume_file" accept=".pdf,.doc,.docx">
+                  <span class="field-hint">Upload a PDF or Word document (max 10 MB). Uploading a new file replaces your current resume immediately.</span>
+                  <span class="field-error" data-for="f_resume_file"></span>
+                  <div id="currentResumeInfo" class="field-hint" style="margin-top:6px;">No resume uploaded yet.</div>
+                </div>
+              </div>
+              <p class="field-hint" style="margin-top:4px;">Profile photo and ID card photo are set at signup and can't be changed here yet.</p>
+            </div>
+
+            <div class="form-actions">
+              <span class="save-status" id="saveStatus"></span>
+              <button type="button" class="btn-outline-teal" id="resetBtn">Discard changes</button>
+              <button type="submit" class="btn-save-profile" id="saveBtn">
+                <i class="bi bi-check2-circle"></i> Save changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <script src="../assets/js/student/my-profile.js"></script>
+    </main>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="../assets/js/student/config.js"></script> -->
+<script src="../assets/js/student/sidebar.js"></script>
+<script src="../assets/js/student/student_dashboard.js"></script>
+
+</body>
+</html>

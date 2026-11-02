@@ -1,0 +1,819 @@
+:root{
+  --navy: #0b2a3d;
+  --navy-light: #123a52;
+  --teal: #0e7c86;
+  --teal-dark: #0a616a;
+   --bg: #e1e7ef;;   /* page background */
+  --card: #ffffff;
+  --border: #e7ebf0;
+  --text-main: #16222c;
+  --text-sub: #6b7a87;
+  --text-faint: #9aa7b1;
+  --green: #16a34a;
+  --green-bg: #e9f9ee;
+  --orange: #d98a1a;
+  --orange-bg: #fdf3e1;
+  --red: #e0392f;
+  --red-bg: #fdeceb;
+  --blue: #2f6fed;
+  --blue-bg: #e9f0ff;
+  --purple: #7c4fe0;
+  --purple-bg: #f1eafd;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --radius-sm: 10px;
+  --shadow: 0 1px 3px rgba(16,42,61,0.06), 0 1px 2px rgba(16,42,61,0.04);
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+}
+
+*{ box-sizing: border-box; }
+
+/* NOTE: no body/.app-shell/.navbar-slot/sidebar rules here on purpose.
+   Layout, sidebar width, and the fixed-topbar offset for `.app-main`
+   already live in company_style.css (shared across every company page).
+   Redeclaring them here risks the exact class-mismatch bug this file
+   just had — keep this stylesheet to manage-jobs page content only. */
+
+.app-main{
+  min-width: 0;     /* prevents a flex/grid parent from forcing horizontal scroll */
+  max-width: 100%;
+  padding-top: 3px; 
+}
+
+/* ---------- Page toolbar (date range only — title/notifications/profile
+   are rendered by the shared navbar via data-page-title/data-page-crumb) ---------- */
+.mj-toolbar{
+  display:flex;
+  justify-content:flex-end;
+  margin: 0px 50px 10px;
+}
+
+.date-range-btn{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:var(--card);
+  border:1px solid var(--border);
+  padding:9px 25px;
+  border-radius: var(--radius-sm);
+  font-size:13px;
+  color: var(--text-main);
+  cursor:pointer;
+  box-shadow: var(--shadow);
+  margin: 0px 70px 10px;
+}
+.date-range-btn .chev{ opacity:.6; }
+
+.mj-toolbar{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin: 0 50px 10px;
+}
+
+.download-report-btn{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background: var(--teal);
+  color:#fff;
+  border:none;
+  padding:9px 20px;
+  border-radius: var(--radius-sm);
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  box-shadow: var(--shadow);
+  transition: background .15s;
+}
+.download-report-btn:hover{ background: var(--teal-dark); }
+/* ---------- Filters bar ---------- */
+.filters-bar{
+  display:flex;
+  align-items:flex-end;
+  gap:14px;
+  flex-wrap:wrap;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding:16px 18px;
+  margin-bottom:20px;
+  box-shadow: var(--shadow);
+  position: relative; /* z-index context so open dropdowns layer above the table below */
+  z-index: 5;
+}
+
+.filter-field{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  min-width:170px;
+  flex:1 1 170px;
+  position: relative; /* anchors this field's own dropdown menu */
+}
+.filter-field label{
+  font-size:11.5px;
+  font-weight:600;
+  color: var(--text-sub);
+}
+
+/* ---------- Custom dropdown (replaces native <select>) ----------
+   Native <select> option lists can't be restyled — no radius, no shadow,
+   and Chrome renders them wide enough to spill over neighbouring fields.
+   This is a real HTML/CSS/JS component instead, so it can look like the
+   rest of the product. */
+.mj-select-trigger{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  border:1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding:9px 12px;
+  font-size:13px;
+  font-family: inherit;
+  color: var(--text-main);
+  background:#fff;
+  cursor:pointer;
+  text-align:left;
+  transition: border-color .15s, box-shadow .15s;
+}
+.mj-select-trigger:hover{ border-color:#cfd7de; }
+.mj-select-trigger:focus{ outline:none; border-color: var(--teal); }
+
+.mj-select-value{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.mj-chev{
+  flex-shrink:0;
+  color: var(--text-faint);
+  transition: transform .15s;
+}
+
+.filter-field.is-open .mj-select-trigger{
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(14,124,134,0.12);
+}
+.filter-field.is-open .mj-chev{ transform: rotate(180deg); }
+
+.mj-select-menu{
+  position:absolute;
+  top: calc(100% + 6px);
+  left:0;
+  right:0;
+  z-index: 30;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 32px rgba(16,42,61,0.16);
+  padding:6px;
+  max-height: 240px;
+  overflow-y:auto;
+  display:none;
+  opacity:0;
+  transform: translateY(-4px);
+  transition: opacity .12s ease, transform .12s ease;
+}
+.filter-field.is-open .mj-select-menu{
+  display:block;
+  opacity:1;
+  transform: translateY(0);
+}
+
+.mj-select-menu button{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  text-align:left;
+  background:none;
+  border:none;
+  border-radius: var(--radius-sm);
+  padding:9px 10px;
+  font-size:13px;
+  font-family: inherit;
+  color: var(--text-main);
+  cursor:pointer;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.mj-select-menu button:hover{ background:#f2f6f8; }
+.mj-select-menu button.is-selected{
+  background: var(--teal-bg, #e6f3f4);
+  color: var(--teal-dark);
+  font-weight:600;
+}
+
+/* ---------- Search field ---------- */
+.search-field{ flex:2 1 220px; }
+.search-input-wrap{
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+.search-icon{
+  position:absolute;
+  left:12px;
+  color: var(--text-faint);
+  pointer-events:none;
+}
+.search-input-wrap input{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding:9px 12px 9px 36px; /* room for the icon on the left instead of colliding on the right */
+  font-size:13px;
+  font-family: inherit;
+  color: var(--text-main);
+  background:#fff;
+  outline:none;
+  min-width:0;
+}
+.search-input-wrap input:focus{ border-color: var(--teal); }
+
+.create-job-btn{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background: var(--teal);
+  color:#fff;
+  border:none;
+  border-radius: var(--radius-sm);
+  padding:10px 16px;
+  font-size:13.5px;
+  font-weight:600;
+  cursor:pointer;
+  white-space:nowrap;
+  text-decoration:none;
+  transition: background .15s;
+}
+.create-job-btn:hover{ background: var(--teal-dark); color:#fff; }
+
+
+/* ---------- Stat cards ---------- */
+.stat-cards{
+  display:grid;
+  grid-template-columns: repeat(5, minmax(0,1fr));
+  gap:16px;
+  margin-bottom:22px;
+}
+@media (max-width: 1200px){
+  .stat-cards{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+}
+@media (max-width: 760px){
+  .stat-cards{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+.stat-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  display:flex;
+  align-items:center;   /* keeps icon and text vertically centered as one unit */
+  gap:12px;
+  box-shadow: var(--shadow);
+  min-width:0;
+  transition: box-shadow .15s, transform .15s;
+}
+.stat-card:hover{
+  box-shadow: 0 6px 18px rgba(16,42,61,0.10);
+  transform: translateY(-1px);
+}
+.stat-icon{
+   width:40px;height:40px;
+  border-radius: 14px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.stat-icon svg{
+  width:22px;height:22px;
+  fill:none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.stat-icon.blue{ background:var(--blue-bg); color:var(--blue); }
+.stat-icon.green{ background:var(--green-bg); color:var(--green); }
+.stat-icon.orange{ background:var(--orange-bg); color:var(--orange); }
+.stat-icon.purple{ background:var(--purple-bg); color:var(--purple); }
+.stat-icon.red{ background:var(--red-bg); color:var(--red); }
+
+.stat-info{ min-width:0; }
+.stat-info .value{ font-size:23px; font-weight:700; line-height:1.1; margin:0; text-align:left; }
+.stat-info .label{ font-size:13px; color:var(--text-sub); margin:2px 0 0; text-align:left; white-space:nowrap; }
+.stat-info .delta{ font-size:12px; font-weight:600; display:flex; align-items:center; gap:4px; }
+.stat-info .delta.up{ color: var(--green); }
+.stat-info .delta.down{ color: var(--red); }
+.stat-info .delta.link{ color: var(--teal); cursor:pointer; }
+
+/* ---------- Table card ---------- */
+.table-card{
+  background: var(--card);
+  border:1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.table-scroll{
+  width:100%;
+  overflow-x: hidden; /* no horizontal scrolling, table adapts instead */
+}
+
+.job-table{
+  width:100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.job-table th{
+  text-align:left;
+  font-size:12px;
+  text-transform:none;
+  color: var(--text-sub);
+  font-weight:700;
+  padding:12px 15px;
+  border-bottom:1px solid var(--border);
+  background:#fbfcfd;
+}
+
+.job-table td{
+  padding:8px 6px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+  font-size:14px;
+  color: var(--text-main);
+}
+
+.job-table tbody tr:last-child td{ border-bottom:none; }
+.job-table tbody tr:hover{ background:#fafcfd; }
+
+.col-job{ width:27%; }
+.col-role{ width:14%; }
+.col-location{ width:10%; }
+.col-salary{ width:12%; }
+.col-posted{ width:13%; }
+.col-apps{ width:9%; }
+.col-status{ width:7%; }
+.col-actions{ width:10%; }
+
+/* Job details cell */
+.job-cell{ display:flex; gap:8px; min-width:0; }
+.job-avatar{
+  width:38px;height:38px;
+  border-radius:10px;
+  flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12.5px;
+  font-weight:700;
+  color:#fff;
+}
+.job-cell-text{ min-width:0; }
+.job-title{ font-weight:700; font-size:14.5px; margin:0; }
+.job-company{ color: var(--teal); font-size:12.5px; font-weight:600; margin:1px 0 4px; display:block; }
+.job-desc{
+  color: var(--text-sub);
+  font-size:12.5px;
+  line-height:1.4;
+  margin:0 0 8px;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.job-tags{ display:flex; flex-wrap:wrap; gap:6px; }
+.job-tag{
+  background:#f1f4f7;
+  color:var(--text-sub);
+  font-size:11px;
+  font-weight:600;
+  padding:3px 8px;
+  border-radius:5px;
+}
+
+/* Role & Employment cell */
+.role-type{ font-weight:700; font-size:14px; margin:0; }
+.role-emp{ color: var(--text-sub); font-size:12.5px; margin:3px 0; }
+.role-pos{ color: var(--text-sub); font-size:12.5px; margin:0; }
+
+/* Location cell */
+.loc-line{ display:flex; align-items:flex-start; gap:5px; font-weight:600; font-size:13px; }
+.loc-line svg{ flex-shrink:0; margin-top:2px; color: var(--text-faint); }
+.loc-dept{ color:var(--text-sub); font-size:12.5px; margin-top:4px; }
+
+/* Salary cell */
+.salary-amt{ font-weight:700; font-size:14px; margin:0; }
+.salary-sub{ color:var(--text-sub); font-size:12px; margin:2px 0 6px; }
+.negotiable-pill{
+  display:inline-block;
+  background:var(--green-bg);
+  color:var(--green);
+  font-size:11px;
+  font-weight:700;
+  padding:3px 8px;
+  border-radius:5px;
+}
+
+/* Posted cell */
+.posted-date{ display:flex; align-items:center; gap:5px; font-weight:600; font-size:13px; }
+.posted-date svg{ color:var(--text-faint); flex-shrink:0; }
+.posted-time{ color:var(--text-sub); font-size:12px; margin:1px 0 8px 19px; }
+.closes-label{ color:var(--text-sub); font-size:12px; margin-left:19px; }
+.closes-date{ font-weight:600; font-size:12.5px; margin-left:19px; }
+
+/* Applications cell */
+.apps-count{ font-weight:700; font-size:16px; margin:0; }
+.apps-label{ color:var(--text-sub); font-size:12px; margin:1px 0 6px; }
+.view-details{
+  color: var(--teal);
+  font-size:12.5px;
+  font-weight:600;
+  cursor:pointer;
+  background:none;border:none;padding:0;
+}
+.view-details:hover{ text-decoration:underline; }
+
+/* Status */
+.status-toggle{
+  position:relative;
+  width:40px;height:22px;
+  border-radius:20px;
+  border:none;
+  background: var(--border);
+  cursor:pointer;
+  transition: background .15s;
+  flex-shrink:0;
+}
+.status-toggle::after{
+  content:'';
+  position:absolute;
+  top:2px;left:2px;
+  width:18px;height:18px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  transition: transform .15s;
+}
+.status-toggle.on{ background: var(--green); }
+.status-toggle.on::after{ transform: translateX(18px); }
+.status-label{
+  display:inline-block;
+  font-size:12px;
+  font-weight:700;
+  margin-top:6px;
+}
+.status-label.active{ color: var(--green); }
+.status-label.inactive{ color: var(--orange); }
+.status-cell{ display:flex; flex-direction:column; align-items:flex-start; }
+
+/* ---------- Actions (plain text links, no overflow) ---------- */
+.actions-cell{ position:relative; }
+
+.action-links{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.action-link{
+  background:none;
+  border:none;
+  padding:0;
+  margin:0;
+  text-align:left;
+  font-size:12.5px;
+  font-weight:700;
+  font-family: inherit;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.action-link.edit{ color: var(--blue); }
+.action-link.edit:hover{ text-decoration:underline; }
+.action-link.activate{ color: var(--green); }
+.action-link.activate:hover{ text-decoration:underline; }
+.action-link.deactivate{ color: var(--orange); }
+.action-link.deactivate:hover{ text-decoration:underline; }
+.action-link.delete{ color: var(--red); }
+.action-link.delete:hover{ text-decoration:underline; }
+
+/* Kept for anywhere a dropdown-style action menu is used instead of action-links */
+.actions-trigger{
+  width:34px;height:34px;
+  border-radius: var(--radius-sm);
+  border:1px solid var(--border);
+  background:#fff;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  color: var(--text-sub);
+}
+.actions-trigger:hover{ background:#f7f9fb; }
+
+.actions-menu{
+  position:absolute;
+  right:0;
+  top:40px;
+  z-index:20;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 30px rgba(16,42,61,.15);
+  min-width:170px;
+  padding:6px;
+  display:none;
+}
+.actions-menu.open{ display:block; }
+.actions-menu button{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  background:none;
+  border:none;
+  text-align:left;
+  padding:9px 10px;
+  font-size:13px;
+  border-radius: var(--radius-sm);
+  cursor:pointer;
+  color: var(--text-main);
+}
+.actions-menu button:hover{ background:#f4f6f9; }
+.actions-menu button.danger{ color: var(--red); }
+.actions-menu button svg{ flex-shrink:0; }
+.actions-menu .divider{ height:1px; background:var(--border); margin:4px 2px; }
+
+/* ---------- Empty state ---------- */
+.empty-state{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding: 60px 20px;
+  color: var(--text-sub);
+  text-align:center;
+  gap:10px;
+}
+.empty-state svg{ color: var(--text-faint); }
+.empty-state button{
+  margin-top:6px;
+  background: var(--teal);
+  color:#fff;
+  border:none;
+  padding:8px 16px;
+  border-radius: var(--radius-sm);
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+/* ---------- Table footer / pagination ---------- */
+.table-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:12px;
+  padding:16px 18px;
+}
+.entries-info{ font-size:13px; color: var(--text-sub); }
+
+.pagination{ display:flex; align-items:center; gap:6px; }
+.pagination button{
+  min-width:32px;height:32px;
+  border-radius: var(--radius-sm);
+  border:1px solid var(--border);
+  background:#fff;
+  color: var(--text-main);
+  font-size:13px;
+  cursor:pointer;
+  padding:0 8px;
+}
+.pagination button.active{
+  background: var(--teal);
+  border-color: var(--teal);
+  color:#fff;
+  font-weight:700;
+}
+.pagination button:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+.show-entries{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+  color: var(--text-sub);
+}
+.show-entries select{
+  border:1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding:6px 10px;
+  font-size:13px;
+}
+
+/* ---------- Toast ----------
+   Renamed from .toast — Materialize (loaded globally on this page) ships
+   its own .toast class for its snackbar system with very different sizing,
+   and the two were colliding: that's the oversized dark box in the
+   screenshot, not a bug in this rule. */
+.mj-toast{
+  position:fixed;
+  bottom:24px;
+  left:50%;
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  max-width: min(90vw, 420px);
+  height:auto;
+  transform:translateX(-50%) translateY(20px);
+  background: var(--navy);
+  color:#fff;
+  padding:12px 20px;
+  border-radius: var(--radius-md);
+  font-size:13px;
+  font-weight:600;
+  line-height:1.4;
+  opacity:0;
+  pointer-events:none;
+  transition: opacity .2s, transform .2s;
+  z-index:1000;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+.mj-toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* ---------- Responsive: collapse columns before ever scrolling ---------- */
+/* Sidebar collapse breakpoints are handled by company_style.css / navbar.js
+   (e.g. the mobile-trigger + mobile-sidenav). This file only reflows the
+   table itself as the viewport narrows. */
+@media (max-width: 1100px){
+  .col-posted{ display:none; }
+  .job-table{ table-layout:auto; }
+}
+
+@media (max-width: 900px){
+  .col-salary{ display:none; }
+}
+
+@media (max-width: 700px){
+  .job-table thead{ display:none; }
+  .job-table, .job-table tbody, .job-table tr, .job-table td{
+    display:block;
+    width:100% !important;
+  }
+  .job-table tr{
+    border-bottom:1px solid var(--border);
+    padding:14px 4px;
+  }
+  .job-table td{ border-bottom:none; padding:6px 8px; }
+  .col-role::before, .col-location::before, .col-apps::before, .col-status::before{
+    content: attr(data-label);
+    display:block;
+    font-size:10.5px;
+    font-weight:700;
+    color: var(--text-faint);
+    text-transform:uppercase;
+    margin-bottom:4px;
+  }
+  .action-links{ flex-direction:row; gap:14px; }
+  .actions-menu{ right:8px; }
+}
+
+/* --- Reminder banner --- */
+.apt-reminder {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: linear-gradient(90deg, #fff7e6, #fff3d1);
+  border: 1px solid #ffd98a;
+  border-left: 4px solid #f0a500;
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin: 0 0 16px 0;
+  animation: aptSlideIn .35s ease-out;
+}
+.apt-reminder-icon { color: #f0a500; display: flex; }
+.apt-reminder-body { flex: 1; }
+.apt-reminder-title { font-size: 14px; font-weight: 600; color: #7a5200; margin: 0; }
+.apt-reminder-sub { font-size: 12.5px; color: #8a6a2a; margin: 2px 0 0 0; }
+.apt-reminder-btn {
+  background: #f0a500;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.apt-reminder-btn:hover { background: #d99400; }
+
+@keyframes aptSlideIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Pending list --- */
+.apt-pending-list {
+  background: #fff;
+  border: 1px solid #eef2f5;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+}
+.apt-pending-list h4 { margin: 0 0 10px; font-size: 14px; color: #2b3a49; }
+.apt-pending-list ul { list-style: none; padding: 0; margin: 0; }
+.apt-pending-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-top: 1px solid #f0f3f6;
+  font-size: 13px;
+}
+.apt-pending-list li:first-child { border-top: none; }
+.apt-pending-list .apt-job-title { font-weight: 600; color: #2b3a49; }
+.apt-pending-list .apt-job-meta { color: #6b7f92; font-size: 12px; }
+.apt-schedule-btn {
+  background: #0E9AA3;
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.apt-schedule-btn:hover { background: #0b8189; }
+
+/* --- Aptitude modal tweaks --- */
+.apt-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.apt-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.apt-help { font-size: 11.5px; color: #6b7f92; margin-top: 4px; }
+
+.action-link.schedule        { color: #0E9AA3; }
+.action-link.schedule:hover  { text-decoration: underline; }
+.action-link.schedule:disabled {
+  color: #16a34a;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+/* Neutralize Materialize's select wrapper inside our own modal */
+.mj-modal select,
+.jc-field select {
+  display: block !important;
+  appearance: auto !important;
+  -webkit-appearance: auto !important;
+  background: #fff !important;
+  border: 1px solid #e7ebf0 !important;
+  border-radius: 8px !important;
+  padding: 8px 10px !important;
+  font-size: 13px !important;
+  height: auto !important;
+  width: 100% !important;
+  color: #2b3a49 !important;
+}
+.mj-modal .select-wrapper,
+.jc-field .select-wrapper {
+  display: none !important;   /* kill Materialize's injected wrapper */
+}
+/* Restore the native dropdown arrow */
+.mj-modal select {
+  background-image: none !important;
+}
+/* Give the field some breathing room so it's visually aligned with others */
+.mj-modal .jc-field select + label,
+.mj-modal .jc-field > label {
+  position: static !important;
+  transform: none !important;
+}
+select.browser-default {
+  display: block !important;
+  opacity: 1 !important;
+  position: static !important;
+  width: auto;
+  pointer-events: auto;
+}
+.mj-badge-scheduled {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #16a34a;
+  background: #e8f8ee;
+  border: 1px solid #b6ebc8;
+  border-radius: 20px;
+  vertical-align: middle;
+}

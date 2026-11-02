@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports — Vertex Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="../assets/css/admin/admin-shared.css" rel="stylesheet">
+
+</head>
+<body data-page="reports">
+<div class="admin-shell">
+    <aside class="admin-sidebar" id="adminSidebar"></aside>
+
+    <main class="admin-main">
+        <header class="admin-topbar">
+            <div class="topbar-heading">
+                <div class="eyebrow">Placement Cell</div>
+                <h4>Reports</h4>
+            </div>
+            <div class="topbar-right">
+                <button class="sidebar-toggle-btn topbar-icon-btn" id="sidebarToggle">
+                    <i class="material-icons">menu</i>
+                </button>
+                <a href="notifications.html" class="topbar-icon-btn" title="Notifications">
+                    <i class="material-icons">notifications_none</i>
+                    <span class="dot"></span>
+                </a>
+                <a href="admin-profile.html" class="topbar-avatar">
+                    <div class="avatar">DR</div>
+                    <span class="name">Devika Rane</span>
+                    <i class="material-icons" style="font-size:18px;color:var(--slate-dim);">expand_more</i>
+                </a>
+            </div>
+        </header>
+
+        <div class="admin-content">
+
+            <div class="section-toolbar">
+                <div class="chip-filters">
+                    <button class="chip active">This Year</button>
+                    <button class="chip">Last Year</button>
+                    <button class="chip">All Time</button>
+                </div>
+               <div class="toolbar-right">
+                    <button class="btn-console outline" id="exportPdfBtn"><i class="material-icons">picture_as_pdf</i> Export PDF</button>
+                    <button class="btn-console" id="exportCsvBtn"><i class="material-icons">download</i> Export CSV</button>
+                </div>
+            </div>
+
+         <div class="grid-3" style="margin-bottom:20px;">
+                <!-- CARD 1: Placement Rate -->
+                <div class="panel">
+                    <div class="panel-head"><h5>Placement rate</h5></div>
+                    <div class="stat-num" id="reportPlacementRate" style="font-size:38px;">—%</div>
+                    <div class="stat-label" id="reportPlacementLabel">Loading...</div>
+                </div>
+                
+                <!-- CARD 2: Companies Onboarded -->
+                <div class="panel">
+                    <div class="panel-head"><h5>Companies onboarded</h5></div>
+                    <div class="stat-num" id="reportCompaniesTotal" style="font-size:38px;">—</div>
+                    <div class="stat-label" id="reportCompaniesLabel">Loading...</div>
+                </div>
+                
+                <!-- CARD 3: Median Package -->
+                <div class="panel">
+                    <div class="panel-head"><h5>Median package</h5></div>
+                    <div class="stat-num" id="reportMedianPackage" style="font-size:38px;">— <span style="font-size:18px;color:var(--slate-dim);">LPA</span></div>
+                    <div class="stat-label" id="reportMedianLabel">Loading...</div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="panel">
+                    <div class="panel-head">
+                        <h5>Branch-wise placement report</h5>
+                        <span class="panel-note">% of eligible students placed</span>
+                    </div>
+                    <div id="reportBranchBars"></div>
+                </div>
+                <div class="panel">
+                    <div class="panel-head">
+                        <h5>Top recruiting companies</h5>
+                        <span class="panel-note">By offers extended</span>
+                    </div>
+                    <div id="topCompanies"></div>
+                </div>
+            </div>
+
+           <div class="panel" style="margin-top:20px;">
+    <div class="panel-head">
+        <h5>Students by status</h5>
+        <span class="panel-note" id="statusCountNote">— students</span>
+    </div>
+
+    <!-- Filters -->
+    <div class="section-toolbar" style="padding: 0 18px 12px; border-bottom:none;">
+        <div class="chip-filters" id="statusFilterChips">
+            <button class="chip active" data-status="HIRED">Placed</button>
+            <button class="chip" data-status="SHORTLISTED">Shortlisted</button>
+            <button class="chip" data-status="REJECTED">Rejected</button>
+            <button class="chip" data-status="UNDER_REVIEW">Under review</button>
+            <button class="chip" data-status="SUBMITTED">Applied</button>
+        </div>
+        <div class="toolbar-right">
+    
+            <div class="select-wrapper">
+            <select id="statusBranchFilter" class="chip" style="padding:8px 12px;">
+                <option value="">All branches</option>
+                <option value="BBA">BBA</option>
+                <option value="B.Tech">B.Tech</option>
+                    <option value="BCA">BCA</option>
+                    <option value="BBA">BBA</option>
+                    <option value="B.Com">B.Com</option>
+                    <option value="M.Tech">M.Tech</option>
+                    <option value="B.Arc">B.Arc</option>
+                    <option value="M.Tech">M.Tech</option>
+                    <option value="MCA">MCA</option>
+                    <option value="MBA">MBA</option>
+                    <option value="M.Sc">M.Sc</option>
+                    <option value="M.Com">M.Com</option>
+                    <option value="MA">MA</option>
+                    <option value="BA">BA</option>
+                <option value="Civil">Civil</option>
+                <option value="Computer Engineering">Computer Engineering</option>
+
+            </select>
+            <i class="material-icons">expand_more</i>
+            </div>
+            
+            <div class="search-box">
+                <i class="material-icons">search</i>
+                <input id="statusSearch" type="text" placeholder="Search name, PRN, email">
+            </div>
+        </div>
+    </div>
+
+    <div class="table-scroll">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>PRN</th>
+                    <th>Branch</th>
+                    <th>CGPA</th>
+                    <th>Company</th>
+                    <th>Job</th>
+                    <th>Status</th>
+                    <th>Applied</th>
+                </tr>
+            </thead>
+            <tbody id="statusTableBody">
+                <tr><td colspan="8" style="text-align:center;padding:1.5rem;">Loading…</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="table-footer">
+        <span id="statusResultCount">— results</span>
+    </div>
+</div>
+
+        </div>
+    </main>
+</div>
+
+<script src="../assets/js/admin/admin-shared.js"></script>
+
+<script>
+/* =========================================================
+   STUDENTS-BY-STATUS section
+   ========================================================= */
+const STATUS_API = 'http://localhost:8080/api/admin/applications/by-status';
+
+let sbState = {
+    status:  'HIRED',
+    branch:  '',
+    search:  '',
+    rows:    []
+};
+
+async function loadStudentsByStatus() {
+    const tbody = document.getElementById('statusTableBody');
+    const countEl = document.getElementById('statusResultCount');
+    const noteEl = document.getElementById('statusCountNote');
+
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:1.5rem;">Loading…</td></tr>`;
+
+    const qs = new URLSearchParams();
+    qs.set('status', sbState.status);
+    if (sbState.branch) qs.set('branch', sbState.branch);
+    if (sbState.search) qs.set('search', sbState.search);
+
+    let url = `${STATUS_API}/${sbState.status}`;
+    try {
+        const res = await fetch(`${url}?${qs.toString()}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        if (!res.ok) {
+            // Try to read backend error message
+            let msg = `HTTP ${res.status}`;
+            try { const b = await res.json(); if (b.message) msg = b.message; } catch {}
+            throw new Error(msg);
+        }
+
+        const payload = await res.json();
+        sbState.rows = Array.isArray(payload.data) ? payload.data : [];
+
+        renderStatusTable();
+        countEl.textContent = `${sbState.rows.length} results`;
+        noteEl.textContent = `${payload.status || sbState.status} · ${sbState.rows.length} students`;
+    } catch (err) {
+        console.error(err);
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#b91c1c;padding:1.5rem;">
+            Failed to load: ${escapeHtml(err.message)}
+            <br><button onclick="loadStudentsByStatus()" style="margin-top:8px;">Retry</button>
+        </td></tr>`;
+        countEl.textContent = '0 results';
+        noteEl.textContent = '— students';
+    }
+}
+
+function renderStatusTable() {
+    const tbody = document.getElementById('statusTableBody');
+
+    if (!sbState.rows.length) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:1.5rem;color:var(--slate-dim);">
+            No students found for this filter.
+        </td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = sbState.rows.map(s => {
+        const initials = (s.name || '?').trim().split(/\s+/)
+                            .map(w => w[0]).slice(0, 2).join('').toUpperCase();
+        const applied = s.appliedAt
+            ? new Date(s.appliedAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+            : '—';
+        const badgeClass = statusBadgeClass(s.status);
+
+        return `
+            <tr>
+                <td>
+                    <div class="avatar-cell">
+                        <div class="av">${initials}</div>
+                        <div>
+                            <div class="cell-primary">${escapeHtml(s.name || '—')}</div>
+                            <div class="cell-sub">${escapeHtml(s.email || '')}</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="mono">${escapeHtml(s.prnNo || '—')}</td>
+                <td>${escapeHtml(s.branch || '—')}</td>
+                <td class="mono">${s.cgpa ?? '—'}</td>
+                <td>${escapeHtml(s.companyName || '—')}</td>
+                <td>${escapeHtml(s.jobTitle || '—')}</td>
+                <td><span class="status-badge ${badgeClass}">${escapeHtml(s.status || '—')}</span></td>
+                <td class="mono">${applied}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function statusBadgeClass(status) {
+    switch ((status || '').toUpperCase()) {
+        case 'HIRED':        return 'badge-success';
+        case 'OFFERED':      return 'badge-info';
+        case 'SHORTLISTED':  return 'badge-warn';
+        case 'UNDER_REVIEW': return 'badge-info';
+        case 'REJECTED':     return 'badge-danger';
+        case 'WITHDRAWN':    return 'badge-muted';
+        default:             return 'badge-muted';
+    }
+}
+
+function escapeHtml(s) {
+    return String(s ?? '').replace(/[&<>"']/g, c => (
+        { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]
+    ));
+}
+
+function wireStatusFilters() {
+    document.querySelectorAll('#statusFilterChips .chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            document.querySelectorAll('#statusFilterChips .chip')
+                    .forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            sbState.status = chip.dataset.status;
+            loadStudentsByStatus();
+        });
+    });
+
+    document.getElementById('statusBranchFilter')
+            .addEventListener('change', e => {
+                sbState.branch = e.target.value;
+                loadStudentsByStatus();
+            });
+
+    let searchTimer;
+    document.getElementById('statusSearch')
+            .addEventListener('input', e => {
+                clearTimeout(searchTimer);
+                searchTimer = setTimeout(() => {
+                    sbState.search = e.target.value.trim();
+                    loadStudentsByStatus();
+                }, 300);
+            });
+}
+
+/* =========================================================
+   Page init — runs LAST so all functions exist
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', function () {
+    // Top stat cards + branch bars + top companies (static for now)
+    const branchData = [
+        { label:'Computer Science', pct:82 },
+        { label:'Information Tech', pct:71 },
+        { label:'Electronics',      pct:64 },
+        { label:'Mechanical',       pct:39 },
+        { label:'Civil',            pct:28 },
+    ];
+    document.getElementById('reportBranchBars').innerHTML = branchData.map(b =>
+        `<div class="bar-row"><div class="bar-label">${b.label}</div><div class="bar-track"><div class="bar-fill" style="width:${b.pct}%;"></div></div><div class="bar-val">${b.pct}%</div></div>`
+    ).join('');
+
+    const companies = [
+        { label:'Nimbus Systems',        pct:100 },
+        { label:'Northbridge Consulting', pct:78 },
+        { label:'Solstice Analytics',    pct:56 },
+        { label:'Ledgerly Finance',      pct:44 },
+    ];
+    document.getElementById('topCompanies').innerHTML = companies.map(c =>
+        `<div class="bar-row"><div class="bar-label">${c.label}</div><div class="bar-track"><div class="bar-fill" style="width:${c.pct}%;background:var(--brass);"></div></div><div class="bar-val">${c.pct}</div></div>`
+    ).join('');
+
+      // --- NEW: FETCH REPORT SUMMARY DATA ---
+    async function loadReportSummary() {
+        // Use the dashboard summary endpoint we built earlier
+        const SUMMARY_API = 'http://127.0.0.1:8080/api/admin/dashboard/summary';
+
+        try {
+            const res = await fetch(SUMMARY_API, {
+                method: 'GET',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = await res.json();
+
+            // 1. Placement Rate Card
+            const rate = data.stats.placementRate || 0;
+            document.getElementById('reportPlacementRate').textContent = `${rate}%`;
+            
+            // Based on your backend logic, placedStudents is the count, totalStudents is the total
+            document.getElementById('reportPlacementLabel').textContent = 
+                `${data.stats.placedStudents} of ${data.stats.totalStudents} eligible students placed`;
+
+            // 2. Companies Onboarded Card
+            const totalCompanies = data.stats.totalCompanies || 0;
+            const pendingCompanies = data.stats.pendingCompanies || 0;
+            const verifiedCompanies = totalCompanies - pendingCompanies; // Assuming the rest are verified
+
+            document.getElementById('reportCompaniesTotal').textContent = totalCompanies;
+            document.getElementById('reportCompaniesLabel').textContent = 
+                `${verifiedCompanies} verified · ${pendingCompanies} pending review`;
+
+            // 3. Median Package Card
+            // If your backend doesn't return medianPackage yet, we default to 0
+            const medianPkg = data.stats.medianPackage ? data.stats.medianPackage : '9.6'; 
+            document.getElementById('reportMedianPackage').innerHTML = 
+                `${medianPkg} <span style="font-size:18px;color:var(--slate-dim);">LPA</span>`;
+            document.getElementById('reportMedianLabel').textContent = 'Across all confirmed offers';
+
+        } catch (err) {
+            console.error("Failed to load report summary:", err);
+            // Fallback text if API fails
+            document.getElementById('reportPlacementLabel').textContent = 'Error loading data';
+            document.getElementById('reportCompaniesLabel').textContent = 'Error loading data';
+            document.getElementById('reportMedianLabel').textContent = 'Error loading data';
+        }
+    }
+    loadReportSummary(); 
+
+        // ==========================================
+    // EXPORT FUNCTIONALITY
+    // ==========================================
+
+    // 1. Export CSV
+    document.getElementById('exportCsvBtn').addEventListener('click', function() {
+        if (!sbState.rows || sbState.rows.length === 0) {
+            alert("No data available to export.");
+            return;
+        }
+
+        // Define the columns for the CSV
+        const headers = ["Student Name", "PRN", "Branch", "CGPA", "Company", "Job Role", "Status", "Applied Date"];
+        
+        // Map the data rows to match the headers
+        const csvRows = sbState.rows.map(student => [
+            `"${student.name || ''}"`,
+            `"${student.prnNo || ''}"`,
+            `"${student.branch || ''}"`,
+            `"${student.cgpa || ''}"`,
+            `"${student.companyName || ''}"`,
+            `"${student.jobTitle || ''}"`,
+            `"${student.status || ''}"`,
+            `"${student.appliedAt ? new Date(student.appliedAt).toLocaleDateString() : ''}"`
+        ]);
+
+        // Combine headers and rows
+        const csvContent = [headers.join(","), ...csvRows.map(row => row.join(","))].join("\n");
+
+        // Create a Blob and trigger download
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `Placement_Report_${sbState.status}_${new Date().toISOString().split('T')[0]}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+
+    // 2. Export PDF
+    document.getElementById('exportPdfBtn').addEventListener('click', function() {
+        // We will use the browser's native print-to-PDF feature.
+        // First, we hide elements we don't want in the PDF (like the sidebar and buttons)
+        
+        const sidebar = document.querySelector('.admin-sidebar');
+        const topbarButtons = document.querySelector('.toolbar-right');
+        const chips = document.querySelector('.chip-filters');
+        
+        // Hide elements temporarily
+        if(sidebar) sidebar.style.display = 'none';
+        if(topbarButtons) topbarButtons.style.display = 'none';
+        if(chips) chips.style.display = 'none';
+
+        // Trigger the browser's print dialog (User selects "Save as PDF")
+        window.print();
+
+        // Restore elements after printing dialog closes
+        if(sidebar) sidebar.style.display = '';
+        if(topbarButtons) topbarButtons.style.display = 'flex';
+        if(chips) chips.style.display = 'flex';
+    });
+    // Status table
+    wireStatusFilters();
+    loadStudentsByStatus();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students — Vertex Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="../assets/css/admin/admin-shared.css" rel="stylesheet">
+
+    <style>
+        /* ========== PRN Rules Modal ========== */
+        .prn-modal-overlay {
+            position: fixed; inset: 0;
+            background: rgba(15,23,42,.55);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        .prn-modal-overlay.open { display: flex; }
+
+        .prn-modal {
+            background: #fff;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 780px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(15,23,42,.35);
+            position: relative;
+        }
+        .prn-modal-head {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #fff;
+            padding: 22px 26px;
+            border-radius: 16px 16px 0 0;
+            position: relative;
+        }
+        .prn-modal-head h3 {
+            margin: 0;
+            font-family: 'Fraunces', serif;
+            font-weight: 600;
+            font-size: 20px;
+            letter-spacing: -.3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .prn-modal-head h3 .material-icons {
+            color: #fbbf24;
+            font-size: 24px;
+        }
+        .prn-modal-head p {
+            margin: 6px 0 0;
+            font-size: 12.5px;
+            color: #94a3b8;
+            font-family: 'IBM Plex Mono', monospace;
+            letter-spacing: .3px;
+        }
+        .prn-modal-close {
+            position: absolute;
+            top: 18px; right: 20px;
+            background: rgba(255,255,255,.1);
+            border: none;
+            color: #fff;
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .15s;
+        }
+        .prn-modal-close:hover { background: rgba(255,255,255,.2); }
+
+        .prn-security-note {
+            background: #fef3c7;
+            border-left: 3px solid #f59e0b;
+            padding: 12px 16px;
+            margin: 20px 26px 0;
+            border-radius: 8px;
+            font-size: 12.5px;
+            color: #78350f;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .prn-security-note i {
+            color: #f59e0b;
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .prn-security-note strong { font-weight: 700; }
+
+        .prn-modal-body { padding: 20px 26px; }
+
+        .prn-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+        .prn-table thead th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 2px solid #e2e8f0;
+            font-family: 'Inter', sans-serif;
+        }
+        .prn-table tbody td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
+        .prn-table tbody tr:hover { background: #f8fafc; }
+
+        .prn-branch-input, .prn-range-input {
+            width: 100%;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: 13px;
+            font-family: 'IBM Plex Mono', monospace;
+            color: #0f172a;
+            background: #fff;
+        }
+        .prn-branch-input:focus, .prn-range-input:focus {
+            outline: none;
+            border-color: #0E9AA3;
+            box-shadow: 0 0 0 3px rgba(14,154,163,.15);
+        }
+        .prn-range-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .prn-range-sep { color: #94a3b8; font-size: 12px; }
+
+        .prn-del-btn {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: none;
+            width: 30px; height: 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .15s;
+        }
+        .prn-del-btn:hover { background: #fecaca; }
+        .prn-del-btn i { font-size: 16px; }
+
+        .prn-modal-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 18px;
+            margin-top: 12px;
+            border-top: 1px solid #eef2f7;
+        }
+        .prn-btn {
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Inter', sans-serif;
+        }
+        .prn-btn-ghost {
+            background: #f1f5f9;
+            color: #475569;
+        }
+        .prn-btn-ghost:hover { background: #e2e8f0; }
+        .prn-btn-add {
+            background: #eef7f8;
+            color: #0E9AA3;
+        }
+        .prn-btn-add:hover { background: #d5edef; }
+        .prn-btn-primary {
+            background: #0f172a;
+            color: #fff;
+        }
+        .prn-btn-primary:hover { background: #1e293b; }
+        .prn-btn-primary i { font-size: 18px; }
+
+        /* Toolbar button */
+        .prn-manage-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            color: #0f172a;
+            padding: 9px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: .15s;
+            margin-right: 10px;
+        }
+        .prn-manage-btn:hover {
+            border-color: #0E9AA3;
+            color: #0E9AA3;
+            background: #f0fbfc;
+        }
+        .prn-manage-btn i { font-size: 17px; }
+
+        /* View student modal */
+        .student-view-modal {
+            background: #fff;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 780px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(15,23,42,.35);
+            position: relative;
+        }
+        .student-view-head {
+            background: linear-gradient(135deg, #0E9AA3 0%, #0C6A70 100%);
+            color: #fff;
+            padding: 22px 26px;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .student-view-avatar {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .student-view-head h3 {
+            margin: 0;
+            font-family: 'Fraunces', serif;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .student-view-head p {
+            margin: 3px 0 0;
+            font-size: 12.5px;
+            opacity: .9;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+        .student-view-body { padding: 22px 26px; }
+        .student-view-section {
+            margin-bottom: 22px;
+        }
+        .student-view-section h4 {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            color: #0E9AA3;
+            margin: 0 0 12px;
+            font-family: 'Inter', sans-serif;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #eef2f7;
+        }
+        .student-view-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 20px;
+        }
+        .student-view-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .student-view-item .lbl {
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+        .student-view-item .val {
+            font-size: 13.5px;
+            color: #0f172a;
+            font-weight: 500;
+            word-break: break-word;
+        }
+        .student-view-item .val.mono {
+            font-family: 'IBM Plex Mono', monospace;
+        }
+    </style>
+</head>
+<body data-page="students">
+<div class="admin-shell">
+    <aside class="admin-sidebar" id="adminSidebar"></aside>
+
+    <main class="admin-main">
+        <header class="admin-topbar">
+            <div class="topbar-heading">
+                <div class="eyebrow">Placement Cell</div>
+                <h4>Students</h4>
+            </div>
+            <div class="topbar-right">
+                <button class="sidebar-toggle-btn topbar-icon-btn" id="sidebarToggle">
+                    <i class="material-icons">menu</i>
+                </button>
+                <a href="notifications.html" class="topbar-icon-btn" title="Notifications">
+                    <i class="material-icons">notifications_none</i>
+                    <span class="dot"></span>
+                </a>
+                <a href="admin-profile.html" class="topbar-avatar">
+                    <div class="avatar">DR</div>
+                    <span class="name">Devika Rane</span>
+                    <i class="material-icons" style="font-size:18px;color:var(--slate-dim);">expand_more</i>
+                </a>
+            </div>
+        </header>
+
+        <div class="admin-content">
+
+            <div class="section-toolbar">
+                <div class="chip-filters" id="studentFilters">
+                    <button class="chip active" data-filter="all">All</button>
+                    <button class="chip" data-filter="verified">Verified</button>
+                    <button class="chip" data-filter="pending">Pending</button>
+                    <button class="chip" data-filter="rejected">Rejected</button>
+                </div>
+                <div class="toolbar-right">
+                    <button class="prn-manage-btn" id="managePrnBtn">
+                        <i class="material-icons">security</i>
+                        PRN Rules
+                    </button>
+                    <select class="select-box" id="branchFilter">
+                        <option value="">All branches</option>
+                        <option>Computer Science</option>
+                        <option>Information Tech</option>
+                        <option>Electronics</option>
+                        <option>Mechanical</option>
+                        <option>Civil</option>
+                        <option>B.Tech</option>
+                        <option>BBA</option>
+                        <option>BCA</option>
+                        <option>MBA</option>
+                        <option>BA</option>
+                        <option>MA</option>
+                        <option>B.Arch</option>
+                    </select>
+                    <div class="search-box">
+                        <i class="material-icons">search</i>
+                        <input id="studentSearch" type="text" placeholder="Search name, roll no or mobile">
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-scroll">
+                    <table class="admin-table">
+                        <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Roll No.</th>
+                            <th>Branch</th>
+                            <th>Mobile Number</th>
+                            <th>CGPA</th>
+                            <th>Status</th>
+                            <th style="width:150px;">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="studentTableBody"></tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <span id="studentResultCount">— results</span>
+                    <div class="pagination"><button class="active">1</button></div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<!-- ======================= PRN RULES MODAL ======================= -->
+<div class="prn-modal-overlay" id="prnModal">
+    <div class="prn-modal">
+        <div class="prn-modal-head">
+            <h3><i class="material-icons">shield</i> PRN Rules Configuration</h3>
+            <p>CONFIDENTIAL · ADMIN-LEVEL ACCESS ONLY</p>
+            <button class="prn-modal-close" id="prnModalClose">
+                <i class="material-icons">close</i>
+            </button>
+        </div>
+
+        <div class="prn-security-note">
+            <i class="material-icons">warning</i>
+            <div>
+                <strong>Security Notice:</strong> These rules determine whether a student is auto-verified.
+                Any modification is logged and takes effect immediately. Do not share PRN ranges outside
+                the placement cell.
+            </div>
+        </div>
+
+        <div class="prn-modal-body">
+            <table class="prn-table">
+                <thead>
+                    <tr>
+                        <th style="width:30%;">Branch</th>
+                        <th style="width:55%;">Valid PRN Range (numeric)</th>
+                        <th style="width:15%;text-align:center;">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="prnRulesBody"></tbody>
+            </table>
+
+            <div class="prn-modal-actions">
+                <button class="prn-btn prn-btn-add" id="prnAddRow">
+                    <i class="material-icons" style="font-size:16px;">add</i> Add Branch Rule
+                </button>
+                <div style="display:flex;gap:8px;">
+                    <button class="prn-btn prn-btn-ghost" id="prnCancelBtn">Cancel</button>
+                    <button class="prn-btn prn-btn-primary" id="prnSaveBtn">
+                        <i class="material-icons">save</i> Save Rules
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ======================= STUDENT VIEW MODAL ======================= -->
+<div class="prn-modal-overlay" id="studentViewModal">
+    <div class="student-view-modal">
+        <div class="student-view-head" id="studentViewHead">
+            <div class="student-view-avatar" id="studentViewAvatar">--</div>
+            <div>
+                <h3 id="studentViewName">—</h3>
+                <p id="studentViewSub">—</p>
+            </div>
+        </div>
+        <div class="student-view-body" id="studentViewBody"></div>
+    </div>
+</div>
+
+<script src="../assets/js/admin/admin-shared.js"></script>
+
+<script>
+(function () {
+    'use strict';
+
+    const API_BASE = (window.API_BASE || 'http://127.0.0.1:8080').replace(/\/$/, '');
+    const STUDENTS_API = `${API_BASE}/api/students`;
+
+    /* =========================================================
+       STATE
+       ========================================================= */
+    let allStudents = [];   // raw list from backend
+    let prnRules = [];      // cached rules
+    let studentFilter = 'all';
+    let studentBranch = '';
+    let studentSearch = '';
+
+    /* =========================================================
+       HELPERS
+       ========================================================= */
+    async function fetchJson(url, options = {}) {
+        const res = await fetch(url, {
+            credentials: 'include',
+            cache: 'no-store',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...(options.headers || {})
+            }
+        });
+        if (!res.ok) {
+            const msg = await res.text().catch(() => `HTTP ${res.status}`);
+            throw new Error(msg || `HTTP ${res.status}`);
+        }
+        if (res.status === 204) return null;
+        return res.json();
+    }
+
+    function initials(name) {
+        if (!name) return '?';
+        const parts = name.trim().split(/\s+/);
+        return ((parts[0]?.[0] || '') + (parts[1]?.[0] || '')).toUpperCase() || '?';
+    }
+
+    function escapeHtml(s) {
+        return String(s ?? '').replace(/[&<>"']/g, c => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[c]));
+    }
+
+    function statusPillHtml(status) {
+        const map = {
+            verified: 'pill pill-verified',
+            pending:  'pill pill-pending',
+            rejected: 'pill pill-rejected'
+        };
+        const cls = map[status] || 'pill';
+        return `<span class="${cls}">${escapeHtml(status.charAt(0).toUpperCase() + status.slice(1))}</span>`;
+    }
+
+    /* =========================================================
+       PRN LOGIC (mirrors backend)
+       ========================================================= */
+    function isPrnAutoVerified(prn) {
+        if (prn == null || !prnRules.length) return false;
+        const num = Number(String(prn).replace(/\D/g, ''));
+        if (!Number.isFinite(num)) return false;
+        return prnRules.some(r =>
+            num >= Number(r.min) && num <= Number(r.max)
+        );
+    }
+
+    /**
+     * Derive the effective status:
+     *  - If backend already marks verified → "verified"
+     *  - Else if PRN matches rules → "verified" (client fallback)
+     *  - Else → "pending"
+     */
+    function resolveStatus(student) {
+        if (student.isVerified) return 'verified';
+        if (student.rejected)   return 'rejected';
+        return isPrnAutoVerified(student.prnNo) ? 'verified' : 'pending';
+    }
+
+    /* =========================================================
+       LOAD DATA
+       ========================================================= */
+    async function loadPrnRules() {
+        try {
+            prnRules = await fetchJson(`${STUDENTS_API}/admin/prn-rules`) || [];
+        } catch (err) {
+            console.warn('Could not fetch PRN rules, using defaults:', err.message);
+            prnRules = [
+                { branch: 'B.Tech', min: 23000000000, max: 23999999999 },
+                { branch: 'BBA',    min: 24000000000, max: 24999999999 },
+                { branch: 'BCA',    min: 25000000000, max: 25999999999 },
+                { branch: 'MBA',    min: 26000000000, max: 26999999999 },
+                { branch: 'BA',     min: 27000000000, max: 27999999999 },
+                { branch: 'MA',     min: 28000000000, max: 28999999999 },
+                { branch: 'B.Arch', min: 29000000000, max: 29999999999 }
+            ];
+        }
+    }
+
+    async function loadStudents() {
+        const body = document.getElementById('studentTableBody');
+        body.innerHTML = '<tr class="empty-row"><td colspan="7">Loading students…</td></tr>';
+
+        try {
+            allStudents = await fetchJson(STUDENTS_API) || [];
+        } catch (err) {
+            console.error('Load students error:', err);
+            body.innerHTML =
+                `<tr class="empty-row"><td colspan="7">Could not load students: ${escapeHtml(err.message)}</td></tr>`;
+            document.getElementById('studentResultCount').textContent = '0 results';
+            return;
+        }
+        renderStudents();
+    }
+
+    /* =========================================================
+       RENDER
+       ========================================================= */
+    function renderStudents() {
+        const rows = allStudents.filter(s => {
+            const eff = resolveStatus(s);
+            if (studentFilter !== 'all' && eff !== studentFilter) return false;
+            if (studentBranch && s.branch !== studentBranch) return false;
+            if (studentSearch) {
+                const haystack = `${s.fullName || ''} ${s.prnNo || ''} ${s.phone || ''}`.toLowerCase();
+                if (!haystack.includes(studentSearch.toLowerCase())) return false;
+            }
+            return true;
+        });
+
+        const body = document.getElementById('studentTableBody');
+        document.getElementById('studentResultCount').textContent =
+            `${rows.length} result${rows.length === 1 ? '' : 's'}`;
+
+        if (!rows.length) {
+            body.innerHTML = '<tr class="empty-row"><td colspan="7">No students match this view.</td></tr>';
+            return;
+        }
+
+        body.innerHTML = rows.map(s => {
+            const eff = resolveStatus(s);
+            const mobile = s.phone || '—';
+            const cgpa = s.cgpa != null ? Number(s.cgpa).toFixed(1) : '—';
+
+            return `
+            <tr>
+                <td>
+                    <div class="avatar-cell">
+                        <div class="av">${initials(s.fullName)}</div>
+                        <div>
+                            <div class="cell-primary">${escapeHtml(s.fullName || '—')}</div>
+                            <div class="cell-sub">${escapeHtml(s.email || '—')}</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="mono">${escapeHtml(s.prnNo || '—')}</td>
+                <td>${escapeHtml(s.branch || '—')}</td>
+                <td class="mono">${escapeHtml(mobile)}</td>
+                <td class="mono">${cgpa}</td>
+                <td>${statusPillHtml(eff)}</td>
+                <td>
+                    <div class="row-actions">
+                        <button class="edit-btn" title="View profile"
+                                onclick="window.viewStudent('${s.id}')">
+                            <i class="material-icons">visibility</i>
+                        </button>
+                        ${eff !== 'verified' ? `
+                            <button class="verify-btn" title="Verify"
+                                    onclick="window.studentAction('verify','${s.id}','${escapeHtml(s.fullName || '')}')">
+                                <i class="material-icons">check_circle</i>
+                            </button>` : ''}
+                        <button class="delete-btn" title="Delete"
+                                onclick="window.studentAction('delete','${s.id}','${escapeHtml(s.fullName || '')}')">
+                            <i class="material-icons">delete</i>
+                        </button>
+                    </div>
+                </td>
+            </tr>`;
+        }).join('');
+    }
+
+    /* =========================================================
+       ACTIONS
+       ========================================================= */
+    window.studentAction = function (type, id, name) {
+        const cfg = {
+            verify: {
+                title: 'Verify student',
+                message: `Verify <b>${name}</b>'s profile?`,
+                label: 'Verify',
+                positive: true
+            },
+            delete: {
+                title: 'Delete student',
+                message: `Permanently remove <b>${name}</b> from the system?`,
+                label: 'Delete'
+            }
+        }[type];
+
+        openConfirm({
+            title: cfg.title,
+            message: cfg.message,
+            confirmLabel: cfg.label,
+            positive: cfg.positive,
+            onConfirm: async function () {
+                try {
+                    if (type === 'verify') {
+                        await fetchJson(`${STUDENTS_API}/${id}/verify`, { method: 'PATCH' });
+                    } else if (type === 'delete') {
+                        await fetchJson(`${STUDENTS_API}/${id}`, { method: 'DELETE' });
+                    }
+                    showToast(`Updated ${name} successfully.`);
+                    await loadStudents();
+                } catch (err) {
+                    console.error(`${type} error:`, err);
+                    showToast(`Could not ${type}: ${err.message}`);
+                }
+            }
+        });
+    };
+
+    /* =========================================================
+       STUDENT VIEW MODAL
+       ========================================================= */
+    window.viewStudent = async function (id) {
+        let s = allStudents.find(x => x.id === id);
+        if (!s) return;
+
+        // Fetch fresh detail (has full DTO)
+        try {
+            s = await fetchJson(`${STUDENTS_API}/${id}`);
+        } catch (err) {
+            console.warn('Using cached student data:', err);
+        }
+
+        const modal = document.getElementById('studentViewModal');
+        document.getElementById('studentViewAvatar').textContent = initials(s.name);
+        document.getElementById('studentViewName').textContent = s.name || '—';
+        document.getElementById('studentViewSub').textContent =
+            `${s.prnNo || '—'} · ${s.branch || '—'}`;
+
+        const row = (label, value, mono = false) => `
+            <div class="student-view-item">
+                <span class="lbl">${label}</span>
+                <span class="val ${mono ? 'mono' : ''}">${escapeHtml(String(value ?? '—'))}</span>
+            </div>`;
+
+        document.getElementById('studentViewBody').innerHTML = `
+            <div class="student-view-section">
+                <h4>Personal Information</h4>
+                <div class="student-view-grid">
+                    ${row('Full Name', s.name)}
+                    ${row('Date of Birth', s.dateOfBirth || '—')}
+                    ${row('Gender', s.gender || '—')}
+                </div>
+            </div>
+
+            <div class="student-view-section">
+                <h4>Contact Details</h4>
+                <div class="student-view-grid">
+                    ${row('Email', s.email, true)}
+                    ${row('Mobile Number', s.phone, true)}
+                    ${row('Address', s.address || '—')}
+                    ${row('City', s.city || '—')}
+                    ${row('State', s.state || '—')}
+                </div>
+            </div>
+
+            <div class="student-view-section">
+                <h4>Academic Details</h4>
+                <div class="student-view-grid">
+                    ${row('PRN', s.prnNo, true)}
+                    ${row('Branch', s.branch)}
+                    ${row('CGPA', s.cgpa != null ? Number(s.cgpa).toFixed(2) : '—', true)}
+                    ${row('Active Backlogs', s.activeBacklogs ?? 0, true)}
+                    ${row('Graduation Year', s.graduationYear || '—', true)}
+                    ${row('Course Duration', s.courseDuration ? s.courseDuration + ' yrs' : '—')}
+                </div>
+            </div>
+
+            <div class="student-view-section">
+                <h4>Account Status</h4>
+                <div class="student-view-grid">
+                    ${row('Verification', resolveStatus(s).toUpperCase())}
+                    ${row('Resume', s.resumeUrl ? 'Uploaded' : 'Not uploaded')}
+                    ${row('Profile Photo', s.profilePhoto ? 'Uploaded' : 'Not uploaded')}
+                    ${row('ID Card', s.idCardPhoto ? 'Uploaded' : 'Not uploaded')}
+                </div>
+            </div>
+        `;
+
+        modal.classList.add('open');
+    };
+
+    /* =========================================================
+       PRN RULES MODAL
+       ========================================================= */
+    function openPrnModal() {
+        renderPrnRules(prnRules.length ? prnRules : [{ branch: '', min: '', max: '' }]);
+        document.getElementById('prnModal').classList.add('open');
+    }
+    function closePrnModal() {
+        document.getElementById('prnModal').classList.remove('open');
+    }
+
+    function renderPrnRules(rules) {
+        const body = document.getElementById('prnRulesBody');
+        body.innerHTML = rules.map((r, i) => `
+            <tr>
+                <td>
+                    <input class="prn-branch-input" data-idx="${i}" data-field="branch"
+                           value="${escapeHtml(r.branch || '')}" placeholder="e.g. B.Tech">
+                </td>
+                <td>
+                    <div class="prn-range-group">
+                        <input class="prn-range-input" data-idx="${i}" data-field="min"
+                               type="number" value="${r.min ?? ''}" placeholder="Min">
+                        <span class="prn-range-sep">→</span>
+                        <input class="prn-range-input" data-idx="${i}" data-field="max"
+                               type="number" value="${r.max ?? ''}" placeholder="Max">
+                    </div>
+                </td>
+                <td style="text-align:center;">
+                    <button class="prn-del-btn" data-idx="${i}" title="Remove">
+                        <i class="material-icons">delete</i>
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+
+        body.querySelectorAll('.prn-del-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const idx = Number(btn.dataset.idx);
+                const current = collectPrnRulesFromTable();
+                current.splice(idx, 1);
+                renderPrnRules(current);
+            });
+        });
+    }
+
+    function collectPrnRulesFromTable() {
+        return Array.from(document.querySelectorAll('#prnRulesBody tr')).map(tr => ({
+            branch: tr.querySelector('[data-field="branch"]').value.trim(),
+            min: Number(tr.querySelector('[data-field="min"]').value),
+            max: Number(tr.querySelector('[data-field="max"]').value)
+        })).filter(r => r.branch && Number.isFinite(r.min) && Number.isFinite(r.max));
+    }
+
+    /* =========================================================
+       BOOT
+       ========================================================= */
+    document.addEventListener('DOMContentLoaded', async function () {
+        // Load rules first so status pills render correctly
+        await loadPrnRules();
+        await loadStudents();
+
+        // Chip filters
+        document.querySelectorAll('#studentFilters .chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('#studentFilters .chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                studentFilter = chip.dataset.filter;
+                renderStudents();
+            });
+        });
+
+        document.getElementById('branchFilter').addEventListener('change', e => {
+            studentBranch = e.target.value;
+            renderStudents();
+        });
+
+        document.getElementById('studentSearch').addEventListener('input', e => {
+            studentSearch = e.target.value;
+            renderStudents();
+        });
+
+        // PRN modal
+        document.getElementById('managePrnBtn').addEventListener('click', openPrnModal);
+        document.getElementById('prnModalClose').addEventListener('click', closePrnModal);
+        document.getElementById('prnCancelBtn').addEventListener('click', closePrnModal);
+        document.getElementById('prnModal').addEventListener('click', e => {
+            if (e.target.id === 'prnModal') closePrnModal();
+        });
+
+        document.getElementById('prnAddRow').addEventListener('click', () => {
+            const cur = collectPrnRulesFromTable();
+            cur.push({ branch: '', min: '', max: '' });
+            renderPrnRules(cur);
+        });
+
+        document.getElementById('prnSaveBtn').addEventListener('click', async () => {
+            const rules = collectPrnRulesFromTable();
+            if (!rules.length) return showToast('Add at least one valid rule before saving.');
+
+            try {
+                await fetchJson(`${STUDENTS_API}/admin/prn-rules`, {
+                    method: 'PUT',
+                    body: JSON.stringify(rules)
+                });
+                prnRules = rules;
+                closePrnModal();
+                await loadStudents();   // re-evaluates verification
+                showToast('PRN rules saved. Verification statuses updated.');
+            } catch (err) {
+                console.error('Save PRN rules error:', err);
+                showToast(`Could not save rules: ${err.message}`);
+            }
+        });
+
+        // Close modals on background click
+        document.getElementById('studentViewModal').addEventListener('click', e => {
+            if (e.target.id === 'studentViewModal') e.target.classList.remove('open');
+        });
+    });
+})();
+</script>
+
+</body>
+</html>

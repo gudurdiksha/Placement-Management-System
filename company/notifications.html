@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications | Company Dashboard</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:500,600,700|Roboto:400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="../assets/css/company/company_style.css">
+    <link rel="stylesheet" href="../assets/css/company/notification.css">
+</head>
+<body>
+
+<a href="#" data-target="mobile-sidenav" class="sidenav-trigger mobile-trigger">
+    <i class="material-icons">menu</i>
+</a>
+
+<!-- <div id="navbar-placeholder"
+     data-page-title="Notifications"
+     data-page-crumb="Alerts, reminders and system updates."
+     data-nav-active="notifications"></div> -->
+<!-- ==================== NAVBAR (inline) ==================== -->
+<style>
+    .profile-nudge-dot{display:inline-block;width:7px;height:7px;border-radius:50%;
+        background:var(--bad,#e53935);margin-left:6px;vertical-align:middle;}
+    .side-foot{display:flex;align-items:center;}
+</style>
+
+<ul id="mobile-sidenav" class="sidenav sidenav-fixed">
+    <div class="side-brand">
+        <div class="brand-mark">H</div>
+        <div class="brand-text">
+            <span id="nav-brand-name" class="name">HireDesk</span>
+            <span class="sub">Company Portal</span>
+        </div>
+    </div>
+
+    <li class="side-section-label">Main</li>
+
+    <li data-nav="dashboard">
+        <a class="side-link" href="index.html"><i class="material-icons">dashboard</i>Dashboard</a>
+    </li>
+    <li data-nav="profile">
+        <a class="side-link" href="profile.html"><i class="material-icons">business</i>Profile
+            <span id="nav-profile-dot" class="profile-nudge-dot" hidden></span></a>
+    </li>
+
+    <li data-nav="jobs" class="has-submenu">
+        <a href="#!" class="side-link nav-dropdown-toggle">
+            <i class="material-icons">work</i><span>Jobs</span>
+            <i class="material-icons dropdown-arrow">keyboard_arrow_down</i>
+        </a>
+        <ul class="side-submenu">
+            <li data-nav="create-job"><a href="job-postings.html" class="side-sub-link"><i class="material-icons">add</i>Create Job</a></li>
+            <li data-nav="manage-jobs"><a href="manage-jobs.html" class="side-sub-link"><i class="material-icons">list</i>Manage Jobs</a></li>
+        </ul>
+    </li>
+
+    <li data-nav="applications"><a class="side-link" href="applications.html"><i class="material-icons">assignment_ind</i>Applications</a></li>
+    <li data-nav="assessments"><a class="side-link" href="test-assessments.html"><i class="material-icons">quiz</i>Test Assessments</a></li>
+    <li data-nav="interviews"><a class="side-link" href="interview-process.html"><i class="material-icons">event</i>Interview Process</a></li>
+    <li data-nav="reports"><a class="side-link" href="reports.html"><i class="material-icons">bar_chart</i>Reports</a></li>
+    <li data-nav="notifications"><a class="side-link" href="notifications.html"><i class="material-icons">notifications</i>Notifications</a></li>
+
+    <div class="side-foot">
+        <a href="profile.html" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;text-decoration:none;color:inherit;">
+            <div id="nav-avatar" class="avatar">--</div>
+            <div class="who" style="min-width:0;">
+                <span id="nav-company-name" class="n" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;">Loading…</span>
+                <span id="nav-profile-pct" class="r">-- % profile complete</span>
+            </div>
+        </a>
+        <a href="#" id="nav-logout-btn" class="tooltipped" data-position="top" data-tooltip="Log out" style="margin-left:8px;">
+            <i class="material-icons" style="font-size:20px;opacity:.7;">logout</i>
+        </a>
+    </div>
+</ul>
+
+<div id="app-topbar" class="topbar">
+    <div class="page-title">
+        <span id="nav-page-title"></span>
+        <span id="nav-page-crumb" class="crumb"></span>
+    </div>
+    <div class="top-actions">
+        <span id="nav-status-pill" class="pill"></span>
+        <i class="material-icons icon-btn tooltipped" data-position="bottom" data-tooltip="Notifications">notifications_none</i>
+        <i class="material-icons icon-btn tooltipped" data-position="bottom" data-tooltip="Help">help_outline</i>
+        <i id="nav-logout-btn-top" class="material-icons icon-btn tooltipped" data-position="bottom" data-tooltip="Log out">logout</i>
+    </div>
+</div>
+
+<!-- Keeps per-page title/crumb/active-key. navbar.js reads these. -->
+<div id="navbar-placeholder"
+     data-page-title="Applications"
+     data-page-crumb="Overview of hiring activity"
+     data-nav-active="applications"
+     style="display:none;"></div>
+<!-- ==================== /NAVBAR ==================== -->
+<main class="app-main">
+
+    <div class="notif-toolbar">
+        <div class="notif-tabs">
+            <button type="button" class="notif-tab is-active" data-tab="all">All</button>
+            <button type="button" class="notif-tab" data-tab="aptitude">Aptitude Tests</button>
+            <button type="button" class="notif-tab" data-tab="applications">Applications</button>
+        </div>
+        <button type="button" class="notif-mark-all" id="markAllReadBtn">Mark all as read</button>
+    </div>
+
+    <section class="notif-list-card">
+        <div id="notificationList" class="notif-list">
+            <p class="notif-empty">Loading notifications…</p>
+        </div>
+    </section>
+
+</main>
+
+<footer class="app-footer">
+    © 2026 HireDesk · Internal hiring workspace
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="../assets/js/company/config.js"></script>
+<script src="../assets/js/company/session.js"></script>
+<script src="../assets/js/company/navbar.js"></script>
+<script src="../assets/js/company/app.js"></script>
+<script src="../assets/js/company/notification.js"></script>
+</body>
+</html>

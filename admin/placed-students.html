@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placed Students — Vertex Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="../assets/css/admin/admin-shared.css" rel="stylesheet">
+
+</head>
+<body data-page="placed-students">
+<div class="admin-shell">
+    <aside class="admin-sidebar" id="adminSidebar"></aside>
+
+    <main class="admin-main">
+        <header class="admin-topbar">
+            <div class="topbar-heading">
+                <div class="eyebrow">Placement Cell</div>
+                <h4>Placed Students</h4>
+            </div>
+            <div class="topbar-right">
+                <button class="sidebar-toggle-btn topbar-icon-btn" id="sidebarToggle">
+                    <i class="material-icons">menu</i>
+                </button>
+                <a href="notifications.html" class="topbar-icon-btn" title="Notifications">
+                    <i class="material-icons">notifications_none</i>
+                    <span class="dot"></span>
+                </a>
+                <a href="admin-profile.html" class="topbar-avatar">
+                    <div class="avatar">DR</div>
+                    <span class="name">Devika Rane</span>
+                    <i class="material-icons" style="font-size:18px;color:var(--slate-dim);">expand_more</i>
+                </a>
+            </div>
+        </header>
+
+        <div class="admin-content">
+
+            <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);">
+    <div class="stat-card" style="--accent:#2f7a4f;--accent-soft:#dcefe2;">
+        <div class="stat-top"><div class="stat-icon"><i class="material-icons">military_tech</i></div></div>
+        <!-- ADDED id="statTotalPlaced" -->
+        <div class="stat-num" id="statTotalPlaced">—</div>
+        <div class="stat-label">Students Placed</div>
+    </div>
+    <div class="stat-card" style="--accent:#146b5f;--accent-soft:#e2ede9;">
+        <div class="stat-top"><div class="stat-icon"><i class="material-icons">payments</i></div></div>
+        <!-- ADDED id="statAvgCtc" -->
+        <div class="stat-num" id="statAvgCtc">—</div>
+        <div class="stat-label">Average CTC (LPA)</div>
+    </div>
+    <div class="stat-card" style="--accent:#b8912b;--accent-soft:#e8d9ab;">
+        <div class="stat-top"><div class="stat-icon"><i class="material-icons">trending_up</i></div></div>
+        <!-- ADDED id="statHighestCtc" -->
+        <div class="stat-num" id="statHighestCtc">—</div>
+        <div class="stat-label">Highest CTC (LPA)</div>
+    </div>
+</div>
+
+            <div class="section-toolbar">
+                <div class="chip-filters" id="placedFilters">
+                    <button class="chip active" data-filter="">All branches</button>
+                    <button class="chip" data-filter="Computer Science">CS</button>
+                    <button class="chip" data-filter="Electronics">EC</button>
+                    <button class="chip" data-filter="Mechanical">ME</button>
+                </div>
+                <div class="toolbar-right">
+                    <div class="search-box">
+                        <i class="material-icons">search</i>
+                        <input id="placedSearch" type="text" placeholder="Search name or company">
+                    </div>
+                    <button class="btn-console outline"><i class="material-icons">download</i> Export CSV</button>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-scroll">
+                    <table class="admin-table">
+                        <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Roll No.</th>
+                            <th>Branch</th>
+                            <th>CGPA</th>
+                            <th>Company</th>
+                            <th>Package</th>
+                        </tr>
+                        </thead>
+                        <tbody id="placedTableBody"></tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <span id="placedResultCount">— results</span>
+                    <div class="pagination"><button class="active">1</button></div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<script src="../assets/js/admin/admin-shared.js"></script>
+
+<script>
+    // 1. HARDCODED URL - Make sure there is NO variable concatenation happening.
+    const API_URL = 'http://127.0.0.1:8080/api/admin/students/placed';
+
+    // State
+    let allPlacedStudents = [];
+    let placedBranch = '';
+    let placedSearch = '';
+
+    // Fetch Data
+    async function loadPlacedStudents() {
+        const body = document.getElementById('placedTableBody');
+        const countEl = document.getElementById('placedResultCount');
+        
+        body.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;">Loading...</td></tr>`;
+
+        try {
+            const res = await fetch(API_URL, {
+                method: 'GET',
+                credentials: 'include', // Needed for Spring Security Session
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (!res.ok) {
+                throw new Error(`HTTP Error: ${res.status}`);
+            }
+
+            const data = await res.json();
+            
+            // Handle if backend returns array directly or wrapped in an object
+            const rawList = Array.isArray(data) ? data : (data.students || data.data || []);
+            allPlacedStudents = rawList.filter(Boolean);
+
+            // Render Table and Stats
+            renderPlacedTable();
+            updateStats(allPlacedStudents);
+
+        } catch (err) {
+            console.error(err);
+            body.innerHTML = `<tr><td colspan="6" style="text-align:center;color:red;">
+                Error: ${err.message} <br>
+                <button onclick="loadPlacedStudents()" style="margin-top:10px;">Retry</button>
+            </td></tr>`;
+            countEl.textContent = '0 results';
+        }
+    }
+
+    // Update Top Stats
+    function updateStats(students) {
+        document.getElementById('statTotalPlaced').textContent = students.length;
+        
+        let maxCtc = 0;
+        let totalCtc = 0;
+        let count = 0;
+
+        students.forEach(s => {
+            // Extract number from "12.5 LPA"
+            let val = parseFloat(s.packageLpa);
+            if (!isNaN(val)) {
+                if (val > maxCtc) maxCtc = val;
+                totalCtc += val;
+                count++;
+            }
+        });
+
+        if (count > 0) {
+            document.getElementById('statAvgCtc').textContent = (totalCtc / count).toFixed(1);
+        }
+        document.getElementById('statHighestCtc').textContent = maxCtc > 0 ? maxCtc : '0';
+    }
+
+    // Render Table
+    function renderPlacedTable() {
+        const body = document.getElementById('placedTableBody');
+        const countEl = document.getElementById('placedResultCount');
+
+        let filtered = allPlacedStudents.filter(s => {
+            if (placedBranch && s.branch !== placedBranch) return false;
+            if (placedSearch) {
+                const text = ((s.name || '') + ' ' + (s.company || '')).toLowerCase();
+                if (!text.includes(placedSearch.toLowerCase())) return false;
+            }
+            return true;
+        });
+
+        countEl.textContent = `${filtered.length} results`;
+
+        if (filtered.length === 0) {
+            body.innerHTML = `<tr><td colspan="6" style="text-align:center;">No students found.</td></tr>`;
+            return;
+        }
+
+        body.innerHTML = filtered.map(s => `
+            <tr>
+                <td>
+                    <div class="avatar-cell">
+                        <div class="av">${s.name ? s.name.substring(0,2).toUpperCase() : '??'}</div>
+                        <div class="cell-primary">${s.name || '—'}</div>
+                    </div>
+                </td>
+                <td class="mono">${s.roll || '—'}</td>
+                <td>${s.branch || '—'}</td>
+                <td class="mono">${s.cgpa || '—'}</td>
+                <td>${s.company || '—'}</td>
+                <td class="mono cell-primary">${s.packageLpa || '—'}</td>
+            </tr>
+        `).join('');
+    }
+
+    // Setup Listeners
+    document.addEventListener('DOMContentLoaded', function () {
+        loadPlacedStudents();
+
+        document.querySelectorAll('#placedFilters .chip').forEach(chip => {
+            chip.addEventListener('click', function () {
+                document.querySelectorAll('#placedFilters .chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                placedBranch = chip.dataset.filter;
+                renderPlacedTable();
+            });
+        });
+
+        document.getElementById('placedSearch').addEventListener('input', function (e) {
+            placedSearch = e.target.value;
+            renderPlacedTable();
+        });
+    });
+</script>
+
+</body>
+</html>

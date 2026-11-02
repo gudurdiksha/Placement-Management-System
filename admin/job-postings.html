@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Postings — Vertex Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="../assets/css/admin/admin-shared.css" rel="stylesheet">
+    <style>
+        .date-filter-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 4px 12px 4px 16px;
+            height: 38px;
+        }
+        .date-filter-wrapper label {
+            font-size: 12px;
+            color: var(--slate);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .date-filter-wrapper input[type="date"] {
+            border: none;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            background: transparent;
+            color: var(--ink);
+            padding: 4px 0;
+        }
+        .date-filter-wrapper input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            opacity: 0.6;
+        }
+        .toolbar-right { flex-wrap: wrap; }
+        .loading-state {
+            text-align: center;
+            padding: 44px !important;
+            color: var(--slate);
+        }
+        .loading-state i {
+            font-size: 32px;
+            animation: spin 1s linear infinite;
+            display: block;
+            margin-bottom: 8px;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* ===== Job Detail Modal ===== */
+        .job-detail-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(16, 32, 47, 0.55);
+            z-index: 300;
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 40px 20px;
+            overflow-y: auto;
+            backdrop-filter: blur(2px);
+        }
+        .job-detail-overlay.open { display: flex; }
+
+        .job-detail-modal {
+            background: var(--surface);
+            border-radius: 14px;
+            width: 100%;
+            max-width: 780px;
+            box-shadow: 0 30px 70px -20px rgba(16, 32, 47, 0.5);
+            animation: modalSlideIn 0.25s ease;
+            overflow: hidden;
+        }
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(-16px) scale(0.98); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .jd-header {
+            background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
+            color: var(--paper);
+            padding: 26px 30px 22px;
+            position: relative;
+        }
+        .jd-header .jd-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(255,255,255,0.12);
+            border: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #fff;
+            transition: background 0.2s;
+        }
+        .jd-header .jd-close:hover { background: rgba(255,255,255,0.25); }
+        .jd-header .jd-close i { font-size: 20px; }
+
+        .jd-header .jd-company {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--brass-soft);
+            margin-bottom: 6px;
+        }
+        .jd-header h3 {
+            font-size: 24px;
+            color: #fff;
+            margin: 0 0 10px;
+        }
+        .jd-header .jd-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 12.5px;
+            color: #c3cdd4;
+        }
+        .jd-header .jd-meta-row span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .jd-header .jd-meta-row i { font-size: 15px; color: var(--brass-soft); }
+
+        .jd-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            margin-top: 14px;
+        }
+        .jd-status-badge.ACTIVE  { background: rgba(47, 122, 79, 0.25); color: #a3e0b8; }
+        .jd-status-badge.CLOSED  { background: rgba(135, 148, 160, 0.25); color: #d0d7dc; }
+        .jd-status-badge.EXPIRED { background: rgba(161, 61, 61, 0.25); color: #f0b8b8; }
+
+        .jd-body { padding: 26px 30px 30px; }
+
+        .jd-section {
+            margin-bottom: 24px;
+        }
+        .jd-section:last-child { margin-bottom: 0; }
+        .jd-section-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10.5px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--slate-dim);
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--line-soft);
+        }
+        .jd-section p {
+            font-size: 13.8px;
+            line-height: 1.65;
+            color: var(--ink-soft);
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        .jd-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+        }
+        .jd-field label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--slate-dim);
+            margin-bottom: 4px;
+        }
+        .jd-field .jd-val {
+            font-size: 13.8px;
+            color: var(--ink);
+            font-weight: 500;
+        }
+        .jd-field .jd-val.mono {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+        }
+
+        .jd-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .jd-skill-tag {
+            background: var(--teal-soft);
+            color: var(--teal);
+            padding: 5px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .jd-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 18px 30px;
+            border-top: 1px solid var(--line);
+            background: var(--paper-dim);
+        }
+        .jd-btn {
+            height: 40px;
+            padding: 0 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 13.5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .jd-btn.outline {
+            background: transparent;
+            border: 1px solid var(--ink);
+            color: var(--ink);
+        }
+        .jd-btn.outline:hover { background: var(--ink); color: #fff; }
+        .jd-btn.primary {
+            background: var(--ink);
+            color: #fff;
+        }
+        .jd-btn.primary:hover { background: var(--ink-soft); }
+        .jd-btn i { font-size: 18px; }
+
+        @media (max-width: 600px) {
+            .job-detail-overlay { padding: 16px 10px; }
+            .jd-header, .jd-body, .jd-footer { padding-left: 20px; padding-right: 20px; }
+            .jd-footer { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body data-page="job-postings">
+<div class="admin-shell">
+    <aside class="admin-sidebar" id="adminSidebar"></aside>
+
+    <main class="admin-main">
+        <header class="admin-topbar">
+            <div class="topbar-heading">
+                <div class="eyebrow">Placement Cell</div>
+                <h4>Job Postings</h4>
+            </div>
+            <div class="topbar-right">
+                <button class="sidebar-toggle-btn topbar-icon-btn" id="sidebarToggle">
+                    <i class="material-icons">menu</i>
+                </button>
+                <a href="notifications.html" class="topbar-icon-btn" title="Notifications">
+                    <i class="material-icons">notifications_none</i>
+                    <span class="dot"></span>
+                </a>
+                <a href="admin-profile.html" class="topbar-avatar">
+                    <div class="avatar">DR</div>
+                    <span class="name">Devika Rane</span>
+                    <i class="material-icons" style="font-size:18px;color:var(--slate-dim);">expand_more</i>
+                </a>
+            </div>
+        </header>
+
+        <div class="admin-content">
+
+            <div class="section-toolbar" style="flex-wrap:wrap; gap:12px;">
+                <div class="chip-filters" id="jobFilters">
+                    <button class="chip active" data-filter="all">All</button>
+                    <button class="chip" data-filter="ACTIVE">Open</button>
+                    <button class="chip" data-filter="CLOSED">Closed</button>
+                    <button class="chip" data-filter="EXPIRED">Expired</button>
+                </div>
+                <div class="toolbar-right" style="flex-wrap:wrap; gap:10px;">
+                    <select id="companyFilter" class="select-box" style="min-width:160px;">
+                        <option value="">All companies</option>
+                    </select>
+                    <select id="branchFilter" class="select-box" style="min-width:150px;">
+                        <option value="">All branches</option>
+                    </select>
+                    <div class="date-filter-wrapper">
+                        <label>From</label>
+                        <input type="date" id="dateFilter">
+                    </div>
+                    <div class="search-box">
+                        <i class="material-icons">search</i>
+                        <input id="jobSearch" type="text" placeholder="Search title or company">
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-scroll">
+                    <table class="admin-table">
+                        <thead>
+                        <tr>
+                            <th>Role</th>
+                            <th>Company</th>
+                            <th>Type</th>
+                            <th>CTC / Stipend</th>
+                            <th>Eligibility</th>
+                            <th>Applicants</th>
+                            <th>Status</th>
+                            <th style="width:150px;">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="jobTableBody">
+                        <tr><td colspan="8" class="loading-state"><i class="material-icons">sync</i>Loading job postings…</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <span id="jobResultCount">— results</span>
+                    <div class="pagination"><button class="active">1</button></div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<!-- ============================================================== -->
+<!-- JOB DETAIL MODAL                                                -->
+<!-- ============================================================== -->
+<div class="job-detail-overlay" id="jobDetailOverlay">
+    <div class="job-detail-modal" id="jobDetailModal">
+        <div class="jd-header">
+            <button class="jd-close" onclick="closeJobDetail()" title="Close">
+                <i class="material-icons">close</i>
+            </button>
+            <div class="jd-company" id="jdCompany">—</div>
+            <h3 id="jdTitle">—</h3>
+            <div class="jd-meta-row">
+                <span><i class="material-icons">place</i> <span id="jdLocation">—</span></span>
+                <span><i class="material-icons">work_outline</i> <span id="jdJobType">—</span></span>
+                <span><i class="material-icons">event</i> Posted <span id="jdPostedAt">—</span></span>
+            </div>
+            <div id="jdStatusBadge"></div>
+        </div>
+
+        <div class="jd-body">
+            <!-- Description -->
+            <div class="jd-section">
+                <div class="jd-section-title">Job Description</div>
+                <p id="jdDescription">—</p>
+            </div>
+
+            <!-- Key details grid -->
+            <div class="jd-section">
+                <div class="jd-section-title">Key Details</div>
+                <div class="jd-grid">
+                    <div class="jd-field">
+                        <label>Department / Branch</label>
+                        <div class="jd-val" id="jdDepartment">—</div>
+                    </div>
+                    <div class="jd-field">
+                        <label>Experience Required</label>
+                        <div class="jd-val" id="jdExperience">—</div>
+                    </div>
+                    <div class="jd-field">
+                        <label>Qualification</label>
+                        <div class="jd-val" id="jdQualification">—</div>
+                    </div>
+                    <div class="jd-field">
+                        <label>Minimum CGPA</label>
+                        <div class="jd-val mono" id="jdCgpa">—</div>
+                    </div>
+                    <div class="jd-field">
+                        <label>Salary Range</label>
+                        <div class="jd-val mono" id="jdSalary">—</div>
+                    </div>
+                    <div class="jd-field">
+                        <label>Openings</label>
+                        <div class="jd-val mono" id="jdOpenings">—</div>
+                    </div>
+                    <div class="jd-field">
+                        <label>Application Deadline</label>
+                        <div class="jd-val" id="jdDeadline">—</div>
+                    </div>
+                    <div class="jd-field">
+                        <label>Last Updated</label>
+                        <div class="jd-val" id="jdUpdatedAt">—</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills -->
+            <div class="jd-section" id="jdSkillsSection">
+                <div class="jd-section-title">Skills Required</div>
+                <div class="jd-skills" id="jdSkills"></div>
+            </div>
+        </div>
+
+        <div class="jd-footer">
+            <button class="jd-btn outline" onclick="closeJobDetail()">
+                <i class="material-icons">close</i> Close
+            </button>
+            <button class="jd-btn primary" id="jdViewApplicantsBtn">
+                <i class="material-icons">people</i> View Applicants
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="../assets/js/admin/admin-shared.js"></script>
+
+<script>
+    // ------------------------------------------------------------------
+    //  State
+    // ------------------------------------------------------------------
+    let allJobs = [];
+    let jobFilter = 'all';
+    let jobSearch = '';
+    let companyFilter = '';
+    let branchFilter = '';
+    let dateFilter = '';
+
+    const API_BASE = 'http://127.0.0.1:8080/api/jobs';
+
+    // ------------------------------------------------------------------
+    //  Helpers
+    // ------------------------------------------------------------------
+    function formatDate(dateStr) {
+        if (!dateStr) return '—';
+        try {
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+        } catch (e) { return dateStr; }
+    }
+
+    function formatDateTime(dateStr) {
+        if (!dateStr) return '—';
+        try {
+            const d = new Date(dateStr);
+            return d.toLocaleString('en-IN', {
+                day: 'numeric', month: 'short', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+        } catch (e) { return dateStr; }
+    }
+
+    function formatSalary(job) {
+        const min = job.minSalary;
+        const max = job.maxSalary;
+        if (min != null && max != null) {
+            return `₹${min.toLocaleString('en-IN')} – ₹${max.toLocaleString('en-IN')}`;
+        } else if (min != null) {
+            return `₹${min.toLocaleString('en-IN')}+`;
+        } else if (max != null) {
+            return `Up to ₹${max.toLocaleString('en-IN')}`;
+        }
+        return '—';
+    }
+
+    function formatEligibility(job) {
+        const parts = [];
+        if (job.minimumCgpa) parts.push(`CGPA ≥ ${job.minimumCgpa}`);
+        if (job.qualification) parts.push(job.qualification);
+        return parts.length ? parts.join(' • ') : '—';
+    }
+
+    function statusPillHtml(status) {
+        const map = {
+            ACTIVE:  { cls: 'open',    label: 'Open' },
+            CLOSED:  { cls: 'closed',  label: 'Closed' },
+            EXPIRED: { cls: 'inactive',label: 'Expired' }
+        };
+        const s = map[status] || { cls: 'closed', label: status || 'Unknown' };
+        return `<span class="pill ${s.cls}">${s.label}</span>`;
+    }
+
+    function escapeHtml(str) {
+        if (str == null) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function prettyJobType(type) {
+        if (!type) return '—';
+        return type.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    // ------------------------------------------------------------------
+    //  Dropdown population
+    // ------------------------------------------------------------------
+    function populateDropdowns(jobs) {
+        const companySelect = document.getElementById('companyFilter');
+        const branchSelect = document.getElementById('branchFilter');
+
+        const prevCompany = companySelect.value;
+        const prevBranch = branchSelect.value;
+
+        const companies = new Map();
+        jobs.forEach(j => {
+            if (j.companyId && j.companyName) companies.set(j.companyId, j.companyName);
+        });
+
+        const branches = new Set();
+        jobs.forEach(j => {
+            if (j.department && j.department.trim()) branches.add(j.department.trim());
+        });
+
+        companySelect.innerHTML = '<option value="">All companies</option>';
+        [...companies.entries()]
+            .sort((a, b) => a[1].localeCompare(b[1]))
+            .forEach(([id, name]) => {
+                const opt = document.createElement('option');
+                opt.value = id;
+                opt.textContent = name;
+                companySelect.appendChild(opt);
+            });
+
+        branchSelect.innerHTML = '<option value="">All branches</option>';
+        [...branches].sort().forEach(dept => {
+            const opt = document.createElement('option');
+            opt.value = dept;
+            opt.textContent = dept;
+            branchSelect.appendChild(opt);
+        });
+
+        if (prevCompany && companies.has(prevCompany)) companySelect.value = prevCompany;
+        if (prevBranch && branches.has(prevBranch)) branchSelect.value = prevBranch;
+    }
+
+    // ------------------------------------------------------------------
+    //  Render table
+    // ------------------------------------------------------------------
+    function renderJobs() {
+        const tbody = document.getElementById('jobTableBody');
+        const countEl = document.getElementById('jobResultCount');
+
+        let rows = allJobs.filter(j => {
+            if (jobFilter !== 'all' && j.status !== jobFilter) return false;
+            if (companyFilter && j.companyId !== companyFilter) return false;
+            if (branchFilter && (j.department || '').trim() !== branchFilter) return false;
+            if (dateFilter) {
+                const posted = j.postedAt ? new Date(j.postedAt).toISOString().slice(0,10) : '';
+                if (posted < dateFilter) return false;
+            }
+            if (jobSearch) {
+                const haystack = ((j.title || '') + ' ' + (j.companyName || '')).toLowerCase();
+                if (!haystack.includes(jobSearch.toLowerCase())) return false;
+            }
+            return true;
+        });
+
+        countEl.textContent = rows.length + ' result' + (rows.length !== 1 ? 's' : '');
+
+        if (rows.length === 0) {
+            tbody.innerHTML = '<tr class="empty-row"><td colspan="8">No job postings match this view.</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = rows.map(j => `
+            <tr>
+                <td>
+                    <div class="cell-primary">${escapeHtml(j.title || 'Untitled')}</div>
+                    <div class="cell-sub">Posted ${formatDate(j.postedAt)}</div>
+                </td>
+                <td>${escapeHtml(j.companyName || '—')}</td>
+                <td>${escapeHtml(prettyJobType(j.jobType))}</td>
+                <td class="mono">${formatSalary(j)}</td>
+                <td class="cell-sub">${escapeHtml(formatEligibility(j))}</td>
+                <td class="mono">${j.applicantCount != null ? j.applicantCount : '0'}</td>
+                <td>${statusPillHtml(j.status)}</td>
+                <td>
+                    <div class="row-actions">
+                        <button class="view-btn" title="View details" onclick="openJobDetail('${j.id}')">
+                            <i class="material-icons">visibility</i>
+                        </button>
+                        <button class="delete-btn" title="Delete" onclick="deleteJob('${j.id}','${escapeHtml(j.title || '')}')">
+                            <i class="material-icons">delete</i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    // ------------------------------------------------------------------
+    //  Job Detail Modal
+    // ------------------------------------------------------------------
+    function openJobDetail(jobId) {
+        const job = allJobs.find(j => j.id === jobId);
+        if (!job) {
+            showToast('Job not found.', 'error');
+            return;
+        }
+
+        // Header
+        document.getElementById('jdCompany').textContent = job.companyName || 'Company';
+        document.getElementById('jdTitle').textContent = job.title || 'Untitled Role';
+        document.getElementById('jdLocation').textContent = job.location || '—';
+        document.getElementById('jdJobType').textContent = prettyJobType(job.jobType);
+        document.getElementById('jdPostedAt').textContent = formatDate(job.postedAt);
+
+        // Status badge
+        const statusLabels = { ACTIVE: 'Open', CLOSED: 'Closed', EXPIRED: 'Expired' };
+        const badgeEl = document.getElementById('jdStatusBadge');
+        badgeEl.innerHTML = `<span class="jd-status-badge ${job.status || 'CLOSED'}">
+            <i class="material-icons" style="font-size:15px;">circle</i>
+            ${statusLabels[job.status] || job.status || 'Unknown'}
+        </span>`;
+
+        // Description
+        document.getElementById('jdDescription').textContent =
+            job.description ? job.description.trim() : 'No description provided.';
+
+        // Key details
+        document.getElementById('jdDepartment').textContent  = job.department || '—';
+        document.getElementById('jdExperience').textContent  = job.experienceRequired || '—';
+        document.getElementById('jdQualification').textContent = job.qualification || '—';
+        document.getElementById('jdCgpa').textContent        = job.minimumCgpa != null ? job.minimumCgpa : '—';
+        document.getElementById('jdSalary').textContent      = formatSalary(job);
+        document.getElementById('jdOpenings').textContent    = job.numberOfOpenings != null ? job.numberOfOpenings : '—';
+        document.getElementById('jdDeadline').textContent    = formatDate(job.applicationDeadline);
+        document.getElementById('jdUpdatedAt').textContent   = formatDateTime(job.updatedAt);
+
+        // Skills
+        const skillsSection = document.getElementById('jdSkillsSection');
+        const skillsEl = document.getElementById('jdSkills');
+        if (job.skillsRequired && job.skillsRequired.length > 0) {
+            skillsSection.style.display = '';
+            skillsEl.innerHTML = job.skillsRequired
+                .map(s => `<span class="jd-skill-tag">${escapeHtml(s)}</span>`)
+                .join('');
+        } else {
+            skillsSection.style.display = 'none';
+        }
+
+        // View Applicants button → pass job id
+        const viewBtn = document.getElementById('jdViewApplicantsBtn');
+        viewBtn.onclick = function () {
+            window.location.href = 'job-applicants.html?jobId=' + encodeURIComponent(job.id);
+        };
+
+        // Show modal
+        document.getElementById('jobDetailOverlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeJobDetail() {
+        document.getElementById('jobDetailOverlay').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    // Close on overlay click (but not when clicking inside modal)
+    document.getElementById('jobDetailOverlay').addEventListener('click', function (e) {
+        if (e.target === this) closeJobDetail();
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeJobDetail();
+    });
+
+    // ------------------------------------------------------------------
+    //  Delete
+    // ------------------------------------------------------------------
+    function deleteJob(jobId, title) {
+        openConfirm({
+            title: 'Delete job posting',
+            message: `Permanently delete <b>${escapeHtml(title)}</b>? This will also remove all saved references.`,
+            confirmLabel: 'Delete',
+            positive: false,
+            onConfirm: async function () {
+                try {
+                    const res = await fetch(`${API_BASE}/${jobId}`, {
+                        method: 'DELETE',
+                        credentials: 'include'
+                    });
+                    if (!res.ok) {
+                        const err = await res.text();
+                        throw new Error(err || 'Delete failed');
+                    }
+                    allJobs = allJobs.filter(j => j.id !== jobId);
+                    renderJobs();
+                    populateDropdowns(allJobs);
+                    showToast('Job posting deleted.');
+                } catch (e) {
+                    showToast('Error: ' + e.message, 'error');
+                }
+            }
+        });
+    }
+
+    // ------------------------------------------------------------------
+    //  Fetch data
+    // ------------------------------------------------------------------
+        // Replace your existing loadJobs() with this:
+    async function loadJobs() {
+        const tbody = document.getElementById('jobTableBody');
+        tbody.innerHTML = '<tr><td colspan="8" class="loading-state"><i class="material-icons">sync</i>Loading job postings…</td></tr>';
+
+        try {
+            // 1. Fetch jobs AND application counts in parallel
+            const [activeRes, closedRes, expiredRes, countsRes] = await Promise.all([
+                fetch(`${API_BASE}/active`,   { credentials: 'include' }),
+                fetch(`${API_BASE}/deactive`, { credentials: 'include' }),
+                fetch(`${API_BASE}/expired`,  { credentials: 'include' }),
+                fetch('http://127.0.0.1:8080/api/applications/count-by-job', { credentials: 'include' })
+            ]);
+
+            const activeJobs  = activeRes.ok  ? await activeRes.json()  : [];
+            const closedJobs  = closedRes.ok  ? await closedRes.json()  : [];
+            const expiredJobs = expiredRes.ok ? await expiredRes.json() : [];
+            const countsMap   = countsRes.ok  ? await countsRes.json()  : {};
+
+            activeJobs.forEach(j  => j.status = 'ACTIVE');
+            closedJobs.forEach(j  => j.status = 'CLOSED');
+            expiredJobs.forEach(j => j.status = 'EXPIRED');
+
+            // 2. Combine jobs and inject the correct count from the map
+            allJobs = [...activeJobs, ...closedJobs, ...expiredJobs].map(job => {
+                // If the map has a count for this job ID, use it. Otherwise, fallback to 0.
+                if (countsMap[job.id] != null) {
+                    job.applicationCount = countsMap[job.id];
+                } else {
+                    job.applicationCount = 0;
+                }
+                return job;
+            });
+
+            populateDropdowns(allJobs);
+            renderJobs();
+
+        } catch (err) {
+            console.error('Error fetching jobs:', err);
+            tbody.innerHTML = `<tr class="empty-row"><td colspan="8">⚠️ Could not load job postings. ${escapeHtml(err.message)}</td></tr>`;
+            document.getElementById('jobResultCount').textContent = '— results';
+        }
+    }
+
+    // ------------------------------------------------------------------
+    //  Wire up events
+    // ------------------------------------------------------------------
+    document.addEventListener('DOMContentLoaded', function () {
+        loadJobs();
+
+        document.querySelectorAll('#jobFilters .chip').forEach(chip => {
+            chip.addEventListener('click', function () {
+                document.querySelectorAll('#jobFilters .chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                jobFilter = chip.dataset.filter;
+                renderJobs();
+            });
+        });
+
+        document.getElementById('companyFilter').addEventListener('change', function (e) {
+            companyFilter = e.target.value;
+            renderJobs();
+        });
+
+        document.getElementById('branchFilter').addEventListener('change', function (e) {
+            branchFilter = e.target.value;
+            renderJobs();
+        });
+
+        document.getElementById('dateFilter').addEventListener('change', function (e) {
+            dateFilter = e.target.value;
+            renderJobs();
+        });
+
+        document.getElementById('jobSearch').addEventListener('input', function (e) {
+            jobSearch = e.target.value;
+            renderJobs();
+        });
+    });
+
+    // Expose to inline handlers
+    window.openJobDetail  = openJobDetail;
+    window.closeJobDetail = closeJobDetail;
+    window.deleteJob      = deleteJob;
+</script>
+
+</body>
+</html>

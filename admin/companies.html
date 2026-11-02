@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Companies — Vertex Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="../assets/css/admin/admin-shared.css" rel="stylesheet">
+    <link href="../assets/css/admin/companies.css" rel="stylesheet">
+</head>
+<body data-page="companies">
+<div class="admin-shell">
+    <aside class="admin-sidebar" id="adminSidebar"></aside>
+
+    <main class="admin-main">
+        <header class="admin-topbar">
+            <div class="topbar-heading">
+                <div class="eyebrow">Placement Cell</div>
+                <h4>Companies</h4>
+            </div>
+            <div class="topbar-right">
+                <button class="sidebar-toggle-btn topbar-icon-btn" id="sidebarToggle">
+                    <i class="material-icons">menu</i>
+                </button>
+                <a href="notifications.html" class="topbar-icon-btn" title="Notifications">
+                    <i class="material-icons">notifications_none</i>
+                    <span class="dot"></span>
+                </a>
+                <a href="admin-profile.html" class="topbar-avatar">
+                    <div class="avatar">DR</div>
+                    <span class="name">Devika Rane</span>
+                    <i class="material-icons" style="font-size:18px;color:var(--slate-dim);">expand_more</i>
+                </a>
+            </div>
+        </header>
+
+        <div class="admin-content">
+
+            <div class="section-toolbar">
+                <div class="chip-filters" id="companyFilters">
+                    <button class="chip active" data-filter="all">All</button>
+                    <button class="chip" data-filter="verified">Verified</button>
+                    <button class="chip" data-filter="pending">Pending</button>
+                    <button class="chip" data-filter="rejected">Rejected</button>
+                </div>
+                <div class="toolbar-right">
+                    <select class="select-box" id="industryFilter">
+                        <option value="">All industries</option>
+                        <option>IT / Software</option>
+                        <option>Core / Manufacturing</option>
+                        <option>Finance / Banking</option>
+                        <option>Consulting</option>
+                        <option>EdTech</option>
+                    </select>
+                    <div class="search-box">
+                        <i class="material-icons">search</i>
+                        <input id="companySearch" type="text" placeholder="Search company or HR contact">
+                    </div>
+                    <button class="cd-retry-btn" id="refreshBtn" title="Refresh">
+                        <i class="material-icons" style="font-size:16px;vertical-align:-3px;">refresh</i> Refresh
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-scroll">
+                    <table class="admin-table">
+                        <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>HR Contact</th>
+                            <th>Industry</th>
+                            <th>Size</th>
+                            <th>Joined</th>
+                            <th>Status</th>
+                            <th style="width:180px;">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="companyTableBody"></tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <span id="companyResultCount">— results</span>
+                    <div class="pagination"><button class="active">1</button></div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<!-- Company detail modal -->
+<div class="cd-modal-overlay" id="cdModalOverlay">
+    <div class="cd-modal">
+        <div class="cd-modal-head">
+            <h3 id="cdModalTitle">Company details</h3>
+            <button class="cd-modal-close" id="cdModalClose"><i class="material-icons">close</i></button>
+        </div>
+        <div class="cd-modal-body" id="cdModalBody">
+            <div class="cd-state-row"><div class="spinner"></div>Loading details…</div>
+        </div>
+        <div class="cd-modal-foot">
+            <button class="cd-retry-btn" id="cdModalCloseBtn">Close</button>
+        </div>
+    </div>
+</div>
+
+<script src="../assets/js/admin/admin-shared.js"></script>
+
+<script src="../assets/js/admin/companies.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1649 @@
+
+:root{
+    --ink:#10202f;
+    --ink-soft:#1a3245;
+    --paper:#f6f4ee;
+    --paper-dim:#efece2;
+    --brass:#b8912b;
+    --brass-soft:#e8d9ab;
+    --teal:#146b5f;
+    --teal-soft:#e2ede9;
+    --slate:#55636f;
+    --line:#dcd6c7;
+    --danger:#a13d3d;
+}
+
+*{box-sizing:border-box;}
+html,body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    scroll-behavior:smooth;
+}
+h1,h2,h3,h4{
+    font-family:'Fraunces',serif;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+}
+.mono{
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:.04em;
+}
+a{color:inherit;}
+::selection{background:var(--brass-soft);}
+
+/* ---------- Navbar ---------- */
+nav{
+    background:var(--paper) !important;
+    box-shadow:none;
+    border-bottom:1px solid var(--line);
+    height:72px;
+    line-height:72px;
+}
+nav .nav-wrapper{
+    padding:0 24px;
+    max-width:1240px;
+    margin:0 auto;
+    width:100%;
+}
+.brand-logo.custom-brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    left:24px;
+}
+.brand-mark{
+    width:36px;height:36px;
+    border:1.5px solid var(--ink);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:16px;
+    color:var(--ink);
+    flex-shrink:0;
+}
+.brand-text{
+    display:flex;
+    flex-direction:column;
+    line-height:1.05;
+}
+.brand-text .name{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:20px;
+    color:var(--ink);
+}
+.brand-text .tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:.12em;
+    color:var(--slate);
+    text-transform:uppercase;
+}
+nav ul li a{
+    color:var(--ink-soft);
+    font-weight:500;
+    font-size:14.5px;
+    padding:0 16px;
+}
+nav ul li a:hover{color:var(--brass);}
+.nav-cta{
+    border:1px solid var(--ink) !important;
+    border-radius:2px;
+    color:var(--ink) !important;
+    font-weight:600 !important;
+    padding:0 18px !important;
+    margin-left:6px;
+}
+.nav-cta:hover{background:var(--ink) !important;color:var(--paper) !important;}
+.nav-cta.filled{background:var(--ink) !important;color:var(--paper) !important;}
+.nav-cta.filled:hover{background:var(--ink-soft) !important;}
+
+#sidenav{background:var(--paper);}
+#sidenav li a{color:var(--ink-soft);font-weight:500;}
+#sidenav .sidenav-header{
+    padding:24px 20px 12px;
+    font-family:'Fraunces',serif;
+    font-size:20px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:8px;
+}
+.sidenav-close-icon{position:absolute;right:14px;top:18px;cursor:pointer;}
+
+/* ---------- Hero ---------- */
+.hero{
+    position:relative;
+    width:100%;
+    padding:88px 24px 60px;
+    max-width:1240px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);
+    gap:56px;
+    align-items:center;
+}
+.eyebrow{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin-bottom:22px;
+}
+.eyebrow::before{
+    content:"";
+    width:26px;height:1px;
+    background:var(--teal);
+    display:inline-block;
+}
+.hero h1{
+    font-size:52px;
+    font-weight:600;
+    line-height:1.06;
+    margin:0 0 22px;
+}
+.hero h1 em{
+    font-style:italic;
+    color:var(--teal);
+}
+.hero p.lede{
+    font-size:17px;
+    line-height:1.65;
+    color:var(--slate);
+    max-width:480px;
+    margin-bottom:34px;
+}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:40px;}
+.btn-primary{
+    background:var(--ink) !important;
+    color:var(--paper) !important;
+    border-radius:2px;
+    font-weight:600;
+    letter-spacing:.02em;
+    padding:0 26px;
+    box-shadow:none !important;
+    height:48px;
+    line-height:48px;
+}
+.btn-primary:hover{background:var(--ink-soft) !important;}
+.btn-ghost{
+    background:transparent !important;
+    color:var(--ink) !important;
+    border:1px solid var(--ink);
+    border-radius:2px;
+    font-weight:600;
+    padding:0 26px;
+    box-shadow:none !important;
+    height:48px;
+    line-height:46px;
+}
+.btn-ghost:hover{border-color:var(--brass);color:var(--brass) !important;}
+
+/* ledger stat strip */
+.ledger{
+    border-top:1px solid var(--line);
+    padding-top:20px;
+    display:flex;
+    gap:36px;
+}
+.ledger .stat .num{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:26px;
+    font-weight:600;
+    color:var(--ink);
+}
+.ledger .stat .num sup{font-size:14px;color:var(--brass);}
+.ledger .stat .label{
+    font-size:11px;
+    color:var(--slate);
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    margin-top:2px;
+}
+
+/* hero seal graphic */
+.seal-wrap{
+    width:100%;
+    max-width:380px;
+    margin:0 auto;
+    display:block;
+}
+.seal-wrap svg{
+    width:100%;
+    height:auto;
+    display:block;
+}
+.seal-wrap .ring-outer{fill:none;stroke:var(--line);stroke-width:1;}
+.seal-wrap .ring-dashed{fill:none;stroke:var(--brass-soft);stroke-width:1;stroke-dasharray:4 5;}
+.seal-wrap .core{fill:var(--ink);}
+.seal-wrap .big-year{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:46px;
+    fill:var(--brass-soft);
+}
+.seal-wrap .small-cap{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:.14em;
+    fill:var(--paper);
+    opacity:.85;
+}
+.seal-wrap .tick-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    fill:var(--slate);
+}
+.seal-wrap .tick-bg{fill:var(--paper);}
+
+/* ---------- Section shared ---------- */
+section.block{
+    width:100%;
+    max-width:1240px;
+    margin:0 auto;
+    padding:70px 24px;
+}
+.section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:24px;
+    margin-bottom:44px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:22px;
+}
+.section-head h2{font-size:32px;font-weight:600;margin:0;}
+.section-head p{color:var(--slate);max-width:420px;font-size:14.5px;margin:0;}
+
+/* ---------- Portal cards ---------- */
+.portals{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+}
+.portal-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:32px 26px;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.portal-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 18px 40px -22px rgba(16,32,47,.35);
+    border-color:var(--ink);
+}
+.portal-badge{
+    width:52px;height:52px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:19px;
+    margin-bottom:22px;
+    border:1.5px solid currentColor;
+}
+.portal-card.admin .portal-badge{color:var(--ink);}
+.portal-card.company .portal-badge{color:var(--teal);}
+.portal-card.student .portal-badge{color:var(--brass);}
+.portal-card .kicker{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--slate);
+    margin-bottom:6px;
+}
+.portal-card h3{font-size:22px;font-weight:600;margin:0 0 10px;}
+.portal-card p{
+    color:var(--slate);
+    font-size:14.5px;
+    line-height:1.6;
+    margin-bottom:24px;
+    flex-grow:1;
+}
+.portal-card .list{list-style:none;padding:0;margin:0 0 26px;}
+.portal-card .list li{
+    font-size:13.5px;
+    color:var(--ink-soft);
+    padding:6px 0;
+    border-top:1px solid var(--paper-dim);
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+.portal-card .list li:first-child{border-top:none;}
+.portal-card .list li i{font-size:16px;color:var(--brass);}
+.portal-card .actions{display:flex;gap:10px;}
+.portal-card .actions .btn-flat-line{
+    flex:1;
+    text-align:center;
+    border:1px solid var(--ink);
+    border-radius:2px;
+    padding:11px 0;
+    font-weight:600;
+    font-size:13.5px;
+    cursor:pointer;
+    background:transparent;
+}
+.portal-card.admin .actions .fill{background:var(--ink);color:#fff;}
+.portal-card.company .actions .btn-flat-line{border-color:var(--teal);color:var(--teal);}
+.portal-card.company .actions .fill{background:var(--teal);color:#fff;}
+.portal-card.student .actions .btn-flat-line{border-color:var(--brass);color:var(--brass);}
+.portal-card.student .actions .fill{background:var(--brass);color:#fff;}
+.portal-card .actions .btn-flat-line:hover{opacity:.85;}
+
+/* ---------- Features ---------- */
+.features-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+}
+.feature{
+    background:var(--paper);
+    padding:28px 22px;
+}
+.feature .fnum{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--brass);
+    margin-bottom:14px;
+}
+.feature h4{font-size:16.5px;font-weight:600;margin:0 0 8px;}
+.feature p{font-size:13.5px;color:var(--slate);line-height:1.55;margin:0;}
+
+/* ---------- How it works strip ---------- */
+.process{
+    background:var(--ink);
+    color:var(--paper);
+}
+.process .block{padding:64px 24px;}
+.process .section-head{border-bottom-color:rgba(246,244,238,.18);}
+.process .section-head h2{color:var(--paper);}
+.process .section-head p{color:#b7c2cb;}
+.steps{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:28px;
+}
+.step .snum{
+    font-family:'Fraunces',serif;
+    font-size:15px;
+    color:var(--brass-soft);
+    border:1px solid rgba(246,244,238,.3);
+    width:34px;height:34px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:16px;
+}
+.step h4{color:var(--paper);font-size:17px;margin:0 0 8px;}
+.step p{color:#b7c2cb;font-size:13.5px;line-height:1.6;margin:0;}
+
+/* ---------- Footer ---------- */
+footer.page-footer{
+    background:var(--paper-dim) !important;
+    color:var(--ink);
+    padding-top:52px;
+    border-top:1px solid var(--line);
+}
+footer .foot-grid{
+    max-width:1240px;margin:0 auto;padding:0 24px;
+    display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;
+}
+footer h5{font-family:'Fraunces',serif;font-size:18px;margin-bottom:14px;color:var(--ink);}
+footer p{color:var(--slate);font-size:13.5px;line-height:1.6;}
+footer ul{list-style:none;padding:0;}
+footer ul li{margin-bottom:9px;}
+footer ul li a{color:var(--slate);font-size:13.5px;}
+footer ul li a:hover{color:var(--brass);}
+.footer-copyright{
+    background:var(--paper-dim) !important;
+    border-top:1px solid var(--line);
+    color:var(--slate) !important;
+    font-size:12.5px;
+}
+.footer-copyright a{color:var(--slate) !important;}
+
+/* ---------- Modals ---------- */
+.modal{
+
+    width:70% !important;
+
+    max-width:800px;
+
+    max-height:92% !important;
+
+    border-radius:18px;
+
+}
+@media only screen and (min-width:992px){
+
+    .modal{
+
+        width:750px !important;
+
+    }
+
+}
+.modal .modal-head{
+    padding:28px 30px 0;
+}
+.modal .modal-head .kicker{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--slate);
+}
+.modal .modal-head h4{
+    font-size:24px;font-weight:600;margin:6px 0 0;
+}
+.modal-content{
+
+    padding:35px !important;
+
+}
+.input-field{
+
+    margin-top:18px;
+
+    margin-bottom:18px;
+
+}
+.modal .input-field label{color:var(--slate);}
+.modal .input-field input:focus + label{color:var(--brass) !important;}
+.modal .input-field input:focus{border-bottom:1px solid var(--brass) !important;box-shadow:0 1px 0 0 var(--brass) !important;}
+.modal .row{margin-bottom:6px;}
+.modal-footer{
+    background:transparent;
+    padding:0 30px 26px;
+}
+.tabs{
+    background:transparent;
+    box-shadow:none;
+    border-bottom:1px solid var(--line);
+}
+.tabs .tab a{color:var(--slate);font-weight:600;font-size:13.5px;}
+.tabs .tab a.active{color:var(--ink);}
+.tabs .indicator{background-color:var(--brass);}
+.modal-submit{
+    width:100%;
+    background:var(--ink) !important;
+    border-radius:2px;
+    font-weight:600;
+    box-shadow:none !important;
+    height:46px;line-height:46px;
+}
+.modal-submit.company{background:var(--teal) !important;}
+.modal-submit.student{background:var(--brass) !important;}
+.modal-note{font-size:12px;color:var(--slate);text-align:center;margin-top:14px;}
+.modal-close-x{
+    position:absolute;right:16px;top:14px;
+    cursor:pointer;color:var(--slate);
+}
+
+/* ---------- Wide screens ---------- */
+@media (min-width:1440px){
+    nav .nav-wrapper,.hero,section.block{max-width:1400px;}
+    .hero h1{font-size:60px;}
+    .seal-wrap{max-width:440px;}
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width:992px){
+    .hero{grid-template-columns:1fr;padding-top:110px;}
+    .seal-wrap{max-width:280px;order:-1;}
+    .hero h1{font-size:40px;}
+    .portals{grid-template-columns:1fr;}
+    .features-grid{grid-template-columns:repeat(2,1fr);}
+    .steps{grid-template-columns:1fr;}
+    footer .foot-grid{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:600px){
+    .features-grid{grid-template-columns:1fr;}
+    .ledger{flex-wrap:wrap;gap:20px;}
+    footer .foot-grid{grid-template-columns:1fr;}
+}
+
+ .error-msg {
+     display: block;
+     color: #e53935;
+     font-size: 12px;
+     margin-top: -14px;
+     margin-bottom: 8px;
+     min-height: 14px;
+ }
+.toggle-pass {
+    cursor: pointer;
+}
+.input-field .toggle-pass {
+    position: absolute;
+    right: 0;
+    top: 0.8rem;
+}
+.input-field input[id="st_pass2"] {
+    padding-right: 40px;
+}
+/* ---- Field error messages ---- */
+.error-msg {
+    display: block;
+    color: #e53935;
+    font-size: 12px;
+    line-height: 1.3;
+    min-height: 14px;
+    margin-top: 2px;
+}
+
+/* ---- Password show/hide icon, pinned to the end of the field ---- */
+.input-field {
+    position: relative;
+}
+.toggle-pass {
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0.8rem;
+}
+.input-field input[type="password"],
+.input-field input[type="text"].pass-visible {
+    padding-right: 34px;
+}
+
+/* ---- In-modal success screen ---- */
+.success-box {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 70px 30px;
+}
+.success-icon {
+    font-size: 64px;
+    color: #43a047;
+    margin-bottom: 14px;
+}
+.success-text {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 6px;
+    color: #212121;
+}
+.redirect-note {
+    font-size: 13px;
+    color: #757575;
+    margin: 0;
+}
+
+/* ---- Select dropdown aligned to match text-input rows exactly ---- */
+.input-field select {
+    display: none;
+}
+.input-field .select-wrapper {
+    margin-top: 0;
+}
+.input-field .select-wrapper input.select-dropdown {
+    border-bottom: 1px solid #9e9e9e;
+    color: var(--ink);
+    font-size: 16px;
+    padding-left: 34px;
+    height: 3rem;
+    line-height: 3rem;
+    margin: 0 0 0.5rem 0;
+    text-transform: none;
+}
+.input-field .select-wrapper input.select-dropdown:focus {
+    border-bottom: 1px solid var(--brass) !important;
+    box-shadow: 0 1px 0 0 var(--brass) !important;
+    color: var(--ink);
+}
+.input-field .select-wrapper .caret {
+    fill: var(--slate);
+    top: 1rem;
+}
+.dropdown-content {
+    border: 1px solid var(--line);
+    box-shadow: 0 8px 24px -12px rgba(16,32,47,.35);
+}
+.dropdown-content li > a,
+.dropdown-content li > span {
+    color: var(--ink-soft);
+    font-size: 14.5px;
+}
+.dropdown-content li.selected,
+.dropdown-content li:hover {
+    background-color: var(--brass-soft);
+}
+
+/* Icon for the select field, aligned with the other prefix icons */
+.input-field i.prefix.select-icon {
+    position: absolute;
+    top: 0.75rem;
+    left: 0;
+    font-size: 1.5rem;
+    color: rgba(0,0,0,.4);
+    z-index: 2;
+}
+
+/* Static label above the select — pin it at the same baseline as
+   the floated labels on text inputs, so both rows start level */
+.input-field label.industry-label {
+    position: absolute;
+    top: -0.8rem;
+    left: 34px;
+    font-size: 12px;
+    color: var(--slate);
+}
+/* ---- Robust two-column pairing that won't break on uneven content ---- */
+.field-row {
+    display: flex;
+    gap: 24px;
+    width: 100%;
+}
+.field-row .input-field.half {
+    flex: 1 1 0;
+    min-width: 0;   /* prevents overflow from long error text or input content */
+}
+
+@media (max-width: 600px) {
+    .field-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+.modal-content {
+    overflow-x: hidden;
+}
+.modal-overlay {
+    z-index: 1002 !important; /* keep overlay/modal stacking predictable */
+}
+.modal {
+    z-index: 1003 !important;
+}
+/* Guarantee only the freshest overlay/modal ever blocks the page */
+.modal-overlay ~ .modal-overlay {
+    display: none !important;
+}
+.modal:not(.open) {
+    pointer-events: none;
+}
+.error-message {
+    display: block;
+    color: #dc3545;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.input-error {
+    border: 1px solid #dc3545 !important;
+}
+
+.input-error:focus {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.15);
+}
+
+/* ==========================================
+   MODERN SPLIT MODAL DESIGN (STUDENT PORTAL)
+   ========================================== */
+
+/* Base Modal Overrides */
+.vertex-split-modal {
+    width: 950px !important;
+    max-width: 95% !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    background: #fff !important;
+}
+
+.vertex-split-modal .modal-close-x {
+    color: #fff;
+    background: rgba(0,0,0,0.2);
+    border-radius: 50%;
+    padding: 4px;
+    z-index: 10;
+    right: 16px;
+    top: 16px;
+    transition: 0.2s;
+}
+.vertex-split-modal .modal-close-x:hover {
+    background: rgba(0,0,0,0.5);
+}
+
+.modal-split-wrapper {
+    display: flex;
+    min-height: 600px;
+}
+
+/* --- LEFT SIDE (GRAPHIC) --- */
+.modal-graphic-side {
+    width: 40%;
+    background: linear-gradient(135deg, var(--ink) 0%, #1a3245 100%);
+    position: relative;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Subtle background pattern for the graphic side */
+.modal-graphic-side::before {
+    content: '';
+    position: absolute;
+    top: -50px; right: -50px;
+    width: 200px; height: 200px;
+    background: var(--teal);
+    border-radius: 50%;
+    opacity: 0.3;
+    filter: blur(40px);
+}
+
+.modal-graphic-side .graphic-content {
+    position: relative;
+    z-index: 2;
+}
+
+.modal-graphic-side h2 {
+    font-family: 'Fraunces', serif;
+    color: #fff;
+    font-size: 32px;
+    line-height: 1.2;
+    margin: 12px 0 16px;
+}
+
+.modal-graphic-side h2 em {
+    color: var(--brass-soft);
+    font-style: italic;
+}
+
+.modal-graphic-side p {
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 32px;
+}
+
+.graphic-features {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.g-feature {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #fff;
+    font-size: 13.5px;
+    font-weight: 500;
+}
+
+.g-feature i {
+    color: var(--brass);
+    font-size: 20px;
+    background: rgba(255,255,255,0.1);
+    padding: 6px;
+    border-radius: 8px;
+}
+
+/* --- RIGHT SIDE (FORM) --- */
+.modal-form-side {
+    width: 60%;
+    padding: 40px;
+    background: #fff;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+/* Custom Tabs */
+.vertex-tabs {
+    background: transparent;
+    border-bottom: 2px solid var(--paper-dim);
+    display: flex;
+}
+
+.vertex-tabs .tab {
+    flex: 1;
+}
+
+.vertex-tabs .tab a {
+    color: var(--slate);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 0;
+    text-transform: none;
+}
+
+.vertex-tabs .tab a.active {
+    color: var(--ink);
+}
+
+.vertex-tabs .indicator {
+    background-color: var(--teal);
+    height: 3px;
+}
+
+/* Custom Input Fields */
+.vertex-split-modal .toggle-pass-btn
+
+.vertex-split-modal .input-field input,
+.vertex-split-modal .input-field select {
+    border: 1px solid var(--line) !important;
+    border-radius: 6px !important;
+    height: 46px !important;
+    padding: 0 16px !important;
+    box-sizing: border-box;
+    background: var(--paper) !important;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.vertex-split-modal .input-field input:focus,
+.vertex-split-modal .input-field select:focus {
+    border-color: var(--teal) !important;
+    box-shadow: 0 0 0 3px var(--teal-soft) !important;
+    background: #fff !important;
+}
+
+/* Adjust materialize floating labels to match the new input box */
+.vertex-split-modal .input-field > label {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 16px;
+    font-size: 14px;
+    color: var(--slate);
+    transition: all 0.2s ease;
+    pointer-events: none;
+}
+
+.vertex-split-modal .input-field input:focus ~ label,
+.vertex-split-modal .input-field input:valid ~ label,
+.vertex-split-modal .input-field input.active ~ label {
+    top: -10px;
+    left: 10px;
+    font-size: 11px;
+    color: var(--teal);
+    background: #fff;
+    padding: 0 4px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+/* Prefix Icons */
+.vertex-split-modal .input-field i.prefix {
+    top: 11px;
+    left: 6px;
+    color: var(--slate);
+    font-size: 20px;
+    transition: color 0.2s;
+}
+.vertex-split-modal .input-field input:focus ~ i.prefix {
+    color: var(--teal);
+}
+
+/* Fix spacing for icons inside inputs */
+.vertex-split-modal .input-field input {
+    padding-left: 42px !important; 
+}
+
+/* Custom Select Dropdown arrow */
+.vertex-split-modal .select-wrapper .caret {
+    fill: var(--slate);
+    top: 18px;
+    right: 10px;
+}
+.vertex-split-modal .select-wrapper input.select-dropdown {
+    border-bottom: none !important;
+}
+
+/* Buttons */
+.vertex-btn-teal {
+    background: var(--teal) !important;
+    color: #fff !important;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: none !important;
+    text-transform: none !important;
+    font-size: 15px !important;
+    transition: 0.2s !important;
+}
+
+.vertex-btn-teal:hover {
+    background: #0f5249 !important;
+    transform: translateY(-1px);
+}
+
+/* File Upload Input Fix */
+.vertex-split-modal input[type="file"] {
+    padding: 10px 12px !important;
+    height: auto !important;
+    line-height: normal;
+}
+.vertex-split-modal input[type="file"] ~ label {
+    display: none !important; /* Hide the floating label for file inputs */
+}
+
+/* Responsive Modal */
+@media (max-width: 768px) {
+    .modal-split-wrapper {
+        flex-direction: column;
+    }
+    .modal-graphic-side {
+        width: 100%;
+        padding: 30px 20px;
+    }
+    .modal-graphic-side h2 {
+        font-size: 24px;
+    }
+    .modal-form-side {
+        width: 100%;
+        padding: 24px 20px;
+    }
+}
+
+/* ==========================================
+   VERTEX SPLIT MODAL (FINAL FIX)
+   ========================================== */
+
+/* 1. Modal Shell */
+.vertex-split-modal {
+    width: 960px !important;
+    max-width: 95% !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    background: #fff !important;
+}
+
+.vertex-split-modal .modal-close-x {
+    color: #fff;
+    background: rgba(0,0,0,0.2);
+    border-radius: 50%;
+    padding: 4px;
+    z-index: 10;
+    right: 16px;
+    top: 16px;
+    transition: 0.2s;
+}
+.vertex-split-modal .modal-close-x:hover { background: rgba(0,0,0,0.5); }
+
+/* 2. Layout Grid */
+.modal-split-wrapper {
+    display: flex;
+    min-height: 600px;
+}
+
+/* Left Side (Graphic) */
+.modal-graphic-side {
+    width: 40%;
+    background: linear-gradient(135deg, var(--ink) 0%, #1a3245 100%);
+    position: relative;
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+.modal-graphic-side::before {
+    content: ''; position: absolute; top: -50px; right: -50px;
+    width: 200px; height: 200px; background: var(--teal);
+    border-radius: 50%; opacity: 0.3; filter: blur(40px);
+}
+.modal-graphic-side .graphic-content { position: relative; z-index: 2; }
+.modal-graphic-side h2 {
+    font-family: 'Fraunces', serif; color: #fff; font-size: 34px; line-height: 1.15; margin: 12px 0 16px;
+}
+.modal-graphic-side h2 em { color: var(--brass-soft); font-style: italic; }
+.modal-graphic-side p { color: rgba(255,255,255,0.7); font-size: 15px; line-height: 1.6; margin-bottom: 32px; }
+.graphic-features { display: flex; flex-direction: column; gap: 16px; }
+.g-feature { display: flex; align-items: center; gap: 12px; color: #fff; font-size: 14px; font-weight: 500; }
+.g-feature i { color: var(--brass); font-size: 20px; background: rgba(255,255,255,0.1); padding: 6px; border-radius: 8px; }
+
+/* Right Side (Form) */
+.modal-form-side {
+    width: 60%;
+    padding: 40px 48px;
+    background: #fff;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+/* 3. Tabs */
+.vertex-tabs { background: transparent; border-bottom: 2px solid var(--paper-dim); display: flex; margin-bottom: 28px !important; }
+.vertex-tabs .tab { flex: 1; }
+.vertex-tabs .tab a { color: var(--slate); font-weight: 600; font-size: 15px; padding: 0; text-transform: none; }
+.vertex-tabs .tab a.active { color: var(--ink); }
+.vertex-tabs .indicator { background-color: var(--teal); height: 3px; }
+
+/* 4. Forms & Inputs Reset */
+.vertex-split-modal form.row { margin: 0 !important; padding: 0 !important; }
+.vertex-split-modal .input-field { 
+    padding: 0 !important; 
+    margin-top: 8px !important; 
+    margin-bottom: 24px !important; 
+    position: relative;
+    width: 100% !important;
+}
+
+/* Ensure 2-column rows stretch fully */
+.vertex-split-modal .field-row {
+    display: flex !important;
+    gap: 20px !important;
+    width: 100% !important;
+}
+.vertex-split-modal .field-row .input-field { flex: 1 1 0 !important; min-width: 0 !important; }
+
+/* Input Boxes */
+.vertex-split-modal .input-field input:not([type="file"]),
+.vertex-split-modal .select-wrapper input.select-dropdown {
+    border: 1px solid var(--line) !important;
+    border-radius: 8px !important;
+    height: 48px !important;
+    width: 100% !important;
+    padding: 0 16px 0 44px !important; 
+    box-sizing: border-box !important;
+    background: var(--paper) !important;
+    transition: all 0.2s ease !important;
+    font-size: 14px !important;
+    margin: 0 !important;
+    color: var(--ink) !important;
+}
+
+/* Focus State */
+.vertex-split-modal .input-field input:focus,
+.vertex-split-modal .select-wrapper input.select-dropdown:focus {
+    border-color: var(--teal) !important;
+    box-shadow: 0 0 0 3px var(--teal-soft) !important;
+    background: #fff !important;
+}
+
+/* Prefix Icons (Inside Input) */
+.vertex-split-modal .input-field i.prefix {
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    left: 14px !important;
+    color: var(--slate) !important;
+    font-size: 20px !important;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Eye Icon (Password Toggle) */
+.vertex-split-modal .input-field .toggle-pass {
+    position: absolute !important;
+    right: 14px !important; 
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    cursor: pointer;
+    color: var(--slate);
+    z-index: 3;
+    margin: 0 !important;
+}
+.vertex-split-modal .input-field input[type="password"] { padding-right: 44px !important; }
+
+/* 5. Floating Labels */
+.vertex-split-modal .input-field > label {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    left: 44px !important;
+    font-size: 14px !important;
+    color: var(--slate) !important;
+    transition: all 0.2s ease !important;
+    pointer-events: none !important;
+    margin: 0 !important;
+}
+
+/* Label floats up on focus/valid */
+.vertex-split-modal .input-field input:focus ~ label,
+.vertex-split-modal .input-field input:valid ~ label,
+.vertex-split-modal .input-field input.active ~ label,
+.vertex-split-modal .select-wrapper input.select-dropdown ~ label {
+    top: -10px !important;
+    left: 12px !important;
+    font-size: 11px !important;
+    color: var(--teal) !important;
+    background: #fff !important;
+    padding: 0 4px !important;
+    border-radius: 4px !important;
+    font-weight: 600 !important;
+    transform: none !important;
+}
+
+/* 6. Dropdown Fix */
+.vertex-split-modal .select-wrapper {
+    width: 100% !important;
+    margin-top: 0 !important;
+}
+.vertex-split-modal .select-wrapper .caret {
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    right: 14px !important;
+    fill: var(--slate) !important;
+}
+/* Fix the actual dropdown popup width */
+.dropdown-content {
+    width: auto !important;
+    min-width: 100% !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
+    background-color: #fff !important;
+    margin-top: 4px !important;
+}
+.dropdown-content li > a, .dropdown-content li > span { font-size: 14px !important; color: var(--ink) !important; padding: 12px 16px !important; }
+.dropdown-content li:hover, .dropdown-content li.selected { background-color: var(--paper) !important; }
+
+/* 7. Profile Photo Upload */
+.vertex-split-modal .input-field input[type="file"] {
+    padding: 12px 16px !important;
+    height: 48px !important;
+    width: 100% !important;
+    border: 1px dashed var(--line) !important;
+    background: var(--paper) !important;
+    border-radius: 8px !important;
+    color: var(--slate) !important;
+}
+.vertex-split-modal .input-field input[type="file"] ~ label { display: none !important; }
+
+/* 8. Error Messages */
+.vertex-split-modal .error-msg {
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    font-size: 12px;
+    color: #dc3545;
+    margin: 0;
+    min-height: 14px;
+}
+
+/* 9. Submit Button */
+.vertex-btn-teal {
+    background: var(--teal) !important;
+    color: #fff !important;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: none !important;
+    text-transform: none !important;
+    font-size: 16px !important;
+    transition: 0.2s !important;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 8px;
+    width: 100%;
+    display: block;
+}
+.vertex-btn-teal:hover { background: #0f5249 !important; transform: translateY(-1px); }
+
+/* 10. Responsive */
+@media (max-width: 768px) {
+    .modal-split-wrapper { flex-direction: column; }
+    .modal-graphic-side { width: 100%; padding: 30px 20px; display: none; }
+    .modal-form-side { width: 100%; padding: 30px 24px; }
+    .vertex-split-modal .field-row { flex-direction: column; gap: 0 !important; }
+}
+
+
+/* =========================================
+   VERTEX STUDENT PORTAL — ALIGNMENT FIX
+   Add at the END of student-signup.css
+   ========================================= */
+
+/* Modal shell */
+#studentModal.vertex-split-modal {
+    width: 1000px !important;
+    max-width: 96vw !important;
+    max-height: 90vh !important;
+    height: auto !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    background: #fff !important;
+}
+
+/* Split layout */
+#studentModal .modal-split-wrapper {
+    display: flex;
+    align-items: stretch;
+    min-height: 0;
+    height: 100%;
+}
+
+/* Left promotional panel */
+#studentModal .modal-graphic-side {
+    flex: 0 0 36%;
+    width: 36%;
+    padding: 42px 32px;
+    min-width: 0;
+}
+
+/* Right form panel */
+#studentModal .modal-form-side {
+    flex: 1 1 64%;
+    width: 64%;
+    min-width: 0;
+    min-height: 0;
+    max-height: 90vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 32px 40px 36px;
+    scrollbar-width: thin;
+    scrollbar-color: #c9c5b9 transparent;
+}
+
+/* Keep the heading readable */
+#studentModal .modal-head {
+    padding: 0 0 20px !important;
+}
+
+#studentModal .modal-head h4 {
+    font-size: 27px;
+    line-height: 1.3;
+    margin: 0;
+}
+
+#studentModal .modal-head p {
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+/* Tabs */
+#studentModal .vertex-tabs {
+    display: flex;
+    width: 100%;
+    height: 48px;
+    margin: 0 0 26px !important;
+    border-bottom: 1px solid var(--line);
+    overflow: visible;
+}
+
+#studentModal .vertex-tabs .tab {
+    flex: 1;
+    height: 48px;
+    line-height: 48px;
+}
+
+#studentModal .vertex-tabs .tab a {
+    display: block;
+    height: 48px;
+    line-height: 48px;
+    padding: 0 10px;
+    text-align: center;
+    text-transform: none;
+    font-size: 15px;
+}
+
+#studentModal .vertex-tabs .indicator {
+    height: 3px;
+    background: var(--teal);
+}
+
+/* Remove Materialize row's negative margins */
+#studentModal .modal-content,
+#studentModal #studentSignup,
+#studentModal #studentLogin {
+    padding: 0 !important;
+    overflow: visible;
+}
+
+#studentModal form.row {
+    margin: 0 !important;
+    width: 100%;
+}
+
+/* Consistent field spacing */
+#studentModal .input-field {
+    position: relative;
+    width: 100% !important;
+    min-width: 0;
+    margin: 0 0 28px !important;
+    padding: 0 !important;
+}
+
+/* Consistent two-column rows */
+#studentModal .field-row {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 18px;
+    width: 100%;
+    margin: 0;
+}
+
+#studentModal .field-row > .input-field {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0;
+}
+
+/* Text inputs */
+#studentModal .input-field input:not([type="file"]) {
+    display: block;
+    width: 100% !important;
+    height: 50px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 0 42px 0 44px !important;
+    border: 1px solid #dcd6c7 !important;
+    border-radius: 9px !important;
+    background: #f8f7f3 !important;
+    color: #10202f !important;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px !important;
+    line-height: normal !important;
+    box-shadow: none !important;
+    transition: border-color .2s, box-shadow .2s,
+                background-color .2s;
+}
+
+/* Placeholder text */
+#studentModal .input-field input::placeholder {
+    color: #75808a;
+    opacity: 1;
+}
+
+/* Focus */
+#studentModal .input-field input:not([type="file"]):focus {
+    border: 1px solid var(--teal) !important;
+    background: #fff !important;
+    box-shadow: 0 0 0 3px rgba(20, 107, 95, .10) !important;
+}
+
+/* Prefix icons */
+#studentModal .input-field > i.prefix {
+    position: absolute;
+    z-index: 2;
+    left: 13px !important;
+    top: 25px !important;
+    transform: translateY(-50%);
+    width: 22px;
+    font-size: 19px !important;
+    color: #64727d !important;
+    pointer-events: none;
+}
+
+#studentModal .input-field input:focus ~ i.prefix {
+    color: var(--teal) !important;
+}
+
+/* Floating labels for regular inputs */
+#studentModal .input-field > label:not(.select-field-label) {
+    position: absolute !important;
+    top: 25px !important;
+    left: 44px !important;
+    transform: translateY(-50%);
+    width: auto;
+    height: auto;
+    color: #64727d !important;
+    font-size: 14px !important;
+    line-height: 1.3;
+    background: transparent;
+    padding: 0;
+    pointer-events: none;
+    transition: all .18s ease;
+}
+
+/* Float the label only when focused or filled */
+#studentModal .input-field > input:focus ~ label:not(.select-field-label),
+#studentModal .input-field > input:valid ~ label:not(.select-field-label),
+#studentModal .input-field > input.active ~ label:not(.select-field-label) {
+    top: -9px !important;
+    left: 11px !important;
+    transform: none;
+    padding: 0 5px;
+    background: #fff;
+    color: var(--teal) !important;
+    font-size: 11px !important;
+    font-weight: 600;
+}
+
+/* Materialize replaces the native select with .select-wrapper.
+   Style the generated visible dropdown, not the hidden select. */
+#studentModal .input-field .select-wrapper {
+    display: block;
+    position: relative;
+    width: 100% !important;
+    min-width: 0;
+    margin: 0;
+}
+
+#studentModal .input-field .select-wrapper input.select-dropdown {
+    display: block;
+    width: 100% !important;
+    height: 50px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 0 38px 0 44px !important;
+    border: 1px solid #dcd6c7 !important;
+    border-radius: 9px !important;
+    background: #f8f7f3 !important;
+    color: #10202f !important;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px !important;
+    line-height: 50px !important;
+    box-shadow: none !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+#studentModal .input-field .select-wrapper input.select-dropdown:focus {
+    border: 1px solid var(--teal) !important;
+    background: #fff !important;
+    box-shadow: 0 0 0 3px rgba(20, 107, 95, .10) !important;
+}
+
+/* Branch icon */
+#studentModal .field-row .input-field:has(#st_branch) > i.prefix {
+    z-index: 3;
+    top: 25px !important;
+}
+
+/* Keep the branch label ABOVE the dropdown.
+   A Materialize select is wrapped, so the ordinary floating-label
+   sibling selector does not work for it. */
+#studentModal .input-field > label.select-field-label {
+    position: absolute !important;
+    top: -9px !important;
+    left: 11px !important;
+    transform: none !important;
+    z-index: 4;
+    width: auto;
+    height: auto;
+    padding: 0 5px !important;
+    background: #fff !important;
+    color: var(--teal) !important;
+    font-size: 11px !important;
+    font-weight: 600;
+    line-height: 1.3;
+    pointer-events: none;
+}
+
+/* Dropdown arrow */
+#studentModal .select-wrapper .caret {
+    z-index: 2;
+    top: 50% !important;
+    right: 12px !important;
+    transform: translateY(-50%);
+    fill: #64727d !important;
+}
+
+/* Dropdown menu */
+#studentModal .dropdown-content {
+    z-index: 1010 !important;
+    min-width: 100%;
+    max-height: 260px;
+    border: 1px solid #e2ded4;
+    border-radius: 9px;
+    background: #fff;
+    box-shadow: 0 12px 30px rgba(16, 32, 47, .14);
+}
+
+#studentModal .dropdown-content li > span,
+#studentModal .dropdown-content li > a {
+    padding: 12px 16px;
+    color: var(--ink);
+    font-size: 14px;
+}
+
+#studentModal .dropdown-content li:hover,
+#studentModal .dropdown-content li.selected {
+    background: var(--teal-soft);
+}
+
+/* Password eye */
+#studentModal .input-field .toggle-pass {
+    position: absolute !important;
+    top: 50% !important;
+    right: 14px !important;
+    transform: translateY(-50%) !important;
+    z-index: 5 !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    font-size: 20px !important;
+    color: #64727d !important;
+    user-select: none;
+}
+/* Profile photo */
+#studentModal #st_profilePhoto {
+    width: 100% !important;
+    min-height: 50px;
+    height: auto !important;
+    box-sizing: border-box;
+    padding: 10px !important;
+    border: 1px dashed #c9c5b9 !important;
+    border-radius: 9px !important;
+    background: #f8f7f3 !important;
+    color: #55636f !important;
+    font-size: 13px;
+    box-shadow: none !important;
+}
+
+#studentModal #st_profilePhoto:focus {
+    border-color: var(--teal) !important;
+}
+
+#studentModal #studentSignup .input-field:has(#st_profilePhoto) > i.prefix {
+    top: 43px !important;
+}
+
+/* Validation messages: reserve room instead of overlapping fields */
+#studentModal .error-msg {
+    position: absolute;
+    top: calc(100% + 4px);
+    bottom: auto;
+    left: 2px;
+    display: block;
+    width: calc(100% - 4px);
+    min-height: 0;
+    margin: 0;
+    color: #c0392b;
+    font-size: 11px;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+/* Submit button */
+#studentModal .vertex-btn-teal {
+    width: 100%;
+    min-height: 50px;
+    height: 50px;
+    line-height: 50px;
+    margin: 0;
+    border: 0;
+    border-radius: 9px;
+    background: var(--teal) !important;
+    color: #fff !important;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px !important;
+    font-weight: 600;
+    text-transform: none !important;
+    letter-spacing: .2px;
+    box-shadow: 0 5px 14px rgba(20, 107, 95, .16) !important;
+    transition: background .2s, transform .2s, box-shadow .2s;
+}
+
+#studentModal .vertex-btn-teal:hover {
+    background: #0f5249 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(20, 107, 95, .22) !important;
+}
+
+/* Small laptop screens */
+@media (max-width: 900px) {
+    #studentModal.vertex-split-modal {
+        max-width: 96vw !important;
+    }
+
+    #studentModal .modal-graphic-side {
+        flex-basis: 32%;
+        width: 32%;
+        padding: 28px 20px;
+    }
+
+    #studentModal .modal-form-side {
+        padding: 28px 24px;
+    }
+
+    #studentModal .modal-graphic-side h2 {
+        font-size: 27px;
+    }
+}
+
+/* Tablet and mobile */
+@media (max-width: 680px) {
+    #studentModal.vertex-split-modal {
+        width: 96vw !important;
+        max-width: 96vw !important;
+        max-height: 90vh !important;
+    }
+
+    #studentModal .modal-graphic-side {
+        display: none;
+    }
+
+    #studentModal .modal-form-side {
+        width: 100%;
+        flex-basis: 100%;
+        max-height: 90vh;
+        padding: 28px 22px;
+    }
+
+    #studentModal .field-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    #studentModal .field-row > .input-field {
+        width: 100% !important;
+        flex-basis: auto !important;
+    }
+}
+.error-msg{
+    display:none;
+    color:#dc3545;
+    font-size:12px;
+    margin-top:5px;
+}
+
+.error-msg.show{
+    display:block;
+}
+
+.vertex-split-modal .toggle-pass {
+    cursor: pointer;
+    z-index: 10;
+    pointer-events: auto;
+}

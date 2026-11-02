@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Postings · HireDesk</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%230E9AA3%22/><text x=%2250%22 y=%2266%22 font-size=%2255%22 font-family=%22Arial%22 fill=%22white%22 text-anchor=%22middle%22>H</text></svg>">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:500,600,700|Roboto:400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="../assets/css/company/company_style.css">
+    <link rel="stylesheet" href="../assets/css/company/job_posting_style.css">
+    <!-- Page-specific styles: only what dashboard.html's shared stylesheet doesn't already cover -->
+   
+</head>
+<body>
+<a href="#" data-target="mobile-sidenav" class="sidenav-trigger mobile-trigger">
+    <i class="material-icons">menu</i>
+</a>
+
+<!-- ==================== NAVBAR (inline) ==================== -->
+<style>
+    .profile-nudge-dot{display:inline-block;width:7px;height:7px;border-radius:50%;
+        background:var(--bad,#e53935);margin-left:6px;vertical-align:middle;}
+    .side-foot{display:flex;align-items:center;}
+</style>
+
+<ul id="mobile-sidenav" class="sidenav sidenav-fixed">
+    <div class="side-brand">
+        <div class="brand-mark">H</div>
+        <div class="brand-text">
+            <span id="nav-brand-name" class="name">HireDesk</span>
+            <span class="sub">Company Portal</span>
+        </div>
+    </div>
+
+    <li class="side-section-label">Main</li>
+
+    <li data-nav="dashboard">
+        <a class="side-link" href="index.html"><i class="material-icons">dashboard</i>Dashboard</a>
+    </li>
+    <li data-nav="profile">
+        <a class="side-link" href="profile.html"><i class="material-icons">business</i>Profile
+            <span id="nav-profile-dot" class="profile-nudge-dot" hidden></span></a>
+    </li>
+
+    <li data-nav="jobs" class="has-submenu">
+        <a href="#!" class="side-link nav-dropdown-toggle">
+            <i class="material-icons">work</i><span>Jobs</span>
+            <i class="material-icons dropdown-arrow">keyboard_arrow_down</i>
+        </a>
+        <ul class="side-submenu">
+            <li data-nav="create-job"><a href="job-postings.html" class="side-sub-link"><i class="material-icons">add</i>Create Job</a></li>
+            <li data-nav="manage-jobs"><a href="manage-jobs.html" class="side-sub-link"><i class="material-icons">list</i>Manage Jobs</a></li>
+        </ul>
+    </li>
+
+    <li data-nav="applications"><a class="side-link" href="applications.html"><i class="material-icons">assignment_ind</i>Applications</a></li>
+    <li data-nav="assessments"><a class="side-link" href="test-assessments.html"><i class="material-icons">quiz</i>Test Assessments</a></li>
+    <li data-nav="interviews"><a class="side-link" href="interview-process.html"><i class="material-icons">event</i>Interview Process</a></li>
+    <li data-nav="reports"><a class="side-link" href="reports.html"><i class="material-icons">bar_chart</i>Reports</a></li>
+    <li data-nav="notifications"><a class="side-link" href="notifications.html"><i class="material-icons">notifications</i>Notifications</a></li>
+
+    <div class="side-foot">
+        <a href="profile.html" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;text-decoration:none;color:inherit;">
+            <div id="nav-avatar" class="avatar">--</div>
+            <div class="who" style="min-width:0;">
+                <span id="nav-company-name" class="n" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;">Loading…</span>
+                <span id="nav-profile-pct" class="r">-- % profile complete</span>
+            </div>
+        </a>
+        <a href="#" id="nav-logout-btn" class="tooltipped" data-position="top" data-tooltip="Log out" style="margin-left:8px;">
+            <i class="material-icons" style="font-size:20px;opacity:.7;">logout</i>
+        </a>
+    </div>
+</ul>
+
+<div id="app-topbar" class="topbar">
+    <div class="page-title">
+        <span id="nav-page-title"></span>
+        <span id="nav-page-crumb" class="crumb"></span>
+    </div>
+    <div class="top-actions">
+        <span id="nav-status-pill" class="pill"></span>
+        <i class="material-icons icon-btn tooltipped" data-position="bottom" data-tooltip="Notifications">notifications_none</i>
+        <i class="material-icons icon-btn tooltipped" data-position="bottom" data-tooltip="Help">help_outline</i>
+        <i id="nav-logout-btn-top" class="material-icons icon-btn tooltipped" data-position="bottom" data-tooltip="Log out">logout</i>
+    </div>
+</div>
+
+<!-- Keeps per-page title/crumb/active-key. navbar.js reads these. -->
+<div id="navbar-placeholder"
+     data-page-title="Applications"
+     data-page-crumb="Overview of hiring activity"
+     data-nav-active="applications"
+     style="display:none;"></div>
+<!-- ==================== /NAVBAR ==================== -->
+
+<!-- ============ Main content ============ -->
+<main class="app-main">
+
+     <div class="jc-topbar">
+        <a href="job-posting.html" class="jc-back">
+            <i class="material-icons">arrow_back</i> Back to Job Postings
+        </a>
+        <div class="jc-progress" id="jc-progress" aria-hidden="true">
+            <span class="jc-progress-fill" id="jc-progress-fill"></span>
+        </div>
+    </div>
+ 
+    <form id="job-create-form" novalidate>
+        <div class="jc-layout">
+ 
+            <!-- ============ LEFT: form sections ============ -->
+            <div class="jc-form-col">
+ 
+                <!-- Basic Information -->
+                <section class="jc-card">
+                    <div class="jc-card-head">
+                        <span class="jc-card-icon"><i class="material-icons">work</i></span>
+                        <div>
+                            <h6>Basic Information</h6>
+                            <p>What role are you hiring for?</p>
+                        </div>
+                    </div>
+ 
+                    <div class="jc-field">
+                        <label for="f-title">Job Title <span class="req">*</span></label>
+                        <input type="text" id="f-title" name="title" maxlength="150" placeholder="e.g. Software Developer" autocomplete="off">
+                        <div class="jc-field-meta">
+                            <span class="jc-error" id="err-title"></span>
+                            <span class="jc-count" id="count-title">0 / 150</span>
+                        </div>
+                    </div>
+ 
+                    <div class="jc-grid-2">
+                        <div class="jc-field">
+                            <label for="f-role">Role Title</label>
+                            <input type="text" id="f-role" name="role" placeholder="e.g. Software Engineer" autocomplete="off">
+                            <div class="jc-field-meta"><span class="jc-error" id="err-role"></span></div>
+                        </div>
+                        <div class="jc-field">
+                        <label for="f-department">Branch / Department <span class="req">*</span></label>
+                        <select id="f-department" name="department" class="browser-default">
+                            <option value="" selected disabled>Select branch/department</option>
+                            <option value="Computer Science Department">Computer Science Department</option>
+                            <option value="Information Technology Department">Information Technology Department</option>
+                            <option value="Electronics &amp; Communication Department">Electronics &amp; Communication Department</option>
+                            <option value="Data Science Department">Data Science Department</option>
+                            <option value="Design Department">Design Department</option>
+                            <option value="Product Management Department">Product Management Department</option>
+                            <option value="Quality Assurance Department">Quality Assurance Department</option>
+                            <option value="Business Development Department">Business Development Department</option>
+                            <option value="Sales &amp; Marketing Department">Sales &amp; Marketing Department</option>
+                            <option value="Finance Department">Finance Department</option>
+                            <option value="Human Resources Department">Human Resources Department</option>
+                            <option value="Operations Department">Operations Department</option>
+                            <option value="Customer Support Department">Customer Support Department</option>
+                            <option value="Legal Department">Legal Department</option>
+                            <option value="Administration Department">Administration Department</option>
+                        </select>
+                        <div class="jc-field-meta"><span class="jc-error" id="err-department"></span></div>
+                     </div>
+                </div>
+
+                    <div class="jc-grid-2">
+                        <div class="jc-field">
+                            <label for="f-location">Location <span class="req">*</span></label>
+                            <input type="text" id="f-location" name="location" placeholder="e.g. Pune, Maharashtra" autocomplete="off">
+                            <div class="jc-field-meta"><span class="jc-error" id="err-location"></span></div>
+                        </div>
+                        <div class="jc-field">
+                            <label for="f-jobType">Job Type <span class="req">*</span></label>
+                            <select id="f-jobType" name="jobType" class="browser-default">
+                                <option value="" selected disabled>Select job type</option>
+                                <option value="FULL_TIME">Full Time</option>
+                                <option value="PART_TIME">Part Time</option>
+                                <option value="INTERNSHIP">Internship</option>
+                                <option value="CONTRACT">Contract</option>
+                                <option value="REMOTE">Remote</option>
+                            </select>
+                            <div class="jc-field-meta"><span class="jc-error" id="err-jobType"></span></div>
+                        </div>
+                    </div>
+                </section>
+ 
+                <!-- Job Description -->
+                <section class="jc-card">
+                    <div class="jc-card-head">
+                        <span class="jc-card-icon"><i class="material-icons">description</i></span>
+                        <div>
+                            <h6>Job Description</h6>
+                            <p>Describe the role, responsibilities and ideal candidate.</p>
+                        </div>
+                    </div>
+ 
+                    <div class="jc-field">
+                        <label for="f-description">Description <span class="req">*</span></label>
+                        <textarea id="f-description" name="description" rows="5" maxlength="5000" placeholder="Describe day-to-day responsibilities, team, and what success looks like in this role..."></textarea>
+                        <div class="jc-field-meta">
+                            <span class="jc-error" id="err-description"></span>
+                            <span class="jc-count" id="count-description">0 / 5000</span>
+                        </div>
+                    </div>
+                    <div class="jc-field">
+                    <label for="f-qualification-input">Eligible Qualifications <span class="req">*</span></label>
+                    <div class="jc-tag-box" id="qualification-box">
+                        <div class="jc-tags" id="qualification-tags"></div>
+                        <input type="text" id="f-qualification-input"
+                            list="qualification-suggestions"
+                            placeholder="Type a branch/degree and press Enter…"
+                            autocomplete="off">
+                        <datalist id="qualification-suggestions">
+                            <!-- <option value="CSE"><option value="IT"><option value="ECE"> -->
+                            <!-- <option value="ME"><option value="CE"><option value="EE"> -->
+                            <option value="MBA"><option value="MCA"><option value="BBA">
+                            <option value="BCA"><option value="M.Tech"><option value="B.Tech">
+                            <option value="M.Sc"><option value="B.Sc"><option value="Any">
+                        </datalist>
+                    </div>
+                    <div class="jc-field-meta">
+                        <span class="jc-error" id="err-qualification"></span>
+                        <span class="jc-hint">Add all branches/degrees eligible to apply</span>
+                    </div>
+                </div>
+ 
+                    <!-- <div class="jc-field">
+                        <label for="f-qualification">Qualification</label>
+                        <input type="text" id="f-qualification" name="qualification" placeholder="e.g. B.Tech / B.E. in CS or related" autocomplete="off">
+                        <div class="jc-field-meta"><span class="jc-error" id="err-qualification"></span></div>
+                    </div> -->
+                </section>
+ 
+                <!-- Skills -->
+                <section class="jc-card">
+                    <div class="jc-card-head">
+                        <span class="jc-card-icon"><i class="material-icons">stars</i></span>
+                        <div>
+                            <h6>Required Skills</h6>
+                            <p>Add each skill and press Enter or comma.</p>
+                        </div>
+                    </div>
+ 
+                    <div class="jc-field">
+                        <label for="f-skill-input">Skills <span class="req">*</span></label>
+                        <div class="jc-tag-box" id="skill-box">
+                            <div class="jc-tags" id="skill-tags"></div>
+                            <input type="text" id="f-skill-input" placeholder="Type a skill and hit Enter…" autocomplete="off">
+                        </div>
+                        <div class="jc-field-meta">
+                            <span class="jc-error" id="err-skillsRequired"></span>
+                            <span class="jc-hint">At least one skill is required</span>
+                        </div>
+                    </div>
+                </section>
+ 
+                <!-- Compensation & openings -->
+                <section class="jc-card">
+                    <div class="jc-card-head">
+                        <span class="jc-card-icon"><i class="material-icons">payments</i></span>
+                        <div>
+                            <h6>Compensation &amp; Openings</h6>
+                            <p>Salary range is optional but improves applicant quality.</p>
+                        </div>
+                    </div>
+ 
+                    <div class="jc-grid-3">
+                        <div class="jc-field">
+                            <label for="f-minSalary">Min Salary (LPA)</label>
+                            <input type="number" id="f-minSalary" name="minSalary" min="0" step="0.1" placeholder="e.g. 4.5">
+                            <div class="jc-field-meta"><span class="jc-error" id="err-minSalary"></span></div>
+                        </div>
+                        <div class="jc-field">
+                            <label for="f-maxSalary">Max Salary (LPA)</label>
+                            <input type="number" id="f-maxSalary" name="maxSalary" min="0" step="0.1" placeholder="e.g. 7.5">
+                            <div class="jc-field-meta"><span class="jc-error" id="err-maxSalary"></span></div>
+                        </div>
+                        <div class="jc-field">
+                            <label for="f-openings">Number of Openings <span class="req">*</span></label>
+                            <input type="number" id="f-openings" name="numberOfOpenings" min="1" step="1" placeholder="e.g. 3">
+                            <div class="jc-field-meta"><span class="jc-error" id="err-numberOfOpenings"></span></div>
+                        </div>
+                    </div>
+                </section>
+ 
+                <!-- Deadline -->
+                <section class="jc-card">
+                    <div class="jc-card-head">
+                        <span class="jc-card-icon"><i class="material-icons">event</i></span>
+                        <div>
+                            <h6>Application Deadline</h6>
+                            <p>Last date candidates can apply.</p>
+                        </div>
+                    </div>
+ 
+                    <div class="jc-field jc-field-narrow">
+                        <label for="f-deadline">Deadline <span class="req">*</span></label>
+                        <input type="date" id="f-deadline" name="applicationDeadline">
+                        <div class="jc-field-meta"><span class="jc-error" id="err-applicationDeadline"></span></div>
+                    </div>
+                </section>
+ 
+                <div class="jc-form-actions">
+                    <a href="job-posting.html" class="action-chip ghost">Cancel</a>
+                    <button type="submit" class="btn waves-effect waves-light btn-add" id="jc-submit-btn">
+                        <i class="material-icons left" style="margin-right:6px;font-size:18px;">send</i>
+                        <span id="jc-submit-label">Publish Job Posting</span>
+                    </button>
+                </div>
+            </div>
+ 
+            <!-- ============ RIGHT: live preview ============ -->
+            <aside class="jc-preview-col">
+                <div class="jc-preview-sticky">
+                    <div class="jc-preview-label"><i class="material-icons">visibility</i>Live Preview</div>
+                    <div class="panel jc-preview-card">
+                        <div class="job-cell">
+                            <span class="job-badge" id="pv-badge">JD</span>
+                            <div>
+                                <p class="job-title" id="pv-title">Untitled Job</p>
+                                <p class="job-company">Your Company</p>
+                                <p class="job-desc" id="pv-description">Your job description will appear here as you type.</p>
+                                <div class="job-tags" id="pv-tags"></div>
+                            </div>
+                        </div>
+                        <table style="width:100%;font-size:13px;margin-top:14px;">
+                            <tr><td style="color:#6b7f92;padding:6px 0;">Role</td><td style="text-align:right;font-weight:600;" id="pv-role">—</td></tr>
+                            <tr><td style="color:#6b7f92;padding:6px 0;">Type</td><td style="text-align:right;font-weight:600;" id="pv-type">—</td></tr>
+                            <tr><td style="color:#6b7f92;padding:6px 0;">Location</td><td style="text-align:right;font-weight:600;" id="pv-location">—</td></tr>
+                            <tr><td style="color:#6b7f92;padding:6px 0;">Openings</td><td style="text-align:right;font-weight:600;" id="pv-openings">—</td></tr>
+                            <tr><td style="color:#6b7f92;padding:6px 0;">Salary</td><td style="text-align:right;font-weight:600;" id="pv-salary">Not disclosed</td></tr>
+                            <tr><td style="color:#6b7f92;padding:6px 0;">Closes On</td><td style="text-align:right;font-weight:600;" id="pv-deadline">—</td></tr>
+                        </table>
+                    </div>
+                    <div class="jc-tip">
+                        <i class="material-icons">lightbulb</i>
+                        <span>Clear titles and a tight skill list get up to 2x more relevant applications.</span>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </form>
+</main>
+
+<footer class="app-footer">
+    © 2026 HireDesk · Internal hiring workspace
+</footer>
+
+<!-- Job details modal -->
+<div id="job-details-modal" class="modal">
+    <div class="modal-content" id="job-details-modal-content"></div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect btn-flat">Close</a>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="../assets/js/company/config.js"></script>
+<script src="../assets/js/company/session.js"></script>
+<script src="../assets/js/company/navbar.js"></script>
+<script src="../assets/js/company/app.js"></script>
+<script src="../assets/js/company/job_posting.js"></script>
+<script src="../assets/js/company/aptitude-expiry.js"></script>
+</body>
+</html>

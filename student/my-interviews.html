@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Interviews | CampusConnect</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../assets/css/student/student_dashboard.css">
+<link rel="stylesheet" href="../assets/css/student/search-jobs.css">
+<link rel="stylesheet" href="../assets/css/student/apply-job.css">
+<link rel="stylesheet" href="../assets/css/student/saved-jobs.css">
+
+<style>
+  /* ============ My Interviews — page-specific ============ */
+
+  .interview-tabs {
+    display: flex;
+    gap: 6px;
+    border-bottom: 1px solid #e6edf2;
+    margin: 6px 0 18px;
+    flex-wrap: wrap;
+  }
+  .interview-tab {
+    border: none;
+    background: transparent;
+    padding: 10px 18px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: .15s;
+  }
+  .interview-tab:hover { color: #0E9AA3; }
+  .interview-tab.active {
+    color: #0E9AA3;
+    border-bottom-color: #0E9AA3;
+  }
+  .interview-tab .tab-count {
+    display: inline-block;
+    margin-left: 6px;
+    background: #eef2f7;
+    color: #475569;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .interview-tab.active .tab-count {
+    background: #0E9AA3;
+    color: #fff;
+  }
+
+  /* Interview card */
+  .iv-card {
+    background: #fff;
+    border: 1px solid #e6edf2;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 2px rgba(15,23,42,.04);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: start;
+    position: relative;
+    transition: .15s;
+  }
+  .iv-card:hover {
+    border-color: #cfe3ea;
+    box-shadow: 0 4px 12px rgba(14,154,163,.08);
+  }
+  .iv-card.is-completed { border-left: 4px solid #22c55e; }
+  .iv-card.is-scheduled { border-left: 4px solid #0E9AA3; }
+  .iv-card.is-cancelled { border-left: 4px solid #ef4444; opacity: .75; }
+  .iv-card.is-today     { border-left: 4px solid #f59e0b; }
+
+  .iv-main { min-width: 0; }
+  .iv-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+  .iv-job-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+  }
+  .iv-company {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+  }
+  .iv-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px 24px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed #e6edf2;
+  }
+  .iv-meta {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+    color: #334155;
+  }
+  .iv-meta i {
+    color: #0E9AA3;
+    font-size: 15px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .iv-meta-label {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-bottom: 2px;
+  }
+  .iv-meta-value {
+    color: #0f172a;
+    font-weight: 500;
+    word-break: break-word;
+  }
+  .iv-notes {
+    margin-top: 12px;
+    background: #f8fafc;
+    border-left: 3px solid #0E9AA3;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    color: #475569;
+    line-height: 1.55;
+  }
+  .iv-notes strong { color: #0f172a; }
+
+  /* Status pill */
+  .iv-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .iv-status.scheduled { background: #e0f2fe; color: #075985; }
+  .iv-status.completed { background: #dcfce7; color: #166534; }
+  .iv-status.cancelled { background: #fee2e2; color: #991b1b; }
+  .iv-status.today     { background: #fef3c7; color: #92400e; }
+
+  /* Countdown chip */
+  .iv-countdown {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #0E9AA3;
+    background: #f0fdfa;
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-top: 8px;
+  }
+  .iv-countdown.urgent { color: #b45309; background: #fef3c7; }
+  .iv-countdown.past   { color: #94a3b8; background: #eef2f7; }
+
+  /* Actions column */
+  .iv-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+    min-width: 160px;
+  }
+  .iv-actions .btn-iv {
+    padding: 9px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: .15s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-decoration: none;
+    font-family: inherit;
+    background: #fff;
+  }
+  .iv-actions .btn-iv.primary {
+    background: #0E9AA3;
+    color: #fff;
+    border-color: #0E9AA3;
+  }
+  .iv-actions .btn-iv.primary:hover { background: #0C6A70; border-color: #0C6A70; }
+  .iv-actions .btn-iv.outline {
+    color: #0E9AA3;
+    border-color: #cfe3ea;
+    background: #f0fdfa;
+  }
+  .iv-actions .btn-iv.outline:hover { background: #e0f7f4; }
+  .iv-actions .btn-iv.ghost {
+    color: #475569;
+    border-color: #e6edf2;
+  }
+  .iv-actions .btn-iv.ghost:hover { background: #f8fafc; }
+
+  /* Empty state */
+  .iv-empty {
+    background: #fff;
+    border: 1px dashed #cfe3ea;
+    border-radius: 14px;
+    padding: 56px 24px;
+    text-align: center;
+  }
+  .iv-empty-icon {
+    width: 72px; height: 72px;
+    background: #f0fdfa;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #0E9AA3;
+    font-size: 30px;
+    margin-bottom: 14px;
+  }
+  .iv-empty h5 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 6px;
+  }
+  .iv-empty p {
+    color: #64748b;
+    font-size: 13.5px;
+    margin: 0 0 18px;
+  }
+  .iv-empty .btn-teal {
+    background: #0E9AA3;
+    color: #fff;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .iv-empty .btn-teal:hover { background: #0C6A70; color: #fff; }
+
+  /* Detail modal */
+  #ivDetailModal .modal-content {
+    border-radius: 14px;
+    border: none;
+  }
+  #ivDetailModal .modal-header {
+    border-bottom: 1px solid #eef2f7;
+    padding: 18px 22px;
+  }
+  #ivDetailModal .modal-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  #ivDetailModal .modal-body {
+    padding: 22px;
+  }
+  .iv-detail-section {
+    margin-bottom: 18px;
+  }
+  .iv-detail-section h6 {
+    font-size: 11px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin: 0 0 8px;
+  }
+  .iv-detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 20px;
+  }
+  .iv-detail-list li {
+    font-size: 13.5px;
+    color: #334155;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .iv-detail-list li i {
+    color: #0E9AA3;
+    font-size: 15px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .iv-detail-list li strong {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-bottom: 2px;
+  }
+
+  @media (max-width: 720px) {
+    .iv-card {
+      grid-template-columns: 1fr;
+    }
+    .iv-actions {
+      flex-direction: row;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+    .iv-actions .btn-iv {
+      flex: 1 1 auto;
+    }
+    .iv-detail-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body data-page="my-interviews">
+
+<div class="app-shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+      <div class="brand-text">
+        <h1>HireTrack</h1>
+        <span>Student Dashboard</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="student-dashboard.html" class="nav-link" data-page="dashboard">
+        <i class="bi bi-house-door-fill"></i><span>Dashboard</span>
+      </a>
+
+      <p class="nav-heading">Job Portal</p>
+      <a href="search-jobs.html" class="nav-link" data-page="search-jobs">
+        <i class="bi bi-search"></i><span>Search Jobs</span>
+      </a>
+      <a href="applications.html" class="nav-link" data-page="applications">
+        <i class="bi bi-briefcase-fill"></i><span>My Applications</span>
+      </a>
+      <a href="saved-jobs.html" class="nav-link" data-page="saved-jobs">
+        <i class="bi bi-bookmark-fill"></i><span>Saved Jobs</span>
+      </a>
+
+      <p class="nav-heading">Assessments</p>
+      <!-- <a href="aptitude-tests.html" class="nav-link" data-page="aptitude-tests">
+        <i class="bi bi-clipboard-check-fill"></i><span>Aptitude Tests</span>
+      </a> -->
+      <a href="test-schedule.html" class="nav-link" data-page="test-schedule">
+        <i class="bi bi-calendar3"></i><span>Test Schedule</span>
+      </a>
+      <!-- <a href="test-results.html" class="nav-link" data-page="test-results">
+        <i class="bi bi-bar-chart-fill"></i><span>Test Results</span>
+      </a> -->
+
+      <p class="nav-heading">Interviews</p>
+      <!-- <a href="interview-schedule.html" class="nav-link" data-page="interview-schedule">
+        <i class="bi bi-calendar-event-fill"></i><span>Interview Schedule</span>
+      </a> -->
+      <a href="my-interviews.html" class="nav-link active" data-page="my-interviews">
+        <i class="bi bi-people-fill"></i><span>My Interviews</span>
+      </a>
+      <a href="offer-letters.html" class="nav-link" data-page="offer-letters">
+        <i class="bi bi-envelope-fill"></i><span>Offer Letters</span>
+      </a>
+
+      <p class="nav-heading">Profile</p>
+      <a href="my-profile.html" class="nav-link" data-page="my-profile">
+        <i class="bi bi-person-fill"></i><span>My Profile</span>
+      </a>
+      <!-- <a href="resume.html" class="nav-link" data-page="resume">
+        <i class="bi bi-file-earmark-person-fill"></i><span>Resume</span>
+      </a>
+      <a href="skills.html" class="nav-link" data-page="skills">
+        <i class="bi bi-star-fill"></i><span>Skills</span>
+      </a> -->
+
+      <p class="nav-heading">More</p>
+      <a href="notifications.html" class="nav-link" data-page="notifications">
+        <i class="bi bi-bell-fill"></i><span>Notifications</span>
+        <span class="badge-count notif-badge-nav" style="display:none;">0</span>
+      </a>
+      <!-- <a href="help.html" class="nav-link" data-page="help">
+        <i class="bi bi-question-circle-fill"></i><span>Help &amp; Support</span>
+      </a> -->
+    </nav>
+
+    <div class="profile-progress-card">
+      <h6>Complete Your Profile</h6>
+      <p>Get more job recommendations</p>
+      <div class="progress-ring-wrap">
+        <svg class="progress-ring" width="64" height="64" viewBox="0 0 64 64">
+          <circle class="ring-bg" cx="32" cy="32" r="27"></circle>
+          <circle class="ring-fg" cx="32" cy="32" r="27"
+            style="stroke-dasharray:169.6; stroke-dashoffset:25.4;"></circle>
+        </svg>
+        <span class="progress-ring-label">85%</span>
+      </div>
+      <button class="btn-complete-profile">Complete Now <i class="bi bi-arrow-right"></i></button>
+    </div>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="topbar">
+      <button class="sidebar-toggle-btn" aria-label="Toggle menu">
+        <i class="bi bi-list"></i>
+      </button>
+      <div class="topbar-search">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="Search for jobs, companies, skills...">
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn notif-btn">
+          <i class="bi bi-bell"></i>
+          <span class="notif-dot">3</span>
+        </button>
+        <div class="profile-chip">
+          <img src="https://i.pravatar.cc/80?img=47" alt="Diksha Gudur">
+          <div class="profile-chip-text">
+            <strong>Diksha Gudur</strong>
+            <span>BCA - 3rd Year</span>
+          </div>
+          <i class="bi bi-chevron-down"></i>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- ============ PAGE HEADER ============ -->
+      <section class="page-header">
+        <div>
+          <h2>My Interviews</h2>
+          <p>Track all your scheduled interviews and outcomes</p>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn-outline-teal" id="refreshInterviewsBtn">
+            <i class="bi bi-arrow-clockwise"></i> Refresh
+          </button>
+          <a href="test-schedule.html" class="btn-outline-teal">
+            <i class="bi bi-calendar3"></i> Test Schedule
+          </a>
+        </div>
+      </section>
+
+      <!-- ============ UPCOMING ALERT BANNER ============ -->
+      <div id="upcomingBanner" class="deadline-banner" hidden>
+        <div class="deadline-banner-icon"><i class="bi bi-alarm-fill"></i></div>
+        <div class="deadline-banner-body">
+          <h5 id="upcomingBannerTitle">Interview today!</h5>
+          <p id="upcomingBannerText"></p>
+        </div>
+        <button class="deadline-banner-btn" id="upcomingBannerBtn">View</button>
+        <button class="deadline-banner-close" id="upcomingBannerClose" aria-label="Dismiss">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <!-- ============ SUMMARY STATS ============ -->
+      <section class="saved-stats" id="interviewStats">
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-blue"><i class="bi bi-people-fill"></i></div>
+          <div>
+            <span class="stat-value" id="statTotalIv">0</span>
+            <span class="stat-label">Total Interviews</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-orange"><i class="bi bi-hourglass-split"></i></div>
+          <div>
+            <span class="stat-value" id="statUpcomingIv">0</span>
+            <span class="stat-label">Upcoming</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-green"><i class="bi bi-patch-check-fill"></i></div>
+          <div>
+            <span class="stat-value" id="statSelectedIv">0</span>
+            <span class="stat-label">Selected</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-red"><i class="bi bi-x-circle-fill"></i></div>
+          <div>
+            <span class="stat-value" id="statRejectedIv">0</span>
+            <span class="stat-label">Not Selected</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ TABS ============ -->
+      <div class="interview-tabs" role="tablist">
+        <button class="interview-tab active" data-tab="all">
+          All <span class="tab-count" id="tabCountAll">0</span>
+        </button>
+        <button class="interview-tab" data-tab="upcoming">
+          Upcoming <span class="tab-count" id="tabCountUpcoming">0</span>
+        </button>
+        <button class="interview-tab" data-tab="completed">
+          Completed <span class="tab-count" id="tabCountCompleted">0</span>
+        </button>
+        <button class="interview-tab" data-tab="cancelled">
+          Cancelled <span class="tab-count" id="tabCountCancelled">0</span>
+        </button>
+      </div>
+
+      <!-- ============ TOOLBAR ============ -->
+      <div class="saved-toolbar">
+        <div class="saved-toolbar-left">
+          <span class="result-count" id="interviewResultCount">0 interviews</span>
+        </div>
+        <div class="saved-toolbar-right">
+          <div class="saved-search-wrap">
+            <i class="bi bi-search"></i>
+            <input type="text" id="interviewSearchInput" placeholder="Search by company or role...">
+          </div>
+          <select class="sort-select" id="interviewSortSelect">
+            <option value="date-asc">Date: Soonest First</option>
+            <option value="date-desc">Date: Latest First</option>
+            <option value="company">Company A–Z</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ============ INTERVIEW LIST ============ -->
+      <div id="interviewList">
+        <div class="iv-empty">
+          <div class="iv-empty-icon"><i class="bi bi-hourglass-split"></i></div>
+          <h5>Loading interviews…</h5>
+          <p>Please wait while we fetch your scheduled interviews.</p>
+        </div>
+      </div>
+      <script src="../assets/js/student/my-interviews.js"></script>
+    </main>
+  </div>
+</div>
+
+<!-- ============ INTERVIEW DETAIL MODAL ============ -->
+<div class="modal fade" id="ivDetailModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ivDetailModalTitle">Interview Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="ivDetailModalBody">
+        <!-- dynamically populated -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="../assets/js/student/config.js"></script> -->
+<script src="../assets/js/student/sidebar.js"></script>
+<script src="../assets/js/student/student_dashboard.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+/* Profile field validation errors */
+.profile-field-error {
+    color: #d32f2f;
+    font-size: 12px;
+    margin-top: -14px;
+    margin-bottom: 10px;
+    display: none;
+}
+
+.profile-field-error.show {
+    display: block;
+}
+
+/* Red border when field has an error */
+input.profile-invalid,
+textarea.profile-invalid,
+select.profile-invalid {
+    border-bottom: 2px solid #d32f2f !important;
+    box-shadow: none !important;
+}
+
+/* Green border when field is valid */
+input.profile-valid,
+textarea.profile-valid,
+select.profile-valid {
+    border-bottom: 2px solid #2e7d32 !important;
+    box-shadow: none !important;
+}

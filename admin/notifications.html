@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications — Vertex Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="../assets/css/admin/admin-shared.css" rel="stylesheet">
+
+</head>
+<body data-page="notifications">
+<div class="admin-shell">
+    <aside class="admin-sidebar" id="adminSidebar"></aside>
+    <main class="admin-main">
+        <header class="admin-topbar">
+            <div class="topbar-heading">
+                <div class="eyebrow">Account</div>
+                <h4>Notifications</h4>
+            </div>
+            <div class="topbar-right">
+                <button class="sidebar-toggle-btn topbar-icon-btn" id="sidebarToggle">
+                    <i class="material-icons">menu</i>
+                </button>
+                <a href="notifications.html" class="topbar-icon-btn" title="Notifications">
+                    <i class="material-icons">notifications_none</i>
+                    <span class="dot"></span>
+                </a>
+                <a href="admin-profile.html" class="topbar-avatar">
+                    <div class="avatar">DR</div>
+                    <span class="name">Devika Rane</span>
+                    <i class="material-icons" style="font-size:18px;color:var(--slate-dim);">expand_more</i>
+                </a>
+            </div>
+        </header>
+
+        <div class="admin-content">
+
+            <div class="section-toolbar">
+                <div class="chip-filters" id="notifFilters">
+                    <button class="chip active" data-filter="all">All</button>
+                    <button class="chip" data-filter="company">Companies</button>
+                    <button class="chip" data-filter="student">Students</button>
+                    <button class="chip" data-filter="job">Job Postings</button>
+                    <button class="chip" data-filter="placed">Placements</button>
+                </div>
+                <div class="toolbar-right">
+                    <button class="btn-console outline" id="markAllReadBtn"><i class="material-icons">done_all</i> Mark all read</button>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="notif-list" id="notifList"></div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<script src="../assets/js/admin/admin-shared.js"></script>
+
+<script>
+    let notifFilter = 'all';
+    const notifIcons = { company:{i:'apartment',c:'#146b5f',bg:'#e2ede9'}, student:{i:'school',c:'#b8912b',bg:'#e8d9ab'}, job:{i:'work_outline',c:'#146b5f',bg:'#e2ede9'}, placed:{i:'military_tech',c:'#2f7a4f',bg:'#dcefe2'}, report:{i:'bar_chart',c:'#55636f',bg:'#eceff0'} };
+
+    function renderNotifs() {
+        let rows = MOCK.notifications.filter(n => notifFilter === 'all' || n.type === notifFilter);
+        const list = document.getElementById('notifList');
+        if (rows.length === 0) {
+            list.innerHTML = '<div class="empty-state"><i class="material-icons">notifications_none</i><p>No notifications in this category.</p></div>';
+            return;
+        }
+        list.innerHTML = rows.map(n => {
+            const ic = notifIcons[n.type] || notifIcons.report;
+            return `<div class="notif-item ${n.unread ? 'unread' : ''}">
+            <div class="n-icon" style="background:${ic.bg};"><i class="material-icons" style="color:${ic.c};">${ic.i}</i></div>
+            <div class="n-body"><div class="n-title">${n.title}</div><div class="n-desc">${n.desc}</div><div class="n-time">${n.time}</div></div>
+        </div>`;
+        }).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        renderNotifs();
+        document.querySelectorAll('#notifFilters .chip').forEach(chip => {
+            chip.addEventListener('click', function () {
+                document.querySelectorAll('#notifFilters .chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                notifFilter = chip.dataset.filter;
+                renderNotifs();
+            });
+        });
+        document.getElementById('markAllReadBtn').addEventListener('click', function () {
+            MOCK.notifications.forEach(n => n.unread = false);
+            renderNotifs();
+            renderNotifBadge();
+            showToast('All notifications marked as read.');
+        });
+    });
+</script>
+
+</body>
+</html>

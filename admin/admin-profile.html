@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Profile — Vertex Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="../assets/css/admin/admin-shared.css" rel="stylesheet">
+
+</head>
+<body data-page="admin-profile">
+<div class="admin-shell">
+    <aside class="admin-sidebar" id="adminSidebar"></aside>
+    <main class="admin-main">
+        <header class="admin-topbar">
+            <div class="topbar-heading">
+                <div class="eyebrow">Account</div>
+                <h4>Admin Profile</h4>
+            </div>
+            <div class="topbar-right">
+                <button class="sidebar-toggle-btn topbar-icon-btn" id="sidebarToggle">
+                    <i class="material-icons">menu</i>
+                </button>
+                <a href="notifications.html" class="topbar-icon-btn" title="Notifications">
+                    <i class="material-icons">notifications_none</i>
+                    <span class="dot"></span>
+                </a>
+                <a href="admin-profile.html" class="topbar-avatar">
+                    <div class="avatar">DR</div>
+                    <span class="name">Devika Rane</span>
+                    <i class="material-icons" style="font-size:18px;color:var(--slate-dim);">expand_more</i>
+                </a>
+            </div>
+        </header>
+
+        <div class="admin-content">
+
+            <div class="grid-2">
+                <div class="panel">
+                    <div class="profile-header">
+                        <div class="avatar-xl">DR</div>
+                        <div>
+                            <h3>Devika Rane</h3>
+                            <div class="sub">Placement Cell Administrator</div>
+                        </div>
+                    </div>
+
+                    <div class="grid-2" style="gap:0 24px;">
+                        <div class="field-static"><label>Full Name</label><div class="val">Devika Rane</div></div>
+                        <div class="field-static"><label>Role</label><div class="val">Placement Cell Administrator</div></div>
+                        <div class="field-static"><label>Email</label><div class="val">devika.rane@vertex.college.edu</div></div>
+                        <div class="field-static"><label>Phone</label><div class="val">+91 98200 11234</div></div>
+                        <div class="field-static"><label>Department</label><div class="val">Training &amp; Placement Office</div></div>
+                        <div class="field-static"><label>Admin Since</label><div class="val">15 Jan 2024</div></div>
+                    </div>
+
+                    <button class="btn-console"><i class="material-icons">edit</i> Edit Profile</button>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-head"><h5>Account security</h5></div>
+                    <div class="field-static"><label>Password</label><div class="val">Last changed 42 days ago</div></div>
+                    <div class="field-static"><label>Two-factor authentication</label><div class="val">Enabled via authenticator app</div></div>
+                    <div class="field-static"><label>Last login</label><div class="val">Today, 9:14 AM · Pune, IN</div></div>
+                    <button class="btn-console outline"><i class="material-icons">lock_reset</i> Change Password</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<script src="../assets/js/admin/admin-shared.js"></script>
+
+</body>
+</html>

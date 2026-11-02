@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Schedule | CampusConnect</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../assets/css/student/student_dashboard.css">
+<link rel="stylesheet" href="../assets/css/student/my-applications.css">
+<link rel="stylesheet" href="../assets/css/student/test-schedule.css">
+</head>
+<body data-page="test-schedule">
+
+<div class="app-shell">
+
+  <!-- ================= SIDEBAR (identical to other pages) ================= -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+      <div class="brand-text">
+        <h1>HireTrack</h1>
+        <span>Student Dashboard</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="student-dashboard.html" class="nav-link" data-page="dashboard">
+        <i class="bi bi-house-door-fill"></i><span>Dashboard</span>
+      </a>
+
+      <p class="nav-heading">Job Portal</p>
+      <a href="search-jobs.html" class="nav-link" data-page="search-jobs">
+        <i class="bi bi-search"></i><span>Search Jobs</span>
+      </a>
+      <a href="applications.html" class="nav-link" data-page="applications">
+        <i class="bi bi-briefcase-fill"></i><span>My Applications</span>
+      </a>
+      <a href="saved-jobs.html" class="nav-link" data-page="saved-jobs">
+        <i class="bi bi-bookmark-fill"></i><span>Saved Jobs</span>
+      </a>
+
+      <p class="nav-heading">Assessments</p>
+      <!-- <a href="aptitude-tests.html" class="nav-link" data-page="aptitude-tests">
+        <i class="bi bi-clipboard-check-fill"></i><span>Aptitude Tests</span>
+      </a> -->
+      <a href="test-schedule.html" class="nav-link" data-page="test-schedule">
+        <i class="bi bi-calendar3"></i><span>Test Schedule</span>
+      </a>
+      <!-- <a href="test-results.html" class="nav-link" data-page="test-results">
+        <i class="bi bi-bar-chart-fill"></i><span>Test Results</span>
+      </a> -->
+
+      <p class="nav-heading">Interviews</p>
+      <!-- <a href="interview-schedule.html" class="nav-link" data-page="interview-schedule">
+        <i class="bi bi-calendar-event-fill"></i><span>Interview Schedule</span>
+      </a> -->
+      <a href="my-interviews.html" class="nav-link active" data-page="my-interviews">
+        <i class="bi bi-people-fill"></i><span>My Interviews</span>
+      </a>
+      <a href="offer-letters.html" class="nav-link" data-page="offer-letters">
+        <i class="bi bi-envelope-fill"></i><span>Offer Letters</span>
+      </a>
+
+      <p class="nav-heading">Profile</p>
+      <a href="my-profile.html" class="nav-link" data-page="my-profile">
+        <i class="bi bi-person-fill"></i><span>My Profile</span>
+      </a>
+      <!-- <a href="resume.html" class="nav-link" data-page="resume">
+        <i class="bi bi-file-earmark-person-fill"></i><span>Resume</span>
+      </a>
+      <a href="skills.html" class="nav-link" data-page="skills">
+        <i class="bi bi-star-fill"></i><span>Skills</span>
+      </a> -->
+
+      <p class="nav-heading">More</p>
+      <a href="notifications.html" class="nav-link" data-page="notifications">
+        <i class="bi bi-bell-fill"></i><span>Notifications</span>
+        <span class="badge-count notif-badge-nav" style="display:none;">0</span>
+      </a>
+      <!-- <a href="help.html" class="nav-link" data-page="help">
+        <i class="bi bi-question-circle-fill"></i><span>Help &amp; Support</span>
+      </a> -->
+    </nav>
+
+    <div class="profile-progress-card">
+      <h6>Complete Your Profile</h6>
+      <p>Get more job recommendations</p>
+      <div class="progress-ring-wrap">
+        <svg class="progress-ring" width="64" height="64" viewBox="0 0 64 64">
+          <circle class="ring-bg" cx="32" cy="32" r="27"></circle>
+          <circle class="ring-fg" cx="32" cy="32" r="27"
+            style="stroke-dasharray:169.6; stroke-dashoffset:25.4;"></circle>
+        </svg>
+        <span class="progress-ring-label">85%</span>
+      </div>
+      <button class="btn-complete-profile">Complete Now <i class="bi bi-arrow-right"></i></button>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN ================= -->
+  <div class="main-wrapper">
+    <header class="topbar">
+      <button class="sidebar-toggle-btn" aria-label="Toggle menu">
+        <i class="bi bi-list"></i>
+      </button>
+      <div class="topbar-search">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="Search for jobs, companies, skills...">
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn notif-btn">
+          <i class="bi bi-bell"></i>
+          <span class="notif-dot">3</span>
+        </button>
+        <div class="profile-chip">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=KiranShinde&backgroundColor=b6e3f4"
+     alt="Kiran shinde">
+          <div class="profile-chip-text">
+            <strong>Kiran shinde</strong>
+            <span>MBA</span>
+          </div>
+          <i class="bi bi-chevron-down"></i>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- Page header -->
+      <section class="page-header">
+        <div>
+          <h2>Test Schedule</h2>
+          <p>Aptitude tests you've been scheduled for — based on your job applications</p>
+        </div>
+      </section>
+
+      <!-- Summary stats -->
+      <section class="app-stats">
+        <div class="stat-card">
+          <div class="stat-icon icon-blue"><i class="bi bi-calendar3"></i></div>
+          <div>
+            <strong id="statTotal">0</strong>
+            <span>Total Tests</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-orange"><i class="bi bi-clock-history"></i></div>
+          <div>
+            <strong id="statUpcoming">0</strong>
+            <span>Upcoming</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-green"><i class="bi bi-play-circle-fill"></i></div>
+          <div>
+            <strong id="statLive">0</strong>
+            <span>Live Now</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-red"><i class="bi bi-clock-fill"></i></div>
+          <div>
+            <strong id="statExpired">0</strong>
+            <span>Expired</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Filter tabs -->
+      <section class="app-tabs" id="tsTabs">
+        <button class="app-tab active" data-filter="all">All <small id="tsCountAll">0</small></button>
+        <button class="app-tab" data-filter="UPCOMING">Upcoming <small id="tsCountUpcoming">0</small></button>
+        <button class="app-tab" data-filter="LIVE">Live Now <small id="tsCountLive">0</small></button>
+        <button class="app-tab" data-filter="EXPIRED">Expired <small id="tsCountExpired">0</small></button>
+      </section>
+
+      <!-- Test schedule list -->
+      <section class="app-list" id="tsList">
+        <p class="ts-loading">Loading your test schedule…</p>
+      </section>
+<script src="../assets/js/student/test-schedule.js"></script>
+<script src="../assets/js/student/sidebar.js"></script>
+    </main>
+  </div>
+</div>
+
+<!-- ============================================================
+     Test details modal
+     ============================================================ -->
+<div class="modal fade" id="tsDetailsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tsDetailsTitle">Test Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="tsDetailsBody">
+        <div class="text-center py-4">
+          <div class="spinner-border" role="status"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="../assets/js/student/config.js"></script> -->
+<!-- <script src="../assets/js/student/sidebar.js"></script> -->
+
+</body>
+</html>

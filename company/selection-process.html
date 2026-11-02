@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selection Process · HireDesk</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%230E9AA3%22/><text x=%2250%22 y=%2266%22 font-size=%2255%22 font-family=%22Arial%22 fill=%22white%22 text-anchor=%22middle%22>H</text></svg>">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:500,600,700|Roboto:400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="../assets/css/company/company_style.css">
+
+</head>
+<body>
+
+<!-- Mobile sidenav trigger -->
+<a href="#" data-target="mobile-sidenav" class="sidenav-trigger mobile-trigger"
+   style="position:fixed;top:14px;left:14px;z-index:1000;">
+    <i class="material-icons" style="font-size:30px;">menu</i>
+</a>
+
+<!-- ==================== NAVBAR (inline) ==================== -->
+<style>
+    .profile-nudge-dot{display:inline-block;width:7px;height:7px;border-radius:50%;
+        background:var(--bad,#e53935);margin-left:6px;vertical-align:middle;}
+    .side-foot{display:flex;align-items:center;}
+</style>
+
+<ul id="mobile-sidenav" class="sidenav sidenav-fixed">
+    <div class="side-brand">
+        <div class="brand-mark">H</div>
+        <div class="brand-text">
+            <span id="nav-brand-name" class="name">HireDesk</span>
+            <span class="sub">Company Portal</span>
+        </div>
+    </div>
+
+    <li class="side-section-label">Main</li>
+
+    <li data-nav="dashboard">
+        <a class="side-link" href="index.html"><i class="material-icons">dashboard</i>Dashboard</a>
+    </li>
+    <li data-nav="profile">
+        <a class="side-link" href="profile.html"><i class="material-icons">business</i>Profile
+            <span id="nav-profile-dot" class="profile-nudge-dot" hidden></span></a>
+    </li>
+
+    <li data-nav="jobs" class="has-submenu">
+        <a href="#!" class="side-link nav-dropdown-toggle">
+            <i class="material-icons">work</i><span>Jobs</span>
+            <i class="material-icons dropdown-arrow">keyboard_arrow_down</i>
+        </a>
+        <ul class="side-submenu">
+            <li data-nav="create-job"><a href="job-postings.html" class="side-sub-link"><i class="material-icons">add</i>Create Job</a></li>
+            <li data-nav="manage-jobs"><a href="manage-jobs.html" class="side-sub-link"><i class="material-icons">list</i>Manage Jobs</a></li>
+        </ul>
+    </li>
+
+    <li data-nav="applications"><a class="side-link" href="applications.html"><i class="material-icons">assignment_ind</i>Applications</a></li>
+    <li data-nav="assessments"><a class="side-link" href="test-assessments.html"><i class="material-icons">quiz</i>Test Assessments</a></li>
+    <li data-nav="interviews"><a class="side-link" href="interview-process.html"><i class="material-icons">event</i>Interview Process</a></li>
+    <li data-nav="reports"><a class="side-link" href="reports.html"><i class="material-icons">bar_chart</i>Reports</a></li>
+    <li data-nav="notifications"><a class="side-link" href="notifications.html"><i class="material-icons">notifications</i>Notifications</a></li>
+
+    <div class="side-foot">
+        <a href="profile.html" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;text-decoration:none;color:inherit;">
+            <div id="nav-avatar" class="avatar">--</div>
+            <div class="who" style="min-width:0;">
+                <span id="nav-company-name" class="n" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;">Loading…</span>
+                <span id="nav-profile-pct" class="r">-- % profile complete</span>
+            </div>
+        </a>
+        <a href="#" id="nav-logout-btn" class="tooltipped" data-position="top" data-tooltip="Log out" style="margin-left:8px;">
+            <i class="material-icons" style="font-size:20px;opacity:.7;">logout</i>
+        </a>
+    </div>
+</ul>
+
+<div id="app-topbar" class="topbar">
+    <div class="page-title">
+        <span id="nav-page-title"></span>
+        <span id="nav-page-crumb" class="crumb"></span>
+    </div>
+    <div class="top-actions">
+        <span id="nav-status-pill" class="pill"></span>
+        <i class="material-icons icon-btn tooltipped" data-position="bottom" data-tooltip="Notifications">notifications_none</i>
+        <i class="material-icons icon-btn tooltipped" data-position="bottom" data-tooltip="Help">help_outline</i>
+        <i id="nav-logout-btn-top" class="material-icons icon-btn tooltipped" data-position="bottom" data-tooltip="Log out">logout</i>
+    </div>
+</div>
+
+<!-- Keeps per-page title/crumb/active-key. navbar.js reads these. -->
+<div id="navbar-placeholder"
+     data-page-title="Applications"
+     data-page-crumb="Overview of hiring activity"
+     data-nav-active="applications"
+     style="display:none;"></div>
+<!-- ==================== /NAVBAR ==================== -->
+
+<!-- ============ Main content ============ -->
+<main class="app-main">
+
+    <div class="section-title-row">
+        <div>
+            <h4>Selection Process</h4>
+            <p>Drag candidates through each stage. The card tells you exactly what's needed next.</p>
+        </div>
+        <div class="input-field" style="margin:0;min-width:220px;">
+            <select>
+                <option selected>All Roles</option>
+                <option>Product Designer</option>
+                <option>Backend Engineer</option>
+                <option>Marketing Lead</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="pipe-cols">
+
+        <div class="pipe-col">
+            <div class="pipe-head"><span class="t">Applied</span><span class="count">86</span></div>
+            <div class="pipe-card">
+                <div class="pn">Sahil Verma</div><div class="pj">Data Analyst</div>
+                <div class="pm"><span class="pill pill-neutral">New</span><a class="action-chip ghost" style="padding:3px 8px;" href="#">Screen</a></div>
+            </div>
+            <div class="pipe-card">
+                <div class="pn">Meera Krishnan</div><div class="pj">Product Designer</div>
+                <div class="pm"><span class="pill pill-neutral">New</span><a class="action-chip ghost" style="padding:3px 8px;" href="#">Screen</a></div>
+            </div>
+            <div class="pipe-card">
+                <div class="pn">Karan Desai</div><div class="pj">Backend Engineer</div>
+                <div class="pm"><span class="pill pill-neutral">New</span><a class="action-chip ghost" style="padding:3px 8px;" href="#">Screen</a></div>
+            </div>
+        </div>
+
+        <div class="pipe-col">
+            <div class="pipe-head"><span class="t">Screening</span><span class="count">54</span></div>
+            <div class="pipe-card">
+                <div class="pn">Vikram Rao</div><div class="pj">Data Analyst</div>
+                <div class="pm"><span class="pill pill-ok">Shortlisted</span><a class="action-chip primary" style="padding:3px 8px;" href="#">Book Interview</a></div>
+            </div>
+            <div class="pipe-card">
+                <div class="pn">Tara Nair</div><div class="pj">QA Engineer</div>
+                <div class="pm"><span class="pill pill-ok">Shortlisted</span><a class="action-chip primary" style="padding:3px 8px;" href="#">Book Interview</a></div>
+            </div>
+        </div>
+
+        <div class="pipe-col">
+            <div class="pipe-head"><span class="t">Interviewing</span><span class="count">21</span></div>
+            <div class="pipe-card">
+                <div class="pn">Aman Kapoor</div><div class="pj">Backend Engineer</div>
+                <div class="pm"><span class="pill pill-info">Round 2 · Aug 18</span><a class="action-chip ghost" style="padding:3px 8px;" href="#">Add Feedback</a></div>
+            </div>
+            <div class="pipe-card">
+                <div class="pn">Ishan Bose</div><div class="pj">Product Designer</div>
+                <div class="pm"><span class="pill pill-info">Round 1 · Aug 16</span><a class="action-chip ghost" style="padding:3px 8px;" href="#">Add Feedback</a></div>
+            </div>
+        </div>
+
+        <div class="pipe-col">
+            <div class="pipe-head"><span class="t">Offer</span><span class="count">9</span></div>
+            <div class="pipe-card">
+                <div class="pn">Riya Sharma</div><div class="pj">Product Designer</div>
+                <div class="pm"><span class="pill pill-warn">Awaiting Response</span><a class="action-chip ghost" style="padding:3px 8px;" href="#">Remind</a></div>
+            </div>
+            <div class="pipe-card">
+                <div class="pn">Priya Menon</div><div class="pj">Marketing Lead</div>
+                <div class="pm"><span class="pill pill-bad">Expires in 2 Days</span><a class="action-chip danger-ghost" style="padding:3px 8px;" href="#">Follow Up</a></div>
+            </div>
+        </div>
+
+        <div class="pipe-col">
+            <div class="pipe-head"><span class="t">Hired</span><span class="count">6</span></div>
+            <div class="pipe-card">
+                <div class="pn">Kabir Malhotra</div><div class="pj">Backend Engineer</div>
+                <div class="pm"><span class="pill pill-ok">Joins Sep 1</span><a class="action-chip ghost" style="padding:3px 8px;" href="#">Send Docs</a></div>
+            </div>
+            <div class="pipe-card">
+                <div class="pn">Ananya Ghosh</div><div class="pj">Data Analyst</div>
+                <div class="pm"><span class="pill pill-ok">Joined</span><a class="action-chip ghost" style="padding:3px 8px;" href="#">View Profile</a></div>
+            </div>
+        </div>
+
+        <div class="pipe-col">
+            <div class="pipe-head"><span class="t">Rejected</span><span class="count">32</span></div>
+            <div class="pipe-card">
+                <div class="pn">Dev Joshi</div><div class="pj">Backend Engineer</div>
+                <div class="pm"><span class="pill pill-bad">Not a Fit</span><a class="action-chip ghost" style="padding:3px 8px;" href="#">Send Update</a></div>
+            </div>
+            <div class="pipe-card">
+                <div class="pn">Farah Sheikh</div><div class="pj">QA Engineer</div>
+                <div class="pm"><span class="pill pill-bad">Not a Fit</span><a class="action-chip ghost" style="padding:3px 8px;" href="#">Send Update</a></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="panel" style="margin-top:22px;">
+        <div class="panel-head">
+            <div>
+                <h5>Stages Needing Attention</h5>
+                <div class="panel-sub">Candidates that have been sitting without action</div>
+            </div>
+        </div>
+        <table class="data-table" style="width:100%;">
+            <thead><tr><th>Candidate</th><th>Stage</th><th>Days Waiting</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+            <tr>
+                <td><span class="avatar-sm">PM</span><span class="cell-primary">Priya Menon</span></td>
+                <td>Offer</td>
+                <td>5 days</td>
+                <td><span class="pill pill-bad">Expires in 2 Days</span></td>
+                <td><a class="action-chip danger-ghost" href="#"><i class="material-icons">call</i>Call Candidate</a></td>
+            </tr>
+            <tr>
+                <td><span class="avatar-sm">IB</span><span class="cell-primary">Ishan Bose</span></td>
+                <td>Interviewing</td>
+                <td>6 days</td>
+                <td><span class="pill pill-warn">Feedback Overdue</span></td>
+                <td><a class="action-chip primary" href="#"><i class="material-icons">rate_review</i>Submit Feedback</a></td>
+            </tr>
+            <tr>
+                <td><span class="avatar-sm">KD</span><span class="cell-primary">Karan Desai</span></td>
+                <td>Applied</td>
+                <td>9 days</td>
+                <td><span class="pill pill-warn">Unscreened</span></td>
+                <td><a class="action-chip ghost" href="#"><i class="material-icons">fact_check</i>Screen Now</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
+<footer class="app-footer">
+    © 2026 HireDesk · Internal hiring workspace for Nova Bright Pvt Ltd
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="../assets/js/company/app.js"></script>
+</body>
+</html>

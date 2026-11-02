@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interview Process · HireDesk</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%230E9AA3%22/><text x=%2250%22 y=%2266%22 font-size=%2255%22 font-family=%22Arial%22 fill=%22white%22 text-anchor=%22middle%22>H</text></svg>">
+<link href="https://fonts.googleapis.com/css?family=Poppins:500,600,700|Roboto:400,500,700" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="../assets/css/company/company_style.css">
+
+<style>
+  /* ========== FORCE OVERRIDES (highest priority) ========== */
+body .ta-table td .stu-cell {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+body .ta-table td {
+  vertical-align: middle !important;
+  padding: 14px 12px !important;
+}
+body .ta-card {
+  margin-bottom: 16px !important;
+}
+  /* ============ Toolbar ============ */
+  .ta-toolbar {
+    background: #fff;
+    border: 1px solid #e6edf2;
+    border-radius: 14px;
+    padding: 18px 20px 16px;
+    margin-bottom: 18px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+  }
+  .ta-toolbar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 14px 16px;
+    align-items: end;
+  }
+  .ta-toolbar .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .ta-toolbar label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    color: #64748b;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .ta-toolbar select.ta-select,
+  .ta-toolbar input {
+    width: 100%;
+    height: 42px;
+    border: 1px solid #d9e2ec;
+    border-radius: 10px;
+    padding: 0 34px 0 14px;
+    font-size: 13.5px;
+    font-family: inherit;
+    color: #0f172a;
+    background: #fff;
+    outline: none;
+    box-sizing: border-box;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2364748b'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 18px;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .ta-toolbar input[type="date"],
+  .ta-toolbar input[type="text"],
+  .ta-toolbar input[type="time"] {
+    background-image: none;
+    padding-right: 14px;
+  }
+  .ta-toolbar select.ta-select:focus,
+  .ta-toolbar input:focus {
+    border-color: #0E9AA3;
+    box-shadow: 0 0 0 3px rgba(14, 154, 163, .15);
+  }
+  .ta-toolbar .field.is-hidden { display: none; }
+  .ta-toolbar .field.span-2 { grid-column: span 2; min-width: 220px; }
+
+  /* ============ Chips ============ */
+  .ta-chipbar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .ta-chip {
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid #d9e2ec;
+    background: #fff;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #334155;
+    cursor: pointer;
+    transition: .15s;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+  }
+  .ta-chip:hover {
+    border-color: #0E9AA3;
+    color: #0C6A70;
+    background: #f0fdfa;
+  }
+  .ta-chip.active {
+    background: #0E9AA3;
+    color: #fff;
+    border-color: #0E9AA3;
+  }
+  .ta-chip:disabled {
+    cursor: not-allowed;
+    opacity: 0.9;
+  }
+  .ta-chip i.material-icons {
+    font-size: 16px;
+    vertical-align: -3px;
+    margin-right: 2px;
+  }
+
+  /* ============ Cards ============ */
+  .ta-card {
+    background: #fff;
+    border: 1px solid #e6edf2;
+    border-radius: 14px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+    position: relative;
+  }
+  .ta-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eef2f7;
+    cursor: pointer;
+  }
+  .ta-card-head .title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .ta-card-head .meta {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 4px;
+  }
+
+  /* ============ Pills ============ */
+  .ta-pill {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .3px;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+  }
+  .ta-pill.ok   { background: #dcfce7; color: #166534; }
+  .ta-pill.warn { background: #fef3c7; color: #92400e; }
+  .ta-pill.bad  { background: #fee2e2; color: #991b1b; }
+  .ta-pill.info { background: #e0f2fe; color: #075985; }
+  .ta-pill.mute { background: #eef2f7; color: #475569; }
+
+  /* ============ Table ============ */
+  .ta-table-wrap {
+    padding: 12px 20px 16px;
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+  .ta-table {
+      width: 100% !important;
+  border-collapse: collapse !important;
+
+    font-size: 15px;
+  }
+  .ta-table th {
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    padding: 12px;
+    border-bottom: 1px solid #eef2f7;
+    background: #f8fafc;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .ta-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #0f172a;
+    font-size: 15px;
+     vertical-align: middle !important;
+  white-space: nowrap !important;
+    line-height: 1.4;
+  
+  }
+  .ta-table tr:hover td { background: #f8fafc; }
+
+  /* Candidate cell (avatar + name side by side) */
+  .ta-table td .stu-cell {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  min-width: 180px;
+}
+  .ta-table td .stu-cell > div:last-child {
+    font-size: 15px;
+    font-weight: 600;
+    color: #0f172a;
+    white-space: nowrap;
+  }
+
+  /* Data columns (PRN, Branch, Email) */
+  .ta-table td:nth-child(2),
+  .ta-table td:nth-child(3),
+  .ta-table td:nth-child(4) {
+    font-size: 14.5px;
+    color: #334155;
+  }
+  .ta-table td:nth-child(4) {
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Result column */
+  .ta-table td .ta-pill {
+    font-size: 12px;
+    padding: 5px 12px;
+  }
+
+  /* Actions column */
+  .ta-table td:last-child {
+    text-align: right;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .ta-table td:last-child .ta-chip {
+    margin-left: 4px;
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  /* Avatar */
+  .ta-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #0E9AA3;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .ta-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Empty state */
+  .ta-empty {
+    padding: 24px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 13px;
+  }
+
+  /* ============ Modal ============ */
+  .modal {
+    max-width: 700px;
+    border-radius: 14px;
+  }
+  .modal .modal-content { padding: 24px; }
+  .modal .modal-footer {
+    padding: 10px 24px;
+    background: #f8fafc;
+    border-radius: 0 0 14px 14px;
+  }
+  .modal label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    display: block;
+  }
+  .modal input,
+  .modal select,
+  .modal textarea {
+    border: 1px solid #d9e2ec;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    font-size: 13px;
+  }
+  .modal input:focus,
+  .modal select:focus,
+  .modal textarea:focus {
+    border-color: #0E9AA3;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(14, 154, 163, .15);
+  }
+
+  /* Student checklist inside modal */
+  .student-checklist {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e6edf2;
+    border-radius: 8px;
+    padding: 10px;
+    background: #f8fafc;
+  }
+  .student-checklist label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    text-transform: none;
+    font-weight: normal;
+    color: #0f172a;
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+  .student-checklist input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+
+<a href="#" data-target="mobile-sidenav" class="sidenav-trigger mobile-trigger">
+  <i class="material-icons">menu</i>
+</a>
+
+<ul id="mobile-sidenav" class="sidenav sidenav-fixed">
+  <div class="side-brand">
+    <div class="brand-mark">H</div>
+    <div class="brand-text">
+      <span id="nav-brand-name" class="name">HireDesk</span>
+      <span class="sub">Company Portal</span>
+    </div>
+  </div>
+  <li class="side-section-label">Main</li>
+  <li data-nav="dashboard"><a class="side-link" href="index.html"><i class="material-icons">dashboard</i>Dashboard</a></li>
+  <li data-nav="profile"><a class="side-link" href="profile.html"><i class="material-icons">business</i>Profile<span id="nav-profile-dot" class="profile-nudge-dot" hidden></span></a></li>
+  <li data-nav="jobs" class="has-submenu">
+    <a href="#!" class="side-link nav-dropdown-toggle"><i class="material-icons">work</i><span>Jobs</span><i class="material-icons dropdown-arrow">keyboard_arrow_down</i></a>
+    <ul class="side-submenu">
+      <li data-nav="create-job"><a href="job-postings.html" class="side-sub-link"><i class="material-icons">add</i>Create Job</a></li>
+      <li data-nav="manage-jobs"><a href="manage-jobs.html" class="side-sub-link"><i class="material-icons">list</i>Manage Jobs</a></li>
+    </ul>
+  </li>
+  <li data-nav="applications"><a class="side-link" href="applications.html"><i class="material-icons">assignment_ind</i>Applications</a></li>
+  <li data-nav="assessments"><a class="side-link" href="test-assessments.html"><i class="material-icons">quiz</i>Test Assessments</a></li>
+  <li data-nav="interviews"><a class="side-link" href="interview-process.html"><i class="material-icons">event</i>Interview Process</a></li>
+  <li data-nav="reports"><a class="side-link" href="reports.html"><i class="material-icons">bar_chart</i>Reports</a></li>
+  <li data-nav="notifications"><a class="side-link" href="notifications.html"><i class="material-icons">notifications</i>Notifications</a></li>
+  <div class="side-foot">
+    <a href="profile.html" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;text-decoration:none;color:inherit;">
+      <div id="nav-avatar" class="avatar">--</div>
+      <div class="who" style="min-width:0;">
+        <span id="nav-company-name" class="n" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;">Loading…</span>
+        <span id="nav-profile-pct" class="r">-- % profile complete</span>
+      </div>
+    </a>
+    <a href="#" id="nav-logout-btn" class="tooltipped" data-position="top" data-tooltip="Log out" style="margin-left:8px;">
+      <i class="material-icons" style="font-size:20px;opacity:.7;">logout</i>
+    </a>
+  </div>
+</ul>
+
+<div id="app-topbar" class="topbar">
+  <div class="page-title">
+    <span id="nav-page-title"></span>
+    <span id="nav-page-crumb" class="crumb"></span>
+  </div>
+  <div class="top-actions">
+    <span id="nav-status-pill" class="pill"></span>
+    <i class="material-icons icon-btn tooltipped" data-position="bottom" data-tooltip="Notifications">notifications_none</i>
+    <i class="material-icons icon-btn tooltipped" data-position="bottom" data-tooltip="Help">help_outline</i>
+    <i id="nav-logout-btn-top" class="material-icons icon-btn tooltipped" data-position="bottom" data-tooltip="Log out">logout</i>
+  </div>
+</div>
+
+<div id="navbar-placeholder"
+     data-page-title="Interview Process"
+     data-page-crumb="Schedule and manage candidate interviews"
+     data-nav-active="interviews"
+     style="display:none;"></div>
+
+<main class="app-main">
+
+  <div class="section-title-row" style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;">
+    <div>
+      <h4 style="margin:0;">Interview Process</h4>
+      <p style="margin:4px 0 0;color:#64748b;">Manage interview schedules for shortlisted candidates.</p>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="ta-chip" id="btn-refresh"><i class="material-icons tiny" style="vertical-align:-2px;">refresh</i> Refresh</button>
+      <button class="ta-chip active" id="btn-add-interview"><i class="material-icons tiny" style="vertical-align:-2px;">add</i> Schedule Interview</button>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="ta-toolbar">
+    <div class="ta-toolbar-grid">
+      <div class="field">
+        <label for="filter-job">Job</label>
+        <select id="filter-job" class="browser-default ta-select">
+          <option value="">All Jobs</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="filter-status">Status</label>
+        <select id="filter-status" class="browser-default ta-select">
+          <option value="">All Statuses</option>
+          <option value="SCHEDULED">Scheduled</option>
+          <option value="COMPLETED">Completed</option>
+          <option value="CANCELLED">Cancelled</option>
+        </select>
+      </div>
+      <div class="field span-2">
+        <label for="filter-search">Search Candidate / Interviewer</label>
+        <input type="text" id="filter-search" placeholder="Name, PRN, interviewer...">
+      </div>
+    </div>
+  </div>
+
+  <!-- Interview Cards Container -->
+  <div id="interviews-container">
+    <div class="ta-empty">Loading interviews...</div>
+  </div>
+
+</main>
+
+<footer class="app-footer">
+  © 2026 HireDesk · Internal hiring workspace for Nova Bright Pvt Ltd
+</footer>
+
+<!-- ==================== SCHEDULE INTERVIEW MODAL ==================== -->
+<div id="interview-modal" class="modal">
+  <div class="modal-content">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+      <h5 style="margin:0; font-weight:700;">Schedule New Interview</h5>
+      <a href="#!" class="modal-close" style="color:#64748b;"><i class="material-icons">close</i></a>
+    </div>
+
+    <form id="interview-form">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+        
+        <!-- Job Selection -->
+        <div style="grid-column: span 2;">
+          <label for="modal-job">Select Job</label>
+          <select id="modal-job" class="browser-default ta-select" required>
+            <option value="">-- Choose a Job --</option>
+          </select>
+        </div>
+
+        <!-- Date & Time -->
+        <div>
+          <label for="modal-date">Interview Date</label>
+          <input type="date" id="modal-date" required>
+        </div>
+        <div>
+          <label for="modal-mode">Mode</label>
+          <select id="modal-mode" required>
+            <option value="ONLINE">Online (Video Call)</option>
+            <option value="OFFLINE">Offline (In-Person)</option>
+            <option value="TELEPHONIC">Telephonic</option>
+          </select>
+        </div>
+        <div>
+          <label for="modal-start">Start Time</label>
+          <input type="time" id="modal-start" required>
+        </div>
+        <div>
+          <label for="modal-end">End Time</label>
+          <input type="time" id="modal-end" required>
+        </div>
+
+        <!-- Location & Interviewer -->
+        <div style="grid-column: span 2;">
+          <label for="modal-location">Location / Meeting Link</label>
+          <input type="text" id="modal-location" placeholder="e.g. Google Meet Link or Office Address" required>
+          <small id="location-help" style="color:#64748b; font-size:11px; display:none;">Must be a valid Google Meet link (e.g., https://meet.google.com/abc-defg-hij)</small>
+        </div>
+        <div style="grid-column: span 2;">
+          <label for="modal-interviewer">Interviewer Name</label>
+          <input type="text" id="modal-interviewer" placeholder="e.g. John Doe (HR Manager)" required>
+        </div>
+
+        <!-- Notes -->
+        <div style="grid-column: span 2;">
+          <label for="modal-notes">Notes / Instructions</label>
+          <textarea id="modal-notes" rows="2" placeholder="Any specific instructions for candidates..."></textarea>
+        </div>
+
+        <!-- Student Selection (Dynamic based on Job) -->
+        <div style="grid-column: span 2;">
+          <label>Select Shortlisted Candidates</label>
+          <div id="student-checklist-container" class="student-checklist">
+            <p style="color:#94a3b8; font-size:12px; text-align:center; margin:0;">Select a job to see shortlisted candidates</p>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-light btn-flat">Cancel</a>
+    <button class="btn waves-effect waves-light" id="btn-save-interview" style="background:#0E9AA3;">Schedule Interview</button>
+  </div>
+</div>
+
+<!-- ==================== OFFER LETTER MODAL ==================== -->
+<div id="offer-modal" class="modal">
+  <div class="modal-content">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+      <h5 style="margin:0; font-weight:700;">Generate Offer Letter</h5>
+      <a href="#!" class="modal-close" style="color:#64748b;"><i class="material-icons">close</i></a>
+    </div>
+
+    <form id="offer-form">
+      <input type="hidden" id="offer-interview-id">
+      <input type="hidden" id="offer-student-id">
+      
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+        <div style="grid-column: span 2;">
+          <label for="offer-candidate-name">Candidate Name</label>
+          <input type="text" id="offer-candidate-name" readonly style="background:#f8fafc; color:#64748b;">
+        </div>
+        
+        <div>
+          <label for="offer-role">Job Role</label>
+          <input type="text" id="offer-role" required>
+        </div>
+        <div>
+          <label for="offer-salary">Annual Salary (CTC)</label>
+          <input type="text" id="offer-salary" placeholder="e.g. 6,00,000" required>
+        </div>
+        <div>
+          <label for="offer-joining-date">Joining Date</label>
+          <input type="date" id="offer-joining-date" required>
+        </div>
+        <div>
+          <label for="offer-location">Work Location</label>
+          <input type="text" id="offer-location" placeholder="e.g. Mumbai, India" required>
+        </div>
+        
+        <div style="grid-column: span 2;">
+          <label for="offer-notes">Additional Terms / Notes</label>
+          <textarea id="offer-notes" rows="3" placeholder="Any additional terms or conditions..."></textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-light btn-flat">Cancel</a>
+    <button class="btn waves-effect waves-light" id="btn-send-offer" style="background:#0E9AA3;">Send Offer Letter</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="../assets/js/company/config.js"></script>
+<script src="../assets/js/company/session.js"></script>
+<script src="../assets/js/company/navbar.js"></script>
+<script src="../assets/js/company/app.js"></script>
+
+<script>
+(function () {
+  'use strict';
+
+  const API = (window.API_BASE || 'http://127.0.0.1:8080') + '/api/interviews';
+  const JOBS_API = (window.API_BASE || 'http://127.0.0.1:8080') + '/api/jobs/my-jobs';
+  const OFFER_API = (window.API_BASE || 'http://127.0.0.1:8080') + '/api/offers';
+
+  const state = {
+    interviews: [],
+    jobs: [],
+    filters: { jobId: '', status: '', search: '' }
+  };
+
+  document.addEventListener('DOMContentLoaded', boot);
+
+  async function boot() {
+    if (typeof Session !== 'undefined' && Session.requireSession) {
+      if (!Session.requireSession()) return;
+    }
+    
+    // Init Modals
+    M.Modal.init(document.querySelectorAll('.modal'), { dismissible: true });
+    
+    bindUI();
+    await loadJobs();
+    await loadInterviews();
+  }
+
+  function bindUI() {
+    document.getElementById('btn-refresh').addEventListener('click', loadInterviews);
+    document.getElementById('btn-add-interview').addEventListener('click', () => openModal());
+    
+    // Filters
+    document.getElementById('filter-job').addEventListener('change', e => { state.filters.jobId = e.target.value; render(); });
+    document.getElementById('filter-status').addEventListener('change', e => { state.filters.status = e.target.value; render(); });
+    document.getElementById('filter-search').addEventListener('input', e => { state.filters.search = e.target.value.toLowerCase(); render(); });
+
+    // Modal Job Change -> Load Students
+    document.getElementById('modal-job').addEventListener('change', async e => {
+      const jobId = e.target.value;
+      const container = document.getElementById('student-checklist-container');
+      if (!jobId) {
+        container.innerHTML = '<p style="color:#94a3b8; font-size:12px; text-align:center; margin:0;">Select a job to see shortlisted candidates</p>';
+        return;
+      }
+      container.innerHTML = '<p style="text-align:center; color:#0E9AA3; font-size:12px;">Loading candidates...</p>';
+      
+      try {
+        const res = await fetch(`${API}/eligible-students/${jobId}`, { credentials: 'include' });
+        const students = await res.json();
+        
+        if (!students.length) {
+          container.innerHTML = '<p style="color:#dc2626; font-size:12px; text-align:center; margin:0;">No shortlisted candidates found for this job.</p>';
+          return;
+        }
+
+        container.innerHTML = students.map(s => `
+          <label>
+            <input type="checkbox" value="${s.studentId}" class="student-cb">
+            <div class="ta-avatar" style="width:24px;height:24px;font-size:10px;">
+              ${s.profilePhoto ? `<img src="${photoUrl(s.profilePhoto)}">` : initials(s.name)}
+            </div>
+            <span>${escapeHtml(s.name)} <small style="color:#64748b;">(${escapeHtml(s.prnNo)})</small></span>
+          </label>
+        `).join('');
+      } catch (err) {
+        container.innerHTML = '<p style="color:#dc2626; font-size:12px; text-align:center;">Error loading candidates.</p>';
+      }
+    });
+
+    // Modal Mode Change -> Toggle Link Validation UI
+    document.getElementById('modal-mode').addEventListener('change', e => {
+      const mode = e.target.value;
+      const locInput = document.getElementById('modal-location');
+      const helpText = document.getElementById('location-help');
+      
+      if (mode === 'ONLINE') {
+        locInput.placeholder = 'e.g. https://meet.google.com/abc-defg-hij';
+        helpText.style.display = 'block';
+      } else {
+        locInput.placeholder = 'e.g. Office Address or Room Number';
+        helpText.style.display = 'none';
+      }
+    });
+
+    // Save Interview
+    document.getElementById('btn-save-interview').addEventListener('click', saveInterview);
+
+    // Send Offer Letter
+    document.getElementById('btn-send-offer').addEventListener('click', sendOfferLetter);
+  }
+
+  async function loadJobs() {
+    try {
+      const res = await fetch(JOBS_API, { credentials: 'include' });
+      if (!res.ok) return;
+      state.jobs = await res.json();
+      
+      const filterJob = document.getElementById('filter-job');
+      const modalJob = document.getElementById('modal-job');
+      
+      filterJob.innerHTML = '<option value="">All Jobs</option>';
+      modalJob.innerHTML = '<option value="">-- Choose a Job --</option>';
+
+      state.jobs.forEach(j => {
+        filterJob.innerHTML += `<option value="${j.id}">${escapeHtml(j.title)}</option>`;
+        modalJob.innerHTML += `<option value="${j.id}">${escapeHtml(j.title)}</option>`;
+      });
+    } catch (e) { 
+      console.warn('Failed to load jobs', e); 
+    }
+  }
+
+async function loadInterviews() {
+    try {
+      const res = await fetch(`${API}?t=${Date.now()}`, {   // ⭐ cache buster
+        credentials: 'include',
+        cache: 'no-store'
+      });
+      if (!res.ok) throw new Error('Failed to load interviews');
+      state.interviews = await res.json();
+      render();
+    } catch (e) {
+      document.getElementById('interviews-container').innerHTML = 
+        `<div class="ta-empty" style="color:#dc2626;">Error: ${e.message}</div>`;
+    }
+}
+
+  function render() {
+    const container = document.getElementById('interviews-container');
+    let list = [...state.interviews];
+
+    // Apply Filters
+    if (state.filters.jobId) list = list.filter(i => i.jobId === state.filters.jobId);
+    if (state.filters.status) list = list.filter(i => i.status === state.filters.status);
+    if (state.filters.search) {
+      const q = state.filters.search;
+      list = list.filter(i => 
+        (i.interviewerName || '').toLowerCase().includes(q) ||
+        i.students.some(s => 
+          (s.name || '').toLowerCase().includes(q) || 
+          (s.prnNo || '').toLowerCase().includes(q)
+        )
+      );
+    }
+
+    if (!list.length) {
+      container.innerHTML = '<div class="ta-empty">No interview schedules match your filters.</div>';
+      return;
+    }
+
+    container.innerHTML = list.map(i => renderCard(i)).join('');
+  }
+
+  function renderCard(i) {
+  const isCancelled = i.status === 'CANCELLED';
+  const statusPill = isCancelled ? 'bad' : (i.status === 'COMPLETED' ? 'ok' : 'info');
+
+  const results = i.candidateResults || {};
+  const offerStatuses = i.offerLetterStatus || {};
+
+  // Check if interview end time has passed
+  const interviewEndDateTime = new Date(`${i.interviewDate}T${i.endTime || '23:59'}`);
+  const isPast = interviewEndDateTime < new Date();
+
+  return `
+    <div class="ta-card">
+      <div class="ta-card-head">
+        <div>
+          <div class="title">${escapeHtml(i.jobTitle)}</div>
+          <div class="meta">
+            <i class="material-icons tiny" style="vertical-align:-3px; font-size:14px;">event</i> ${i.interviewDate}
+            &nbsp;•&nbsp;
+            <i class="material-icons tiny" style="vertical-align:-3px; font-size:14px;">schedule</i> ${i.startTime} - ${i.endTime}
+            &nbsp;•&nbsp;
+            <i class="material-icons tiny" style="vertical-align:-3px; font-size:14px;">person</i> ${escapeHtml(i.interviewerName)}
+          </div>
+        </div>
+        <div>
+          <span class="ta-pill ${statusPill}">${i.status}</span>
+        </div>
+      </div>
+
+      <div class="ta-table-wrap" style="padding: 12px 20px;">
+        <div style="margin-bottom:12px; font-size:13px; color:#475569;">
+          <strong>Mode:</strong> ${i.mode} &nbsp;|&nbsp;
+          <strong>Location:</strong> ${escapeHtml(i.location)}
+          ${i.notes ? `<br><strong>Notes:</strong> ${escapeHtml(i.notes)}` : ''}
+        </div>
+        <table class="ta-table">
+          <thead>
+            <tr>
+              <th>Candidate</th>
+              <th>PRN</th>
+              <th>Branch</th>
+              <th>Email</th>
+              <th>Result</th>
+              <th style="text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${i.students.map(s => {
+              const r = results[s.id] || 'PENDING';
+              const pillClass = r === 'SELECTED' ? 'ok'
+                              : r === 'REJECTED' ? 'bad'
+                              : 'mute';
+              const offerStatus = offerStatuses[s.id];
+
+              // Build the actions HTML as a separate string — this avoids template nesting bugs
+              let actionsHtml = '';
+
+              if (!isPast) {
+                actionsHtml = `<span style="color:#94a3b8; font-size:12px; font-style:italic;">Awaiting Interview</span>`;
+              } else {
+                // Select button
+                if (r !== 'SELECTED') {
+                  actionsHtml += `
+                    <button class="ta-chip" title="Mark Selected"
+                            onclick="updateCandidate('${i.id}','${s.id}','SELECTED')"
+                            style="padding:5px 10px;color:#166534;border-color:#bbf7d0;">
+                      <i class="material-icons tiny" style="vertical-align:-2px;font-size:14px;">check_circle</i>
+                      Select
+                    </button>`;
+                }
+                // Reject button
+                if (r !== 'REJECTED') {
+                  actionsHtml += `
+                    <button class="ta-chip" title="Reject"
+                            onclick="updateCandidate('${i.id}','${s.id}','REJECTED')"
+                            style="padding:5px 10px;color:#991b1b;border-color:#fecaca;">
+                      <i class="material-icons tiny" style="vertical-align:-2px;font-size:14px;">cancel</i>
+                      Reject
+                    </button>`;
+                }
+                // Undo button
+                if (r !== 'PENDING') {
+                  actionsHtml += `
+                    <button class="ta-chip" title="Reset to Pending"
+                            onclick="updateCandidate('${i.id}','${s.id}','PENDING')"
+                            style="padding:5px 10px;">
+                      <i class="material-icons tiny" style="vertical-align:-2px;font-size:14px;">undo</i>
+                    </button>`;
+                }
+                // Offer letter button (only if SELECTED)
+                if (r === 'SELECTED') {
+                  if (offerStatus === 'SENT' || offerStatus === 'ACCEPTED' || offerStatus === 'DECLINED') {
+                    // Offer already sent — disabled badge
+                    const labelMap = {
+                      SENT: 'Offer Sent',
+                      ACCEPTED: 'Offer Accepted',
+                      DECLINED: 'Offer Declined'
+                    };
+                    const colorMap = {
+                      SENT: 'color:#075985; border-color:#bae6fd; background:#f0f9ff;',
+                      ACCEPTED: 'color:#166534; border-color:#bbf7d0; background:#f0fdf4;',
+                      DECLINED: 'color:#991b1b; border-color:#fecaca; background:#fef2f2;'
+                    };
+                    const iconMap = {
+                      SENT: 'mark_email_read',
+                      ACCEPTED: 'check_circle',
+                      DECLINED: 'cancel'
+                    };
+                    actionsHtml += `
+                      <button class="ta-chip" disabled title="${labelMap[offerStatus]}"
+                              style="padding:5px 10px; cursor:not-allowed; opacity:0.9; ${colorMap[offerStatus]}">
+                        <i class="material-icons tiny" style="vertical-align:-2px;font-size:14px;">${iconMap[offerStatus]}</i>
+                        ${labelMap[offerStatus]}
+                      </button>`;
+                  } else {
+                    // Offer button — clickable
+                    actionsHtml += `
+                      <button class="ta-chip" title="Generate Offer Letter"
+                              onclick="openOfferModal('${i.id}','${s.id}','${escapeHtml(s.name)}','${escapeHtml(i.jobTitle)}')"
+                              style="padding:5px 10px; color:#075985; border-color:#bae6fd; background:#f0f9ff;">
+                        <i class="material-icons tiny" style="vertical-align:-2px;font-size:14px;">description</i>
+                        Offer Letter
+                      </button>`;
+                  }
+                }
+              }
+
+              return `
+                <tr>
+                  <td>
+                    <div class="stu-cell">
+                      <div class="ta-avatar">
+                        ${s.profilePhoto ? `<img src="${photoUrl(s.profilePhoto)}">` : initials(s.name)}
+                      </div>
+                      <div>${escapeHtml(s.name)}</div>
+                    </div>
+                  </td>
+                  <td>${escapeHtml(s.prnNo || '—')}</td>
+                  <td>${escapeHtml(s.branch || '—')}</td>
+                  <td>${escapeHtml(s.email || '—')}</td>
+                  <td><span class="ta-pill ${pillClass}">${r}</span></td>
+                  <td style="text-align:right; white-space:nowrap;">
+                    ${actionsHtml}
+                  </td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+  function openModal() {
+    document.getElementById('interview-form').reset();
+    document.getElementById('student-checklist-container').innerHTML = '<p style="color:#94a3b8; font-size:12px; text-align:center; margin:0;">Select a job to see shortlisted candidates</p>';
+    
+    // Reset mode-specific UI
+    document.getElementById('location-help').style.display = 'block';
+    document.getElementById('modal-location').placeholder = 'e.g. https://meet.google.com/abc-defg-hij';
+    
+    M.Modal.getInstance(document.getElementById('interview-modal')).open();
+  }
+
+  async function saveInterview() {
+    const jobId = document.getElementById('modal-job').value;
+    const jobTitle = document.getElementById('modal-job').options[document.getElementById('modal-job').selectedIndex].text;
+    const date = document.getElementById('modal-date').value;
+    const start = document.getElementById('modal-start').value;
+    const end = document.getElementById('modal-end').value;
+    const mode = document.getElementById('modal-mode').value;
+    const location = document.getElementById('modal-location').value.trim();
+    const interviewer = document.getElementById('modal-interviewer').value;
+    const notes = document.getElementById('modal-notes').value;
+
+    // Get selected students
+    const checkboxes = document.querySelectorAll('.student-cb:checked');
+    const studentIds = Array.from(checkboxes).map(cb => cb.value);
+
+    // Basic Validation
+    if (!jobId || !date || !start || !end || !location || !interviewer) {
+      M.toast({ html: 'Please fill all required fields', classes: 'rounded red' });
+      return;
+    }
+    if (studentIds.length === 0) {
+      M.toast({ html: 'Please select at least one candidate', classes: 'rounded red' });
+      return;
+    }
+
+    // MODE VALIDATION
+    if (mode === 'ONLINE') {
+      const googleMeetRegex = /^https:\/\/meet\.google\.com\/[a-z]{3}-[a-z]{4}-[a-z]{3}$/;
+      if (!googleMeetRegex.test(location)) {
+        M.toast({ html: 'Please enter a valid Google Meet link (e.g., https://meet.google.com/abc-defg-hij)', classes: 'rounded red', displayLength: 5000 });
+        return;
+      }
+    }
+
+    const payload = {
+      jobId, jobTitle, interviewDate: date, startTime: start, endTime: end,
+      mode, location, interviewerName: interviewer, notes, studentIds
+    };
+
+    try {
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) throw new Error('Failed to schedule interview');
+
+      M.toast({ html: 'Interview scheduled successfully!', classes: 'rounded green' });
+      M.Modal.getInstance(document.getElementById('interview-modal')).close();
+      await loadInterviews();
+    } catch (e) {
+      M.toast({ html: 'Error: ' + e.message, classes: 'rounded red' });
+    }
+  }
+
+  // --- OFFER LETTER LOGIC ---
+  window.openOfferModal = function(interviewId, studentId, candidateName, jobTitle) {
+    document.getElementById('offer-interview-id').value = interviewId;
+    document.getElementById('offer-student-id').value = studentId;
+    document.getElementById('offer-candidate-name').value = candidateName;
+    document.getElementById('offer-role').value = jobTitle;
+    
+    // Reset form fields
+    document.getElementById('offer-salary').value = '';
+    document.getElementById('offer-joining-date').value = '';
+    document.getElementById('offer-location').value = '';
+    document.getElementById('offer-notes').value = '';
+
+    M.Modal.getInstance(document.getElementById('offer-modal')).open();
+  };
+
+  async function sendOfferLetter() {
+    const interviewId = document.getElementById('offer-interview-id').value;
+    const studentId = document.getElementById('offer-student-id').value;
+    const role = document.getElementById('offer-role').value;
+    const salary = document.getElementById('offer-salary').value;
+    const joiningDate = document.getElementById('offer-joining-date').value;
+    const location = document.getElementById('offer-location').value;
+    const notes = document.getElementById('offer-notes').value;
+
+    if (!role || !salary || !joiningDate || !location) {
+      M.toast({ html: 'Please fill all required offer details', classes: 'rounded red' });
+      return;
+    }
+
+    const payload = { interviewId, studentId, role, salary, joiningDate, location, notes };
+
+    try {
+      const res = await fetch(OFFER_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(payload)
+      });
+
+      // ⭐ Handle "already sent" as a soft success — no red error
+      if (res.status === 409) {
+        M.toast({ 
+          html: 'Offer letter was already sent to this candidate.', 
+          classes: 'rounded orange' 
+        });
+        M.Modal.getInstance(document.getElementById('offer-modal')).close();
+        await loadInterviews();   // ⭐ refresh so badge appears
+        return;
+      }
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || 'Failed to send offer letter');
+      }
+
+      M.toast({ html: 'Offer letter sent successfully!', classes: 'rounded green' });
+      M.Modal.getInstance(document.getElementById('offer-modal')).close();
+      await loadInterviews();   // ⭐ refresh so badge appears
+    } catch (e) {
+      M.toast({ html: 'Error: ' + e.message, classes: 'rounded red' });
+    }
+}
+  // Helpers
+  function initials(name) {
+    return (name || '?').split(/\s+/).filter(Boolean).slice(0,2)
+      .map(w => w[0].toUpperCase()).join('') || '?';
+  }
+  function photoUrl(fn) {
+    if (!fn) return '';
+    if (/^https?:/i.test(fn)) return fn;
+    return (window.API_BASE || 'http://127.0.0.1:8080') + '/uploads/student-photos/' + fn;
+  }
+  function escapeHtml(s){ return String(s ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); 
+  }
+
+  // Make it globally accessible so inline onclick works
+  window.updateCandidate = async function(interviewId, studentId, result) {
+    if (result === 'REJECTED' &&
+        !confirm('Reject this candidate? Their application will be marked as REJECTED.')) {
+      return;
+    }
+    if (result === 'SELECTED' &&
+        !confirm('Mark this candidate as SELECTED? Their application will be marked as HIRED.')) {
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `${API}/${interviewId}/candidate/${studentId}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ result })
+        }
+      );
+
+      if (!res.ok) throw new Error('Update failed');
+
+      M.toast({ html: `Candidate marked as ${result}`, classes: 'rounded green' });
+      await loadInterviews();   // reload cards
+    } catch (e) {
+      M.toast({ html: 'Error: ' + e.message, classes: 'rounded red' });
+    }
+  };
+
+})();
+</script>
+</body>
+</html>

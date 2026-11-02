@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Search | CampusConnect</title>
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<!-- Google Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Job Search page styles -->
+ <link rel="stylesheet" href="../assets/css/student/student_dashboard.css">
+<link rel="stylesheet" href="../assets/css/student/search-jobs.css">
+<link rel="stylesheet" href="../assets/css/student/apply-job.css">
+</head>
+<body data-page="search-jobs">
+
+<div class="app-shell">
+
+ <!-- Sidebar: static markup, no id, selected by class in JS -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+      <div class="brand-text">
+        <h1>HireTrack</h1>
+        <span>Student Dashboard</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="student-dashboard.html" class="nav-link" data-page="dashboard">
+        <i class="bi bi-house-door-fill"></i><span>Dashboard</span>
+      </a>
+
+      <p class="nav-heading">Job Portal</p>
+      <a href="search-jobs.html" class="nav-link" data-page="search-jobs">
+        <i class="bi bi-search"></i><span>Search Jobs</span>
+      </a>
+      <a href="applications.html" class="nav-link" data-page="applications">
+        <i class="bi bi-briefcase-fill"></i><span>My Applications</span>
+      </a>
+      <a href="saved-jobs.html" class="nav-link" data-page="saved-jobs">
+        <i class="bi bi-bookmark-fill"></i><span>Saved Jobs</span>
+      </a>
+
+      <p class="nav-heading">Assessments</p>
+      <!-- <a href="aptitude-tests.html" class="nav-link" data-page="aptitude-tests">
+        <i class="bi bi-clipboard-check-fill"></i><span>Aptitude Tests</span>
+      </a> -->
+      <a href="test-schedule.html" class="nav-link" data-page="test-schedule">
+        <i class="bi bi-calendar3"></i><span>Test Schedule</span>
+      </a>
+      <!-- <a href="test-results.html" class="nav-link" data-page="test-results">
+        <i class="bi bi-bar-chart-fill"></i><span>Test Results</span>
+      </a> -->
+
+      <p class="nav-heading">Interviews</p>
+      <!-- <a href="interview-schedule.html" class="nav-link" data-page="interview-schedule">
+        <i class="bi bi-calendar-event-fill"></i><span>Interview Schedule</span>
+      </a> -->
+      <a href="my-interviews.html" class="nav-link active" data-page="my-interviews">
+        <i class="bi bi-people-fill"></i><span>My Interviews</span>
+      </a>
+      <a href="offer-letters.html" class="nav-link" data-page="offer-letters">
+        <i class="bi bi-envelope-fill"></i><span>Offer Letters</span>
+      </a>
+
+      <p class="nav-heading">Profile</p>
+      <a href="my-profile.html" class="nav-link" data-page="my-profile">
+        <i class="bi bi-person-fill"></i><span>My Profile</span>
+      </a>
+      <!-- <a href="resume.html" class="nav-link" data-page="resume">
+        <i class="bi bi-file-earmark-person-fill"></i><span>Resume</span>
+      </a>
+      <a href="skills.html" class="nav-link" data-page="skills">
+        <i class="bi bi-star-fill"></i><span>Skills</span>
+      </a> -->
+
+      <p class="nav-heading">More</p>
+      <a href="notifications.html" class="nav-link" data-page="notifications">
+        <i class="bi bi-bell-fill"></i><span>Notifications</span>
+        <span class="badge-count notif-badge-nav" style="display:none;">0</span>
+      </a>
+      <!-- <a href="help.html" class="nav-link" data-page="help">
+        <i class="bi bi-question-circle-fill"></i><span>Help &amp; Support</span>
+      </a> -->
+    </nav>
+
+    <div class="profile-progress-card">
+      <h6>Complete Your Profile</h6>
+      <p>Get more job recommendations</p>
+      <div class="progress-ring-wrap">
+        <svg class="progress-ring" width="64" height="64" viewBox="0 0 64 64">
+          <circle class="ring-bg" cx="32" cy="32" r="27"></circle>
+          <circle class="ring-fg" cx="32" cy="32" r="27"
+            style="stroke-dasharray:169.6; stroke-dashoffset:25.4;"></circle>
+        </svg>
+        <span class="progress-ring-label">85%</span>
+      </div>
+      <button class="btn-complete-profile">Complete Now <i class="bi bi-arrow-right"></i></button>
+    </div>
+  </aside>
+ 
+  <div class="main-wrapper">
+    <header class="topbar">
+      <button class="sidebar-toggle-btn" aria-label="Toggle menu">
+        <i class="bi bi-list"></i>
+      </button>
+      <div class="topbar-search">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="Search for jobs, companies, skills...">
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn notif-btn">
+          <i class="bi bi-bell"></i>
+          <span class="notif-dot">3</span>
+        </button>
+        <div class="profile-chip">
+          <img src="https://i.pravatar.cc/80?img=47" alt="Diksha Gudur">
+          <div class="profile-chip-text">
+            <strong>Diksha Gudur</strong>
+            <span>BCA - 3rd Year</span>
+          </div>
+          <i class="bi bi-chevron-down"></i>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="content">--
+
+      <!-- Page header -->
+      <section class="page-header">
+        <div>
+          <h2>Job Search</h2>
+          <p>Find opportunities that match your skills and career goals</p>
+        </div>
+        <button class="btn-outline-teal"><i class="bi bi-bookmark-star"></i> Saved Searches</button>
+      </section>
+
+      <!-- Job type tabs -->
+      <section class="job-tabs" id="jobTabs">
+        <button class="tab-card active" data-tab="all">
+          <span class="tab-icon"><i class="bi bi-grid-fill"></i></span>
+          <span class="tab-text"><strong>All Jobs</strong><small>236</small></span>
+        </button>
+        <button class="tab-card" data-tab="fulltime">
+          <span class="tab-icon"><i class="bi bi-briefcase-fill"></i></span>
+          <span class="tab-text"><strong>Full Time</strong><small>152</small></span>
+        </button>
+        <button class="tab-card" data-tab="internship">
+          <span class="tab-icon"><i class="bi bi-mortarboard-fill"></i></span>
+          <span class="tab-text"><strong>Internships</strong><small>58</small></span>
+        </button>
+        <button class="tab-card" data-tab="parttime">
+          <span class="tab-icon"><i class="bi bi-clock-fill"></i></span>
+          <span class="tab-text"><strong>Part Time</strong><small>26</small></span>
+        </button>
+        <button class="tab-card" data-tab="remote">
+          <span class="tab-icon"><i class="bi bi-laptop"></i></span>
+          <span class="tab-text"><strong>Remote</strong><small>42</small></span>
+        </button>
+      </section>
+
+      <!-- Main 3-column layout -->
+      <section class="job-layout">
+
+        <!-- Filters -->
+        <aside class="filters-panel">
+          <div class="filters-head">
+            <h4>Filters</h4>
+            <a href="#" id="clearFilters">Clear All</a>
+          </div>
+
+          <div class="filter-block">
+            <label class="filter-label">Search Keywords</label>
+            <div class="filter-search">
+              <input type="text" placeholder="Job title, skills, company...">
+              <i class="bi bi-search"></i>
+            </div>
+          </div>
+
+          <div class="filter-block">
+            <label class="filter-label">Job Type</label>
+            <div class="filter-check">
+              <label><input type="checkbox"><span>Full Time</span></label>
+              <span class="filter-count">152</span>
+            </div>
+            <div class="filter-check">
+              <label><input type="checkbox"><span>Internship</span></label>
+              <span class="filter-count">58</span>
+            </div>
+            <div class="filter-check">
+              <label><input type="checkbox"><span>Part Time</span></label>
+              <span class="filter-count">26</span>
+            </div>
+            <div class="filter-check">
+              <label><input type="checkbox"><span>Contract</span></label>
+              <span class="filter-count">18</span>
+            </div>
+          </div>
+
+          <div class="filter-block">
+            <label class="filter-label">Location</label>
+            <div class="filter-search">
+              <input type="text" placeholder="Enter location">
+              <i class="bi bi-geo-alt"></i>
+            </div>
+            <div class="filter-check top-gap">
+              <label><input type="checkbox"><span>On-site</span></label>
+              <span class="filter-count">178</span>
+            </div>
+            <div class="filter-check">
+              <label><input type="checkbox"><span>Remote</span></label>
+              <span class="filter-count">42</span>
+            </div>
+            <div class="filter-check">
+              <label><input type="checkbox"><span>Hybrid</span></label>
+              <span class="filter-count">16</span>
+            </div>
+          </div>
+
+          <!-- <div class="filter-block">
+            <label class="filter-label">Experience Level</label>
+            <div class="filter-check">
+              <label><input type="checkbox" checked><span>Fresher</span></label>
+              <span class="filter-count">98</span>
+            </div>
+            <div class="filter-check">
+              <label><input type="checkbox"><span>0-1 Year</span></label>
+              <span class="filter-count">76</span>
+            </div>
+            <div class="filter-check">
+              <label><input type="checkbox"><span>1-3 Years</span></label>
+              <span class="filter-count">42</span>
+            </div>
+            <div class="filter-check">
+              <label><input type="checkbox"><span>3+ Years</span></label>
+              <span class="filter-count">20</span>
+            </div>
+          </div> -->
+          <!-- ============ BRANCH FILTER (NEW) ============ -->
+<div class="filter-block">
+  <label class="filter-label">Branch / Course</label>
+
+  <div class="filter-search">
+    <input type="text" id="branchSearchInput" placeholder="Search branch...">
+    <i class="bi bi-search"></i>
+  </div>
+
+  <div class="filter-check-list" id="branchFilterList" style="max-height:220px;overflow-y:auto;margin-top:10px;">
+    <!-- populated by JS from BRANCH_OPTIONS -->
+  </div>
+</div>
+
+          <!-- <button class="show-more-btn" id="showMoreFilters">Show More Filters <i class="bi bi-chevron-down"></i></button> -->
+
+          <button class="btn-apply-filters">Apply Filters</button>
+        </aside>
+
+        <!-- Job list -->
+        <div class="job-list-col" id="jobListCol">
+
+          <div class="list-toolbar">
+            <span class="result-count">236 Jobs found</span>
+            <div class="toolbar-right">
+              <span class="sort-label">Sort by:</span>
+              <select class="sort-select">
+                <option>Most Relevant</option>
+                <option>Newest First</option>
+                <option>Salary: High to Low</option>
+              </select>
+              <div class="view-toggle">
+                <button class="view-btn" data-view="list"><i class="bi bi-list-ul"></i></button>
+                <button class="view-btn active" data-view="grid"><i class="bi bi-grid-3x3-gap-fill"></i></button>
+              </div>
+            </div>
+          </div>
+
+         
+
+          <button class="btn-load-more">Load More Jobs <i class="bi bi-arrow-down"></i></button>
+        </div>
+
+        <!-- Right widgets -->
+        <aside class="widgets-col">
+          <div class="widget-card">
+            <div class="widget-head">
+              <i class="bi bi-bell-fill"></i>
+              <h5>Get Job Alerts</h5>
+            </div>
+            <p>Get notified about new job openings that match your preferences.</p>
+            <button class="widget-btn-outline">Create Alert</button>
+          </div>
+
+          <div class="widget-card">
+            <div class="widget-head">
+              <i class="bi bi-graph-up-arrow"></i>
+              <h5>Improve Your Profile</h5>
+            </div>
+            <p>Increase your chances of getting hired by completing your profile.</p>
+            <div class="widget-progress-ring">
+              <svg width="72" height="72" viewBox="0 0 72 72">
+                <circle class="ring-bg" cx="36" cy="36" r="30"></circle>
+                <circle class="ring-fg" cx="36" cy="36" r="30"></circle>
+              </svg>
+              <div class="ring-center">
+                <strong>85%</strong>
+                <span>Complete</span>
+              </div>
+            </div>
+            <!-- <button class="widget-btn-outline">Update Profile</button> -->
+             <a href="my-profile.html" class="widget-btn-outline" data-page="my-profile">
+  Update Profile
+</a>
+          </div>
+
+          <div class="widget-card">
+            <div class="widget-head">
+              <i class="bi bi-file-earmark-text-fill"></i>
+              <h5>Resume Review</h5>
+            </div>
+            <p>Get your resume reviewed by experts and stand out to recruiters.</p>
+            <button class="widget-btn-outline">Upload Resume</button>
+          </div>
+
+          
+    
+        </aside>
+      </section>
+
+      <!-- Bottom CTA banner -->
+      <section class="cta-banner">
+        <div class="cta-left">
+          <span class="cta-icon"><i class="bi bi-rocket-takeoff-fill"></i></span>
+          <div>
+            <h5>Stand Out to Recruiters</h5>
+            <p>Complete assessments and showcase your skills to increase your visibility.</p>
+          </div>
+        </div>
+        <button class="cta-btn">Take Assessment</button>
+      </section>
+      <!-- Company Profile Modal -->
+<div class="modal fade" id="companyProfileModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="companyProfileModalLabel">Company Profile</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="companyProfileModalBody">
+        <div class="text-center py-4">
+          <div class="spinner-border" role="status"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Application form -->
+ <!-- ============================================================
+     Job Application Modal
+     ============================================================ -->
+<div class="modal fade" id="applyJobModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+    <div class="modal-content apply-modal">
+
+      <div class="modal-header apply-modal-header">
+        <div>
+          <h5 class="modal-title" id="applyJobModalLabel">Apply for this job</h5>
+          <small class="apply-modal-subtitle" id="applyJobSubtitle"></small>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Profile gate banner (shown only if profile is incomplete) -->
+      <div id="applyProfileGate" class="apply-gate" hidden>
+        <div class="apply-gate-icon"><i class="bi bi-shield-exclamation"></i></div>
+        <div class="apply-gate-body">
+          <h6>Complete your profile to apply</h6>
+          <p id="applyGateMessage">Your profile is <strong>—</strong> complete.</p>
+          <div class="apply-gate-progress">
+            <div class="apply-gate-bar"><span id="applyGateBarFill" style="width:0%"></span></div>
+            <small id="applyGatePercent">0%</small>
+          </div>
+          <ul id="applyGateMissing" class="apply-gate-missing"></ul>
+        </div>
+        <div class="apply-gate-actions">
+          <a href="my-profile.html" class="btn-apply gate-action-primary" data-page="my-profile">
+            Complete Profile
+          </a>
+          <button type="button" class="btn-outline-teal" data-bs-dismiss="modal">Later</button>
+        </div>
+      </div>
+      <!-- ===== Eligibility Gate ===== -->
+<div id="applyEligibilityGate" hidden class="apply-gate eligibility-gate">
+  <div class="gate-icon gate-icon-error">
+    <i class="bi bi-shield-exclamation"></i>
+  </div>
+  <h5>You're not eligible for this role</h5>
+  <p class="gate-sub">
+    Based on your current profile, you don't meet this company's requirements.
+  </p>
+
+  <ul class="eligibility-failures"></ul>
+
+  <ul class="eligibility-warnings" hidden></ul>
+
+  <div class="gate-actions">
+    <button type="button" class="btn-apply btn-update-profile">
+      <i class="bi bi-person-gear"></i> Update Profile
+    </button>
+    <button type="button" class="btn btn-link" data-bs-dismiss="modal">
+      Close
+    </button>
+  </div>
+</div>
+
+      <!-- Application body (hidden while gated) -->
+      <form id="jobApplicationForm" novalidate hidden>
+        <div class="modal-body apply-modal-body">
+
+          <!-- Job + company summary -->
+          <div class="apply-summary">
+            <div class="apply-summary-logo" id="applyCompanyLogo">
+              <i class="bi bi-building"></i>
+            </div>
+            <div class="apply-summary-main">
+              <h5 id="applyJobTitle">—</h5>
+              <p class="apply-summary-company">
+                <i class="bi bi-briefcase"></i>
+                <span id="applyCompanyName">—</span>
+                <span id="applyCompanyIndustry" class="apply-company-industry"></span>
+              </p>
+              <div class="apply-summary-facts" id="applyJobFacts"></div>
+              <div class="apply-summary-deadline" id="applyDeadlineBadge"></div>
+            </div>
+            <div class="apply-summary-salary" id="applySalaryBox"></div>
+          </div>
+
+          <div class="apply-company-strip" id="applyCompanyStrip"></div>
+
+          <!-- Personal details -->
+          <fieldset class="apply-section">
+            <legend>
+              <i class="bi bi-person-badge"></i>
+              <span>Personal details</span>
+              <small class="apply-section-hint">Auto-filled from your profile. Edit if anything has changed.</small>
+            </legend>
+            <div class="apply-field apply-field-wide">
+    <label>Profile photo <span class="req">*</span></label>
+    <div class="apply-photo-row" id="applyPhotoRow">
+      <!-- populated by JS -->
+    </div>
+    <label class="apply-file apply-file-photo">
+      <input type="file" id="af_profilePhoto" name="profilePhoto"
+             accept="image/jpeg,image/png,image/webp" hidden>
+      <i class="bi bi-image"></i>
+      <span>Upload a different photo</span>
+      <small>JPG / PNG / WEBP · max 5 MB</small>
+    </label>
+    <div class="field-error" data-for="af_profilePhoto"></div>
+  </div>
+            <div class="apply-grid">
+              <div class="apply-field">
+                <label for="af_fullName">Full name <span class="req">*</span></label>
+                <div class="apply-input-wrap">
+                  <input type="text" id="af_fullName" name="fullName" autocomplete="name" required>
+                  <span class="apply-source" data-source="fullName"></span>
+                </div>
+                <div class="field-error" data-for="af_fullName"></div>
+              </div>
+
+              <div class="apply-field">
+                <label for="af_prnNo">PRN number <span class="req">*</span></label>
+                <div class="apply-input-wrap">
+                  <input type="text" id="af_prnNo" name="prnNo" required readonly
+                         title="Set at signup — contact admin to change">
+                  <span class="apply-source" data-source="prnNo"></span>
+                </div>
+                <div class="field-error" data-for="af_prnNo"></div>
+              </div>
+
+              <div class="apply-field">
+                <label for="af_email">Email <span class="req">*</span></label>
+                <div class="apply-input-wrap">
+                  <input type="email" id="af_email" name="email" autocomplete="email" required>
+                  <span class="apply-source" data-source="email"></span>
+                </div>
+                <div class="field-error" data-for="af_email"></div>
+              </div>
+
+              <div class="apply-field">
+                <label for="af_phone">Phone <span class="req">*</span></label>
+                <div class="apply-input-wrap">
+                  <input type="tel" id="af_phone" name="phone" autocomplete="tel"
+                         inputmode="numeric" maxlength="10" required>
+                  <span class="apply-source" data-source="phone"></span>
+                </div>
+                <div class="field-error" data-for="af_phone"></div>
+              </div>
+
+              <div class="apply-field">
+                <label for="af_dateOfBirth">Date of birth <span class="req">*</span></label>
+                <div class="apply-input-wrap">
+                  <input type="date" id="af_dateOfBirth" name="dateOfBirth" required>
+                  <span class="apply-source" data-source="dateOfBirth"></span>
+                </div>
+                <div class="field-error" data-for="af_dateOfBirth"></div>
+              </div>
+
+              <div class="apply-field">
+                <label for="af_gender">Gender <span class="req">*</span></label>
+                <div class="apply-input-wrap">
+                  <select id="af_gender" name="gender" required>
+                    <option value="">Select gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                  </select>
+                  <span class="apply-source" data-source="gender"></span>
+                </div>
+                <div class="field-error" data-for="af_gender"></div>
+              </div>
+
+              <div class="apply-field apply-field-wide">
+                <label for="af_address">Address <span class="req">*</span></label>
+                <div class="apply-input-wrap">
+                  <input type="text" id="af_address" name="address" autocomplete="street-address" required>
+                  <span class="apply-source" data-source="address"></span>
+                </div>
+                <div class="field-error" data-for="af_address"></div>
+              </div>
+
+              <div class="apply-field">
+                <label for="af_city">City <span class="req">*</span></label>
+                <div class="apply-input-wrap">
+                  <input type="text" id="af_city" name="city" required>
+                  <span class="apply-source" data-source="city"></span>
+                </div>
+                <div class="field-error" data-for="af_city"></div>
+              </div>
+
+              <div class="apply-field">
+                <label for="af_state">State <span class="req">*</span></label>
+                <div class="apply-input-wrap">
+                  <input type="text" id="af_state" name="state" required>
+                  <span class="apply-source" data-source="state"></span>
+                </div>
+                <div class="field-error" data-for="af_state"></div>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Academic details -->
+          <fieldset class="apply-section">
+            <legend>
+              <i class="bi bi-mortarboard"></i>
+              <span>Academic details</span>
+            </legend>
+
+            <div class="apply-grid">
+              <div class="apply-field">
+                <label for="af_branch">Branch / Course <span class="req">*</span></label>
+                <div class="apply-input-wrap">
+                  <input type="text" id="af_branch" name="branch" required readonly
+                         title="Locked — set at signup">
+                  <span class="apply-source" data-source="branch"></span>
+                </div>
+                <div class="field-error" data-for="af_branch"></div>
+              </div>
+
+              <div class="apply-field">
+                <label for="af_cgpa">CGPA <span class="req">*</span></label>
+                <div class="apply-input-wrap">
+                  <input type="number" id="af_cgpa" name="cgpa" step="0.01" min="0" max="10" required>
+                  <span class="apply-source" data-source="cgpa"></span>
+                </div>
+                <div class="field-error" data-for="af_cgpa"></div>
+                <small class="apply-help">Must meet the job's minimum CGPA requirement.</small>
+              </div>
+
+              <div class="apply-field">
+                <label for="af_activeBacklogs">Active backlogs <span class="req">*</span></label>
+                <div class="apply-input-wrap">
+                  <input type="number" id="af_activeBacklogs" name="activeBacklogs" min="0" step="1" required>
+                  <span class="apply-source" data-source="activeBacklogs"></span>
+                </div>
+                <div class="field-error" data-for="af_activeBacklogs"></div>
+              </div>
+
+              <div class="apply-field">
+                <label for="af_graduationYear">Graduation year <span class="req">*</span></label>
+                <div class="apply-input-wrap">
+                  <input type="number" id="af_graduationYear" name="graduationYear"
+                         min="2000" max="2100" step="1" required>
+                  <span class="apply-source" data-source="graduationYear"></span>
+                </div>
+                <div class="field-error" data-for="af_graduationYear"></div>
+              </div>
+
+              <div class="apply-field">
+                <label for="af_courseDuration">Course duration (yrs) <span class="req">*</span></label>
+                <div class="apply-input-wrap">
+                  <input type="number" id="af_courseDuration" name="courseDuration"
+                         min="1" max="10" step="1" required>
+                  <span class="apply-source" data-source="courseDuration"></span>
+                </div>
+                <div class="field-error" data-for="af_courseDuration"></div>
+              </div>
+
+              <!-- <div class="apply-field">
+                <label for="af_qualification">Highest qualification <span class="req">*</span></label>
+                <div class="apply-input-wrap">
+                  <input type="text" id="af_qualification" name="qualification"
+                         placeholder="e.g. BCA / B.Tech / MCA" required>
+                  <span class="apply-source" data-source="qualification"></span>
+                </div>
+                <div class="field-error" data-for="af_qualification"></div>
+              </div> -->
+            </div>
+          </fieldset>
+
+          <!-- Application materials -->
+          <fieldset class="apply-section">
+            <legend>
+              <i class="bi bi-file-earmark-text"></i>
+              <span>Application materials</span>
+            </legend>
+
+            <div class="apply-field apply-field-wide">
+              <label>Resume <span class="req">*</span></label>
+              <div class="apply-resume-row" id="applyResumeRow"></div>
+              <label class="apply-file">
+                <input type="file" id="af_resume" name="resume" accept=".pdf,.doc,.docx" hidden>
+                <i class="bi bi-upload"></i>
+                <span>Upload a different resume</span>
+                <small>PDF / DOC / DOCX · max 10 MB</small>
+              </label>
+              <div class="field-error" data-for="af_resume"></div>
+            </div>
+
+            <div class="apply-field apply-field-wide">
+              <label for="af_skills">Key skills <span class="req">*</span></label>
+              <div class="apply-input-wrap">
+                <input type="text" id="af_skills" name="skills"
+                       placeholder="Comma separated, e.g. Java, Spring Boot, MongoDB" required>
+              </div>
+              <div class="field-error" data-for="af_skills"></div>
+              <small class="apply-help">These will be shown to the recruiter.</small>
+            </div>
+
+            <div class="apply-field apply-field-wide">
+              <label for="af_coverLetter">Cover letter <span class="req">*</span></label>
+              <textarea id="af_coverLetter" name="coverLetter" rows="6" required
+                        minlength="50" maxlength="2000"
+                        placeholder="Why are you a great fit for this role? Mention relevant projects or experience."></textarea>
+              <div class="apply-char-count"><span id="af_coverCount">0</span> / 2000</div>
+              <div class="field-error" data-for="af_coverLetter"></div>
+            </div>
+
+            <div class="apply-field apply-field-wide">
+              <label for="af_portfolio">Portfolio / GitHub / LinkedIn (optional)</label>
+              <input type="url" id="af_portfolio" name="portfolioUrl" placeholder="https://...">
+              <div class="field-error" data-for="af_portfolio"></div>
+            </div>
+          </fieldset>
+
+          <!-- Declaration -->
+          <fieldset class="apply-section apply-section-decl">
+            <legend>
+              <i class="bi bi-shield-check"></i>
+              <span>Declaration</span>
+            </legend>
+            <label class="apply-check">
+              <input type="checkbox" id="af_declare" required>
+              <span>I confirm that all information provided is true and accurate to the best of my knowledge.</span>
+            </label>
+            <div class="field-error" data-for="af_declare"></div>
+
+            <label class="apply-check">
+              <input type="checkbox" id="af_consent">
+              <span>I allow the company to contact me about this application.</span>
+            </label>
+          </fieldset>
+
+          <div id="applyGlobalError" class="apply-global-error" hidden></div>
+        </div>
+
+        <div class="modal-footer apply-modal-footer">
+          <div class="apply-footer-left">
+            <i class="bi bi-info-circle"></i>
+            <span>Fields marked <span class="req">*</span> are required.</span>
+          </div>
+          <div class="apply-footer-right">
+            <button type="button" class="btn-outline-teal" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn-apply" id="applySubmitBtn">
+              <span class="apply-btn-label">Submit application</span>
+              <span class="apply-btn-spinner" hidden>
+                <span class="spinner-border spinner-border-sm"></span> Submitting…
+              </span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Application Success Modal -->
+<div class="modal fade" id="applicationSuccessModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content success-modal-content">
+      <div class="success-modal-body">
+        <div class="success-icon-wrap">
+          <i class="bi bi-check-lg"></i>
+        </div>
+        <h4 class="success-title">Application Submitted!</h4>
+        <p class="success-message">
+          Your application for <strong id="successJobTitle">this role</strong> has been successfully submitted.
+        </p>
+        <p class="success-submessage">
+          We'll notify you soon about the next steps. Good luck! 🎉
+        </p>
+        <button type="button" class="btn-success-close" data-bs-dismiss="modal">
+          Got it
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/student/saved-job-store.js"></script>
+<script src="../assets/js/student/search-jobs.js"></script>
+    </main>
+  </div>
+</div>
+
+
+<!-- Job Search page logic -->
+<script src="../assets/js/student/sidebar.js"></script>
+<script src="../assets/js/student/student_dashboard.js"></script>
+
+<script src="../assets/js/student/saved-jobs.js"></script>
+</body>
+</html>

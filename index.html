@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hiredesk &mdash; College Placement Cell</title>
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="assets/css/index_style.css">
+    <link rel="stylesheet" href="assets/css/student/student-signup.css">
+</head>
+<body>
+
+<!-- ============ NAVBAR ============ -->
+<nav>
+    <div class="nav-wrapper">
+        <a href="#top" class="brand-logo custom-brand">
+            <span class="brand-mark">V</span>
+            <span class="brand-text">
+        <span class="name">Hiredesk</span>
+        <span class="tag">Placement Cell</span>
+      </span>
+        </a>
+
+        <a href="#" data-target="sidenav" class="sidenav-trigger right hide-on-large-only" style="line-height:72px;">
+            <i class="material-icons">menu</i>
+        </a>
+
+        <ul class="right hide-on-med-and-down">
+            <li><a href="#top">Home</a></li>
+            <li><a href="#portals">Portals</a></li>
+            <li><a href="#how">How it works</a></li>
+            <li><a href="#features">Why Hiredesk</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a class="nav-cta modal-trigger" href="#adminModal">Admin Login</a></li>
+            <li><a class="nav-cta filled modal-trigger" href="#studentModal">Get Started</a></li>
+        </ul>
+    </div>
+</nav>
+
+<ul class="sidenav" id="sidenav">
+    <li class="sidenav-header">Hiredesk <span class="mono" style="font-size:11px;color:var(--slate);">Placement Cell</span></li>
+    <li><a href="#top">Home</a></li>
+    <li><a href="#portals">Portals</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#features">Why Hiredesk</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><div class="divider" style="margin:10px 0;"></div></li>
+    <li><a class="modal-trigger" href="#adminModal"><i class="material-icons left">admin_panel_settings</i>Admin Login</a></li>
+    <li><a class="modal-trigger" href="#companyModal"><i class="material-icons left">apartment</i>Company Portal</a></li>
+    <li><a class="modal-trigger" href="#studentModal"><i class="material-icons left">school</i>Student Portal</a></li>
+</ul>
+
+<!-- ============ HERO ============ -->
+<div id="top"></div>
+<section class="hero">
+    <div>
+        <div class="eyebrow">Placement Cell &middot; Academic Year 2026&ndash;27</div>
+        <h1>One record book for every <em>placement</em>, on one campus.</h1>
+        <p class="lede">Hiredesk keeps the admin, the recruiter and the student on the same page &mdash; from the day a company registers a drive to the day an offer letter is signed.</p>
+        <div class="hero-actions">
+            <a class="btn waves-effect btn-primary modal-trigger" href="#studentModal">Student Sign Up</a>
+            <a class="btn waves-effect btn-ghost modal-trigger" href="#companyModal">Register as Recruiter</a>
+        </div>
+        <div class="ledger">
+            <div class="stat">
+                <div class="num">312<sup>+</sup></div>
+                <div class="label">Students Placed</div>
+            </div>
+            <div class="stat">
+                <div class="num">86</div>
+                <div class="label">Companies On&#8209;Campus</div>
+            </div>
+            <div class="stat">
+                <div class="num">&#8377;9.4<sup>L</sup></div>
+                <div class="label">Highest Package</div>
+            </div>
+            <div class="stat">
+                <div class="num">94%</div>
+                <div class="label">Final&#8209;Year Placed</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="seal-wrap">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <circle class="ring-outer" cx="200" cy="200" r="198"></circle>
+            <circle class="ring-dashed" cx="200" cy="200" r="172"></circle>
+            <circle class="core" cx="200" cy="200" r="138"></circle>
+
+            <text class="big-year" x="200" y="210" text-anchor="middle">2026</text>
+            <text class="small-cap" x="200" y="238" text-anchor="middle">PLACEMENT DRIVE CYCLE</text>
+
+            <rect class="tick-bg" x="160" y="0" width="80" height="16"></rect>
+            <text class="tick-label" x="200" y="12" text-anchor="middle">ADMIN</text>
+
+            <rect class="tick-bg" x="152" y="384" width="96" height="16"></rect>
+            <text class="tick-label" x="200" y="396" text-anchor="middle">STUDENT</text>
+
+            <rect class="tick-bg" x="0" y="192" width="52" height="16"></rect>
+            <text class="tick-label" x="26" y="204" text-anchor="middle">CO.</text>
+
+            <rect class="tick-bg" x="348" y="192" width="52" height="16"></rect>
+            <text class="tick-label" x="374" y="204" text-anchor="middle">CO.</text>
+        </svg>
+    </div>
+</section>
+
+<!-- ============ PORTALS ============ -->
+<section class="block" id="portals">
+    <div class="section-head">
+        <h2>Three portals, one drive</h2>
+        <p>Every stakeholder in the placement process gets an entry point built around what they actually need to do.</p>
+    </div>
+
+    <div class="portals">
+        <!-- Admin -->
+        <div class="portal-card admin">
+            <div class="portal-badge">A</div>
+            <div class="kicker">Placement Cell</div>
+            <h3>College Admin</h3>
+            <p>Run the placement cell end to end &mdash; approve companies, publish drives and track every student's status from one dashboard.</p>
+            <ul class="list">
+                <li><i class="material-icons">check</i>Approve company &amp; job postings</li>
+                <li><i class="material-icons">check</i>Manage student eligibility lists</li>
+                <li><i class="material-icons">check</i>Generate placement reports</li>
+            </ul>
+            <div class="actions">
+                <a class="btn-flat-line fill modal-trigger" href="#adminModal">Admin Login</a>
+            </div>
+        </div>
+
+        <!-- Company -->
+        <div class="portal-card company">
+            <div class="portal-badge">C</div>
+            <div class="kicker">Recruiter</div>
+            <h3>Companies</h3>
+            <p>Post openings, shortlist resumes and schedule interview rounds without a single email chain with the placement office.</p>
+            <ul class="list">
+                <li><i class="material-icons">check</i>Post job &amp; internship drives</li>
+                <li><i class="material-icons">check</i>Filter resumes by branch &amp; CGPA</li>
+                <li><i class="material-icons">check</i>Schedule rounds &amp; release offers</li>
+            </ul>
+            <div class="actions">
+                <a class="btn-flat-line modal-trigger" href="#companyModal">Sign Up</a>
+                <a class="btn-flat-line fill modal-trigger" href="#companyModal">Login</a>
+            </div>
+        </div>
+
+        <!-- Student -->
+        <div class="portal-card student">
+            <div class="portal-badge">S</div>
+            <div class="kicker">Final &amp; Pre&#8209;Final Year</div>
+            <h3>Students</h3>
+            <p>Build your profile once, apply to every eligible drive and track applications from "applied" to "offer" in real time.</p>
+            <ul class="list">
+                <li><i class="material-icons">check</i>One profile, every application</li>
+                <li><i class="material-icons">check</i>Real&#8209;time interview schedule</li>
+                <li><i class="material-icons">check</i>Track offers &amp; upload documents</li>
+            </ul>
+            <div class="actions">
+                <a class="btn-flat-line modal-trigger" href="#studentModal">Sign Up</a>
+                <a class="btn-flat-line fill modal-trigger" href="#studentModal">Login</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<div class="process" id="how">
+    <section class="block">
+        <div class="section-head">
+            <h2>How a drive moves through Hiredesk</h2>
+            <p>The same three steps, every cycle, for every company that walks in.</p>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="snum">1</div>
+                <h4>Admin opens the drive</h4>
+                <p>The placement cell verifies the company, sets eligibility criteria and opens the drive to the matching batch.</p>
+            </div>
+            <div class="step">
+                <div class="snum">2</div>
+                <h4>Students apply, company shortlists</h4>
+                <p>Eligible students apply from their dashboard; recruiters filter, shortlist and move candidates through rounds.</p>
+            </div>
+            <div class="step">
+                <div class="snum">3</div>
+                <h4>Offers are recorded</h4>
+                <p>Offers are logged against each student's profile and roll up into the admin's placement report automatically.</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- ============ FEATURES ============ -->
+<section class="block" id="features">
+    <div class="section-head">
+        <h2>Why the placement cell runs on Hiredesk</h2>
+        <p>Built for a single institution's placement season &mdash; not a generic job board.</p>
+    </div>
+    <div class="features-grid">
+        <div class="feature">
+            <div class="fnum mono">01</div>
+            <h4>Role&#8209;based access</h4>
+            <p>Admins, recruiters and students each see only what belongs to them &mdash; no shared inboxes or spreadsheets.</p>
+        </div>
+        <div class="feature">
+            <div class="fnum mono">02</div>
+            <h4>Eligibility auto&#8209;check</h4>
+            <p>CGPA, backlog and branch criteria are applied automatically before a student can apply to a drive.</p>
+        </div>
+        <div class="feature">
+            <div class="fnum mono">03</div>
+            <h4>Live drive calendar</h4>
+            <p>Every test, interview round and result date sits on one calendar visible to whoever needs it.</p>
+        </div>
+        <div class="feature">
+            <div class="fnum mono">04</div>
+            <h4>Exportable reports</h4>
+            <p>Branch&#8209;wise and year&#8209;wise placement statistics, ready for NAAC and NBA documentation.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="page-footer" id="contact">
+    <div class="foot-grid">
+        <div>
+            <h5>Vertex Placement Cell</h5>
+            <p>The placement management system built for a single college campus &mdash; admin, recruiters and students, on one record.</p>
+        </div>
+        <div>
+            <h5 style="font-size:14px;">Portals</h5>
+            <ul>
+                <li><a class="modal-trigger" href="#adminModal">Admin Login</a></li>
+                <li><a class="modal-trigger" href="#companyModal">Company Portal</a></li>
+                <li><a class="modal-trigger" href="#studentModal">Student Portal</a></li>
+            </ul>
+        </div>
+        <div>
+            <h5 style="font-size:14px;">Placement Cell</h5>
+            <ul>
+                <li><a href="#how">How it works</a></li>
+                <li><a href="#features">Why Vertex</a></li>
+                <li><a href="#">Placement Policy</a></li>
+            </ul>
+        </div>
+        <div>
+            <h5 style="font-size:14px;">Contact</h5>
+            <ul>
+                <li><a href="mailto:placements@college.edu">placements@college.edu</a></li>
+                <li><a href="tel:+910000000000">+91 00000 00000</a></li>
+                <li><a href="#">Training &amp; Placement Office, Main Campus</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container center-align" style="max-width:1240px;">
+            &copy; 2026 Vertex Placement Cell. Built for internal college use.
+        </div>
+    </div>
+</footer>
+<!-- ============ MODAL: ADMIN LOGIN ============ -->
+<div id="adminModal" class="modal">
+    <i class="material-icons modal-close-x modal-close">close</i>
+    <div class="modal-head">
+        <div class="kicker">Placement Cell</div>
+        <h4>Admin Login</h4>
+    </div>
+    <form class="modal-content" id="adminLoginForm" novalidate>
+        <div class="row" style="margin-bottom:0;">
+            <div class="input-field col s12">
+                <i class="material-icons prefix">badge</i>
+                <input id="admin_id" type="text" required>
+                <label for="admin_id">Admin Username</label>
+                <span class="error-msg" id="err_admin_id"></span>
+            </div>
+            <div class="input-field col s12">
+                <i class="material-icons prefix">lock</i>
+                <input id="admin_pass" type="password" required>
+                <label for="admin_pass">Password</label>
+                <i class="material-icons suffix toggle-pass" data-target="admin_pass">visibility_off</i>
+                <span class="error-msg" id="err_admin_pass"></span>
+            </div>
+        </div>
+    </form>
+    <div class="modal-footer">
+        <button class="btn waves-effect modal-submit" type="button" id="adminLoginBtn">Login to Dashboard</button>
+        <p class="modal-note">Admin accounts are created by the college IT office only.</p>
+    </div>
+</div>
+
+<!-- ============ MODAL: COMPANY LOGIN / SIGNUP ============ -->
+<div id="companyModal" class="modal">
+    <i class="material-icons modal-close-x modal-close">close</i>
+    <div class="modal-head">
+        <div class="kicker">Recruiter Access</div>
+        <h4>Company Portal</h4>
+    </div>
+    <ul class="tabs" style="margin:18px 30px 0; width:calc(100% - 60px);">
+        <li class="tab col s6"><a class="active" href="#companyLogin">Login</a></li>
+        <li class="tab col s6"><a href="#companySignup">Register</a></li>
+    </ul>
+
+    <div id="companyLogin" class="modal-content">
+        <form class="row" id="companyLoginForm" style="margin-bottom:0;" novalidate>
+            <div class="input-field col s12">
+                <i class="material-icons prefix">mail</i>
+                <input id="co_email" type="email" required>
+                <label for="co_email">Company/HR Email</label>
+                <span class="error-msg" id="err_co_email"></span>
+            </div>
+            <div class="input-field col s12">
+                <i class="material-icons prefix">lock</i>
+                <input id="co_pass" type="password" required>
+                <label for="co_pass">Password</label>
+                <i class="material-icons suffix toggle-pass" data-target="co_pass">visibility_off</i>
+                <span class="error-msg" id="err_co_pass"></span>
+            </div>
+            <div class="col s12" style="text-align:center; margin-top:6px;">
+                <button type="button" id="companyLoginBtn" class="btn waves-effect waves-light">Login</button>
+            </div>
+        </form>
+    </div>
+    <div id="companySignup" class="modal-content">
+        <form class="row" id="companySignupForm" style="margin-bottom:0;" novalidate>
+
+            <div class="input-field col s12">
+                <i class="material-icons prefix">apartment</i>
+                <input id="co_name" type="text" required>
+                <label for="co_name">Company Name</label>
+                <span class="error-msg" id="err_co_name"></span>
+            </div>
+            <div class="input-field col s12">
+                <i class="material-icons prefix">place</i>
+                <input id="co_location" type="text" required>
+                <label for="co_location">Location (City, State)</label>
+                <span class="error-msg" id="err_co_location"></span>
+            </div>
+            <div class="field-row">
+                <div class="input-field half">
+                    <i class="material-icons prefix">person</i>
+                    <input id="co_contact" type="text" required>
+                    <label for="co_contact">HR Contact Name</label>
+                    <span class="error-msg" id="err_co_contact"></span>
+                </div>
+                <div class="input-field half">
+                    <i class="material-icons prefix">call</i>
+                    <input id="co_phone" type="text" inputmode="numeric" maxlength="10" required
+                           oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)">
+                    <label for="co_phone">Phone Number</label>
+                    <span class="error-msg" id="err_co_phone"></span>
+                </div>
+            </div>
+
+            <div class="field-row">
+                <div class="input-field half">
+                    <i class="material-icons prefix">mail</i>
+                    <input id="co_email2" type="email" required>
+                    <label for="co_email2">Work Email</label>
+                    <span class="error-msg" id="err_co_email2"></span>
+                </div>
+                <div class="input-field half">
+                    <i class="material-icons prefix">language</i>
+                    <input id="co_website" type="text" required>
+                    <label for="co_website">Company Website URL</label>
+                    <span class="error-msg" id="err_co_website"></span>
+                </div>
+            </div>
+
+            <div class="field-row">
+                <div class="input-field half">
+                    <i class="material-icons prefix">fingerprint</i>
+                    <input id="co_cin" type="text" maxlength="21" required
+                           oninput="this.value=this.value.toUpperCase()">
+                    <label for="co_cin">CIN Number</label>
+                    <span class="error-msg" id="err_co_cin"></span>
+                </div>
+
+                <div class="input-field half">
+                    <i class="material-icons prefix select-icon">category</i>
+                    <select id="co_industry" required>
+                        <option value="" disabled selected>Choose industry</option>
+                        <option value="IT">IT / Software</option>
+                        <option value="CORE">Core / Manufacturing</option>
+                        <option value="FINANCE">Finance / Banking</option>
+                        <option value="CONSULTING">Consulting</option>
+                        <option value="EDTECH">EdTech</option>
+                        <option value="OTHER">Other</option>
+                    </select>
+                    <label class="active industry-label">Industry Type</label>
+                    <span class="error-msg" id="err_co_industry"></span>
+                </div>
+            </div>
+
+            <div class="field-row">
+                <div class="input-field half">
+                    <i class="material-icons prefix">lock</i>
+                    <input id="co_pass2" type="password" required>
+                    <label for="co_pass2">Create Password</label>
+                    <i class="material-icons suffix toggle-pass" data-target="co_pass2">visibility_off</i>
+                    <span class="error-msg" id="err_co_pass2"></span>
+                </div>
+                <div class="input-field half">
+                    <i class="material-icons prefix">lock_outline</i>
+                    <input id="co_pass3" type="password" required>
+                    <label for="co_pass3">Confirm Password</label>
+                    <i class="material-icons suffix toggle-pass" data-target="co_pass3">visibility_off</i>
+                    <span class="error-msg" id="err_co_pass3"></span>
+                </div>
+            </div>
+
+            <div class="col s12" style="text-align:center; margin-top:6px;">
+                <button type="button" id="companySignupBtn" class="btn waves-effect waves-light" >Sign Up</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- ============ MODAL: STUDENT LOGIN / SIGNUP ============ -->
+<!-- ============ MODAL: STUDENT LOGIN / SIGNUP ============ -->
+<div id="studentModal" class="modal vertex-split-modal">
+    <i class="material-icons modal-close-x modal-close">close</i>
+    
+    <div class="modal-split-wrapper">
+        <!-- LEFT SIDE: Graphic & Text -->
+        <div class="modal-graphic-side">
+            <div class="graphic-content">
+                <div class="kicker" style="color: var(--brass-soft);">Student Access</div>
+                <h2>One step closer to your <em>dream job</em>.</h2>
+                <p>Register now and take the next step in your career journey. Explore opportunities, connect with top companies, and build a brighter future.</p>
+                
+                <div class="graphic-features">
+                    <div class="g-feature"><i class="material-icons">business</i> Top Companies</div>
+                    <div class="g-feature"><i class="material-icons">work</i> Great Opportunities</div>
+                    <div class="g-feature"><i class="material-icons">trending_up</i> Career Growth</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE: Form -->
+        <div class="modal-form-side">
+            <div class="modal-head" style="padding: 0 0 20px 0;">
+                <h4 style="margin:0;">Student Portal</h4>
+                <p style="color: var(--slate); font-size: 14px; margin-top: 4px;">Create your account or login to continue.</p>
+            </div>
+            
+            <ul class="tabs vertex-tabs" style="margin-bottom: 24px; width: 100%;">
+                <li class="tab col s6"><a class="active" href="#studentLogin">Login</a></li>
+                <li class="tab col s6"><a href="#studentSignup">Sign Up</a></li>
+            </ul>
+
+            <!-- LOGIN TAB -->
+            <div id="studentLogin" class="modal-content" style="padding: 0;">
+                <form class="row" id="studentLoginForm" style="margin-bottom:0;" novalidate>
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">school</i>
+                        <input id="st_roll" type="text" required>
+                        <label for="st_roll">College Email</label>
+                        <span class="error-msg" id="err_st_roll"></span>
+                    </div>
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">lock</i>
+                        <input id="st_pass" type="password" required>
+                        <label for="st_pass">Password</label>
+                        <i class="material-icons suffix toggle-pass" data-target="st_pass">visibility_off</i>
+                        <span class="error-msg" id="err_st_pass"></span>
+                    </div>
+                    <div class="col s12" style="text-align:center; margin-top:12px;">
+                        <button type="button" id="studentLoginBtn" class="btn waves-effect vertex-btn-teal" style="width:100%; height: 48px; border-radius: 6px;">Login to Portal</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- SIGNUP TAB -->
+           <div id="studentSignup" class="modal-content" style="padding: 0;">
+    <form class="row" id="studentSignupForm" style="margin-bottom:0;" novalidate>
+        
+        <!-- Full Name -->
+        <div class="input-field" style="margin-top: 16px;">
+            <i class="material-icons prefix">person</i>
+            <input id="st_name" type="text" required>
+            <label for="st_name">Full Name</label>
+            <span class="error-msg" id="err_st_name"></span>
+        </div>
+
+        <!-- PRN and Branch Row -->
+        <div class="field-row">
+            <div class="input-field">
+                <i class="material-icons prefix">badge</i>
+                <input id="st_roll2" type="text" required >
+                <label for="st_roll2">PRN Number</label>
+                <span class="error-msg" id="err_st_roll2"></span>
+            </div>
+            
+            <div class="input-field">
+                <i class="material-icons prefix">apartment</i>
+                <select id="st_branch" required>
+                    <option value="" disabled selected>Branch</option>
+                    <option value="B.Tech">B.Tech</option>
+                    <option value="BCA">BCA</option>
+                    <option value="BBA">BBA</option>
+                    <option value="B.Com">B.Com</option>
+                    <option value="M.Tech">M.Tech</option>
+                    <option value="B.Arc">B.Arc</option>
+                    <option value="MCA">MCA</option>
+                    <option value="MBA">MBA</option>
+                    <option value="M.Sc">M.Sc</option>
+                    <option value="M.Com">M.Com</option>
+                    <option value="MA">MA</option>
+                    <option value="BA">BA</option>
+                    <option value="Other">Other</option>
+                </select>
+                <label>Branch</label>
+                <span class="error-msg" id="err_st_branch"></span>
+            </div>
+        </div>
+
+        <!-- Phone and Email Row -->
+        <div class="field-row">
+            <div class="input-field">
+                <i class="material-icons prefix">call</i>
+                <input id="st_phone" type="text" inputmode="numeric" maxlength="10" required
+                       oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)">
+                <label for="st_phone">Phone</label>
+                <span class="error-msg" id="err_st_phone"></span>
+            </div>
+            
+            <div class="input-field">
+                <i class="material-icons prefix">mail</i>
+                <input id="st_email" type="email" required>
+                <label for="st_email">Email</label>
+                <span class="error-msg" id="err_st_email"></span>
+            </div>
+        </div>
+
+        <!-- Profile Photo -->
+        <div class="input-field">
+            <i class="material-icons prefix">account_circle</i>
+            <div style="padding-left: 44px;">
+                <label for="st_profilePhoto" style="display:block; margin-bottom:8px; color:var(--slate); font-size:12px;">
+                    Profile Photo (Max 2MB)
+                </label>
+                <input id="st_profilePhoto" type="file" accept="image/jpeg,image/png,image/webp" required>
+                <span class="error-msg" id="err_st_profilePhoto"></span>
+                <div id="profilePhotoPreview" style="display:none; margin-top:12px;">
+                    <img id="profilePhotoPreviewImg" src="" alt="Profile Preview" style="width:80px; height:80px; object-fit:cover; border-radius:8px; border:1px solid var(--line);">
+                </div>
+            </div>
+        </div>
+
+        <!-- Password -->
+        <div class="input-field">
+    <i class="material-icons prefix">lock</i>
+
+    <input
+        type="password"
+        id="st_pass2"
+        name="password"
+        required
+    >
+
+    <label for="st_pass2">Create Password</label>
+
+    <i class="material-icons toggle-pass"
+   id="toggle_st_pass2"
+   onclick="togglePassword('st_pass2', this)">visibility_off</i>
+</div>
+
+        <!-- Submit Button -->
+        <div style="margin-top: 32px;">
+            <button type="button" id="studentSignupBtn" class="btn waves-effect Hiredesk-btn-teal">Sign Up</button>
+        </div>
+        
+    </form>
+</div>
+        </div>
+    </div>
+</div>
+
+<!-- Materialize JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="assets/js/company/config.js"></script>
+
+<script src="assets/js/index/index_script.js"></script>
+<script src="assets/js/index/company_login.js"></script>
+<script src="assets/js/index/company-signup.js"></script>
+<!-- <script src="assets/js/index/student-login.js"></script>
+<script src="assets/js/index/student-signup.js"></script> -->
+<script src="assets/js/index/student-auth.js"></script>
+
+</body>
+</html>

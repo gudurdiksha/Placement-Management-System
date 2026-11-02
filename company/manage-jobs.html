@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Postings | Company Dashboard</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:500,600,700|Roboto:400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="../assets/css/company/company_style.css">
+    <link rel="stylesheet" href="../assets/css/company/manage-jobs-style.css">
+</head>
+<body>
+
+<a href="#" data-target="mobile-sidenav" class="sidenav-trigger mobile-trigger">
+    <i class="material-icons">menu</i>
+</a>
+
+<!-- ============ Shared navbar: fetched from assets/navbar.html by assets/navbar.js ============ -->
+
+<!-- <div id="navbar-placeholder"
+     data-page-title="Job Postings"
+     data-page-crumb="Create, manage and track all your job openings."
+     data-nav-active="job-postings"></div> -->
+<!-- ==================== NAVBAR (inline) ==================== -->
+<style>
+    .profile-nudge-dot{display:inline-block;width:7px;height:7px;border-radius:50%;
+        background:var(--bad,#e53935);margin-left:6px;vertical-align:middle;}
+    .side-foot{display:flex;align-items:center;}
+</style>
+
+<ul id="mobile-sidenav" class="sidenav sidenav-fixed">
+    <div class="side-brand">
+        <div class="brand-mark">H</div>
+        <div class="brand-text">
+            <span id="nav-brand-name" class="name">HireDesk</span>
+            <span class="sub">Company Portal</span>
+        </div>
+    </div>
+
+    <li class="side-section-label">Main</li>
+
+    <li data-nav="dashboard">
+        <a class="side-link" href="index.html"><i class="material-icons">dashboard</i>Dashboard</a>
+    </li>
+    <li data-nav="profile">
+        <a class="side-link" href="profile.html"><i class="material-icons">business</i>Profile
+            <span id="nav-profile-dot" class="profile-nudge-dot" hidden></span></a>
+    </li>
+
+    <li data-nav="jobs" class="has-submenu">
+        <a href="#!" class="side-link nav-dropdown-toggle">
+            <i class="material-icons">work</i><span>Jobs</span>
+            <i class="material-icons dropdown-arrow">keyboard_arrow_down</i>
+        </a>
+        <ul class="side-submenu">
+            <li data-nav="create-job"><a href="job-postings.html" class="side-sub-link"><i class="material-icons">add</i>Create Job</a></li>
+            <li data-nav="manage-jobs"><a href="manage-jobs.html" class="side-sub-link"><i class="material-icons">list</i>Manage Jobs</a></li>
+        </ul>
+    </li>
+
+    <li data-nav="applications"><a class="side-link" href="applications.html"><i class="material-icons">assignment_ind</i>Applications</a></li>
+    <li data-nav="assessments"><a class="side-link" href="test-assessments.html"><i class="material-icons">quiz</i>Test Assessments</a></li>
+    <li data-nav="interviews"><a class="side-link" href="interview-process.html"><i class="material-icons">event</i>Interview Process</a></li>
+    <li data-nav="reports"><a class="side-link" href="reports.html"><i class="material-icons">bar_chart</i>Reports</a></li>
+    <li data-nav="notifications"><a class="side-link" href="notifications.html"><i class="material-icons">notifications</i>Notifications</a></li>
+
+    <div class="side-foot">
+        <a href="profile.html" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;text-decoration:none;color:inherit;">
+            <div id="nav-avatar" class="avatar">--</div>
+            <div class="who" style="min-width:0;">
+                <span id="nav-company-name" class="n" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;">Loading…</span>
+                <span id="nav-profile-pct" class="r">-- % profile complete</span>
+            </div>
+        </a>
+        <a href="#" id="nav-logout-btn" class="tooltipped" data-position="top" data-tooltip="Log out" style="margin-left:8px;">
+            <i class="material-icons" style="font-size:20px;opacity:.7;">logout</i>
+        </a>
+    </div>
+</ul>
+
+<div id="app-topbar" class="topbar">
+    <div class="page-title">
+        <span id="nav-page-title"></span>
+        <span id="nav-page-crumb" class="crumb"></span>
+    </div>
+    <div class="top-actions">
+        <span id="nav-status-pill" class="pill"></span>
+        <i class="material-icons icon-btn tooltipped" data-position="bottom" data-tooltip="Notifications">notifications_none</i>
+        <i class="material-icons icon-btn tooltipped" data-position="bottom" data-tooltip="Help">help_outline</i>
+        <i id="nav-logout-btn-top" class="material-icons icon-btn tooltipped" data-position="bottom" data-tooltip="Log out">logout</i>
+    </div>
+</div>
+
+<!-- Keeps per-page title/crumb/active-key. navbar.js reads these. -->
+<div id="navbar-placeholder"
+     data-page-title="Applications"
+     data-page-crumb="Overview of hiring activity"
+     data-nav-active="applications"
+     style="display:none;"></div>
+<!-- ==================== /NAVBAR ==================== -->
+     
+<!-- ============ Main content ============ -->
+
+<main class="app-main">
+
+<!-- Aptitude Schedule Reminder Banner (hidden until needed) -->
+<section class="apt-reminder" id="aptReminder" hidden>
+  <div class="apt-reminder-icon">
+    <svg viewBox="0 0 24 24" width="22" height="22">
+      <path fill="currentColor" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 15h-2v-2h2zm0-4h-2V7h2z"/>
+    </svg>
+  </div>
+  <div class="apt-reminder-body">
+    <p class="apt-reminder-title" id="aptReminderTitle">Aptitude test not scheduled yet</p>
+    <p class="apt-reminder-sub" id="aptReminderSub"></p>
+  </div>
+  <div class="apt-reminder-actions">
+    <button type="button" class="apt-reminder-btn" id="aptReminderViewBtn">
+      View jobs
+    </button>
+  </div>
+</section>
+
+<!-- Expandable list of pending jobs (hidden by default) -->
+<section class="apt-pending-list" id="aptPendingList" hidden>
+  <h4>Jobs waiting for an aptitude schedule</h4>
+  <ul id="aptPendingItems"></ul>
+</section>
+    <div class="mj-toolbar">
+    <button class="download-report-btn" id="downloadReportBtn" type="button">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
+        <span>Download Report</span>
+    </button>
+</div>
+    <!-- Filters -->
+    <section class="filters-bar" aria-label="Filter job postings">
+
+        <div class="filter-field" data-dropdown="time">
+            <label>Time Filter</label>
+            <button type="button" class="mj-select-trigger">
+                <span class="mj-select-value">This Month</span>
+                <svg class="mj-chev" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+            </button>
+            <div class="mj-select-menu" role="listbox">
+                <button type="button" data-value="all">All Time</button>
+                <button type="button" data-value="this-week">This Week</button>
+                <button type="button" data-value="this-month" class="is-selected">This Month</button>
+                <button type="button" data-value="last-month">Last Month</button>
+            </div>
+        </div>
+
+        <div class="filter-field" data-dropdown="branch">
+            <label>Branch / Department</label>
+            <button type="button" class="mj-select-trigger">
+                <span class="mj-select-value">All Branches</span>
+                <svg class="mj-chev" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+            </button>
+            <div class="mj-select-menu" role="listbox">
+                <button type="button" data-value="all" class="is-selected">All Branches</button>
+                <button type="button" data-value="Computer Science Department">Computer Science Department</button>
+                <button type="button" data-value="Information Technology Department">Information Technology Department</button>
+                <button type="button" data-value="Design Department">Design Department</button>
+                <button type="button" data-value="Business Development Department">Business Development Department</button>
+            </div>
+        </div>
+
+        <div class="filter-field" data-dropdown="type">
+            <label>Job Type</label>
+            <button type="button" class="mj-select-trigger">
+                <span class="mj-select-value">All Types</span>
+                <svg class="mj-chev" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+            </button>
+            <div class="mj-select-menu" role="listbox">
+                <button type="button" data-value="all" class="is-selected">All Types</button>
+                <button type="button" data-value="Full Time">Full Time</button>
+                <button type="button" data-value="Part Time">Part Time</button>
+                <button type="button" data-value="Contract">Contract</button>
+                <button type="button" data-value="Internship">Internship</button>
+            </div>
+        </div>
+
+        <div class="filter-field" data-dropdown="status">
+            <label>Job Status</label>
+            <button type="button" class="mj-select-trigger">
+                <span class="mj-select-value">All Status</span>
+                <svg class="mj-chev" viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+            </button>
+            <div class="mj-select-menu" role="listbox">
+                <button type="button" data-value="all" class="is-selected">All Status</button>
+                <button type="button" data-value="Active">Active</button>
+                <button type="button" data-value="Inactive">Inactive</button>
+            </div>
+        </div>
+
+        <div class="filter-field search-field">
+            <label for="searchJob">Search Job</label>
+            <div class="search-input-wrap">
+                <!-- <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 5L20.49 19l-5-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>-->
+                <input type="text" id="searchJob" placeholder="Search by title, role or skills"> 
+            </div>
+        </div>
+
+        <a href="job-postings.html" class="create-job-btn" id="createJobBtn">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6z"/></svg>
+            Create New Job
+        </a>
+    </section>
+
+    <!-- Stat cards -->
+    <section class="stat-cards" id="statCards"></section>
+
+    <!-- Job table -->
+    <section class="table-card">
+        <div class="table-scroll">
+            <table class="job-table">
+                <thead>
+                    <tr>
+                        <th class="col-job">Job Details</th>
+                        <th class="col-role">Role &amp; Employment</th>
+                        <th class="col-location">Location &amp; Branch</th>
+                        <th class="col-salary">Salary Package</th>
+                        <th class="col-posted">Posted On</th>
+                        <th class="col-apps">Applications</th>
+                        <th class="col-status">Status</th>
+                        <th class="col-actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="jobTableBody">
+                    <!-- rows injected by manage-jobs.js -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="empty-state" id="emptyState" hidden>
+            <svg viewBox="0 0 24 24" width="40" height="40"><path fill="currentColor" d="M20 6h-4V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zM10 4h4v2h-4z"/></svg>
+            <p>No job postings match your filters</p>
+            <button id="clearFiltersBtn" type="button">Clear filters</button>
+        </div>
+
+        <div class="table-footer">
+            <span class="entries-info" id="entriesInfo">Showing 0 of 0 entries</span>
+
+            <div class="pagination" id="pagination"></div>
+
+            <div class="show-entries">
+                <span>Show</span>
+                <select id="pageSizeSelect">
+                    <option value="6">6</option>
+                    <option value="10" selected>10</option>
+                    <option value="20">20</option>
+                </select>
+                <span>entries</span>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="app-footer">
+    © 2026 HireDesk · Internal hiring workspace
+</footer>
+
+<!-- Toast -->
+<div class="mj-toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="../assets/js/company/config.js"></script>
+<script src="../assets/js/company/session.js"></script>
+<script src="../assets/js/company/navbar.js"></script>
+<script src="../assets/js/company/app.js"></script>
+<script src="../assets/js/company/aptitude-schedule.js"></script>
+<script src="../assets/js/company/manage-jobs.js"></script>
+</body>
+</html>

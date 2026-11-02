@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard · HireDesk</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%230E9AA3%22/><text x=%2250%22 y=%2266%22 font-size=%2255%22 font-family=%22Arial%22 fill=%22white%22 text-anchor=%22middle%22>H</text></svg>">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:500,600,700|Roboto:400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="../assets/css/company/company_style.css">
+
+</head>
+<body>
+      
+
+<!-- ============ Shared navbar: fetched from assets/navbar.html by assets/navbar.js ============
+
+<div id="navbar-placeholder"
+     data-page-title="Applications"
+     data-page-crumb="Overview of hiring activity"
+     data-nav-active="applications">
+</div> -->
+
+<!-- ==================== NAVBAR (inline) ==================== -->
+<style>
+    .profile-nudge-dot{display:inline-block;width:7px;height:7px;border-radius:50%;
+        background:var(--bad,#e53935);margin-left:6px;vertical-align:middle;}
+    .side-foot{display:flex;align-items:center;}
+</style>
+
+<ul id="mobile-sidenav" class="sidenav sidenav-fixed">
+    <div class="side-brand">
+        <div class="brand-mark">H</div>
+        <div class="brand-text">
+            <span id="nav-brand-name" class="name">HireDesk</span>
+            <span class="sub">Company Portal</span>
+        </div>
+    </div>
+
+    <li class="side-section-label">Main</li>
+
+    <li data-nav="dashboard">
+        <a class="side-link" href="index.html"><i class="material-icons">dashboard</i>Dashboard</a>
+    </li>
+    <li data-nav="profile">
+        <a class="side-link" href="profile.html"><i class="material-icons">business</i>Profile
+            <span id="nav-profile-dot" class="profile-nudge-dot" hidden></span></a>
+    </li>
+
+    <li data-nav="jobs" class="has-submenu">
+        <a href="#!" class="side-link nav-dropdown-toggle">
+            <i class="material-icons">work</i><span>Jobs</span>
+            <i class="material-icons dropdown-arrow">keyboard_arrow_down</i>
+        </a>
+        <ul class="side-submenu">
+            <li data-nav="create-job"><a href="job-postings.html" class="side-sub-link"><i class="material-icons">add</i>Create Job</a></li>
+            <li data-nav="manage-jobs"><a href="manage-jobs.html" class="side-sub-link"><i class="material-icons">list</i>Manage Jobs</a></li>
+        </ul>
+    </li>
+
+    <li data-nav="applications"><a class="side-link" href="applications.html"><i class="material-icons">assignment_ind</i>Applications</a></li>
+    <li data-nav="assessments"><a class="side-link" href="test-assessments.html"><i class="material-icons">quiz</i>Test Assessments</a></li>
+    <li data-nav="interviews"><a class="side-link" href="interview-process.html"><i class="material-icons">event</i>Interview Process</a></li>
+    <li data-nav="reports"><a class="side-link" href="reports.html"><i class="material-icons">bar_chart</i>Reports</a></li>
+    <li data-nav="notifications"><a class="side-link" href="notifications.html"><i class="material-icons">notifications</i>Notifications</a></li>
+
+    <div class="side-foot">
+        <a href="profile.html" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;text-decoration:none;color:inherit;">
+            <div id="nav-avatar" class="avatar">--</div>
+            <div class="who" style="min-width:0;">
+                <span id="nav-company-name" class="n" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;">Loading…</span>
+                <span id="nav-profile-pct" class="r">-- % profile complete</span>
+            </div>
+        </a>
+        <a href="#" id="nav-logout-btn" class="tooltipped" data-position="top" data-tooltip="Log out" style="margin-left:8px;">
+            <i class="material-icons" style="font-size:20px;opacity:.7;">logout</i>
+        </a>
+    </div>
+</ul>
+
+<div id="app-topbar" class="topbar">
+    <div class="page-title">
+        <span id="nav-page-title"></span>
+        <span id="nav-page-crumb" class="crumb"></span>
+    </div>
+    <div class="top-actions">
+        <span id="nav-status-pill" class="pill"></span>
+        <i class="material-icons icon-btn tooltipped" data-position="bottom" data-tooltip="Notifications">notifications_none</i>
+        <i class="material-icons icon-btn tooltipped" data-position="bottom" data-tooltip="Help">help_outline</i>
+        <i id="nav-logout-btn-top" class="material-icons icon-btn tooltipped" data-position="bottom" data-tooltip="Log out">logout</i>
+    </div>
+</div>
+
+<!-- Keeps per-page title/crumb/active-key. navbar.js reads these. -->
+<div id="navbar-placeholder"
+     data-page-title="Applications"
+     data-page-crumb="Overview of hiring activity"
+     data-nav-active="applications"
+     style="display:none;"></div>
+<!-- ==================== /NAVBAR ==================== -->
+
+<!-- ============ Main content ============ -->
+<main class="app-main">
+
+    <div class="section-title-row">
+        <div>
+            <h4>Welcome back, Nova Bright</h4>
+            <p>Here's what's happening with your hiring pipeline today.</p>
+        </div>
+    </div>
+
+    <!-- KPI row -->
+    <div class="row" style="margin-bottom:6px;">
+        <div class="col s12 m6 l3">
+            <div class="stat-card">
+                <div>
+                    <div class="stat-label">Open Job Postings</div>
+                    <div class="stat-value">14</div>
+                    <div class="stat-delta up"><i class="material-icons tiny" style="vertical-align:-2px;">arrow_upward</i> 3 new this week</div>
+                </div>
+                <div class="stat-icon" style="background:var(--info-bg);"><i class="material-icons" style="color:var(--info);">work</i></div>
+            </div>
+        </div>
+        <div class="col s12 m6 l3">
+            <div class="stat-card">
+                <div>
+                    <div class="stat-label">Total Applications</div>
+                    <div class="stat-value">328</div>
+                    <div class="stat-delta up"><i class="material-icons tiny" style="vertical-align:-2px;">arrow_upward</i> 46 this week</div>
+                </div>
+                <div class="stat-icon" style="background:var(--teal-light);"><i class="material-icons" style="color:var(--teal);">description</i></div>
+            </div>
+        </div>
+        <div class="col s12 m6 l3">
+            <div class="stat-card">
+                <div>
+                    <div class="stat-label">Interviews Scheduled</div>
+                    <div class="stat-value">21</div>
+                    <div class="stat-delta down"><i class="material-icons tiny" style="vertical-align:-2px;">arrow_downward</i> 4 fewer than last week</div>
+                </div>
+                <div class="stat-icon" style="background:var(--warn-bg);"><i class="material-icons" style="color:var(--warn);">event</i></div>
+            </div>
+        </div>
+        <div class="col s12 m6 l3">
+            <div class="stat-card">
+                <div>
+                    <div class="stat-label">Offers Pending Approval</div>
+                    <div class="stat-value">5</div>
+                    <div class="stat-delta up" style="color:var(--bad);"><i class="material-icons tiny" style="vertical-align:-2px;">priority_high</i> Needs your action</div>
+                </div>
+                <div class="stat-icon" style="background:var(--bad-bg);"><i class="material-icons" style="color:var(--bad);">how_to_reg</i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom:0;">
+        <!-- Action needed panel -->
+        <div class="col s12 l7">
+            <div class="panel" style="height:100%;">
+                <div class="panel-head">
+                    <div>
+                        <h5>Needs your action</h5>
+                        <div class="panel-sub">Items waiting on a decision from your team</div>
+                    </div>
+                    <a href="applications.html" class="link-more">View all</a>
+                </div>
+
+                <table class="data-table" style="width:100%;">
+                    <thead>
+                    <tr><th>Candidate</th><th>Role</th><th>Status</th><th>Action</th></tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><span class="avatar-sm">RS</span><span class="cell-primary">Riya Sharma</span></td>
+                        <td>Product Designer</td>
+                        <td><span class="pill pill-warn">Offer Pending</span></td>
+                        <td><a class="action-chip primary" href="selection-process.html"><i class="material-icons">check</i>Approve Offer</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="avatar-sm">AK</span><span class="cell-primary">Aman Kapoor</span></td>
+                        <td>Backend Engineer</td>
+                        <td><span class="pill pill-info">Interview Feedback Due</span></td>
+                        <td><a class="action-chip ghost" href="selection-process.html"><i class="material-icons">rate_review</i>Add Feedback</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="avatar-sm">PM</span><span class="cell-primary">Priya Menon</span></td>
+                        <td>Marketing Lead</td>
+                        <td><span class="pill pill-bad">Offer Expiring in 2 Days</span></td>
+                        <td><a class="action-chip danger-ghost" href="selection-process.html"><i class="material-icons">schedule</i>Follow Up</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="avatar-sm">SV</span><span class="cell-primary">Sahil Verma</span></td>
+                        <td>Data Analyst</td>
+                        <td><span class="pill pill-neutral">New Application</span></td>
+                        <td><a class="action-chip ghost" href="applications.html"><i class="material-icons">visibility</i>Review</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="avatar-sm">TN</span><span class="cell-primary">Tara Nair</span></td>
+                        <td>QA Engineer</td>
+                        <td><span class="pill pill-ok">Shortlisted</span></td>
+                        <td><a class="action-chip ghost" href="selection-process.html"><i class="material-icons">event</i>Schedule Interview</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Postings snapshot -->
+        <div class="col s12 l5">
+            <div class="panel" style="height:100%;">
+                <div class="panel-head">
+                    <div>
+                        <h5>Job Postings Snapshot</h5>
+                        <div class="panel-sub">Fill progress by role</div>
+                    </div>
+                    <a href="job-postings.html" class="link-more">Manage</a>
+                </div>
+
+                <div style="display:flex;flex-direction:column;gap:16px;">
+                    <div>
+                        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+                            <span class="cell-primary">Product Designer</span><span class="cell-sub">7 / 10 applied</span>
+                        </div>
+                        <div class="bar-track"><div class="bar-fill" style="width:70%;"></div></div>
+                    </div>
+                    <div>
+                        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+                            <span class="cell-primary">Backend Engineer</span><span class="cell-sub">18 / 20 applied</span>
+                        </div>
+                        <div class="bar-track"><div class="bar-fill" style="width:90%;"></div></div>
+                    </div>
+                    <div>
+                        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+                            <span class="cell-primary">Marketing Lead</span><span class="cell-sub">3 / 12 applied</span>
+                        </div>
+                        <div class="bar-track"><div class="bar-fill" style="width:25%;background:var(--warn);"></div></div>
+                    </div>
+                    <div>
+                        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+                            <span class="cell-primary">Data Analyst</span><span class="cell-sub">11 / 15 applied</span>
+                        </div>
+                        <div class="bar-track"><div class="bar-fill" style="width:73%;"></div></div>
+                    </div>
+                    <div>
+                        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+                            <span class="cell-primary">QA Engineer</span><span class="cell-sub">2 / 8 applied</span>
+                        </div>
+                        <div class="bar-track"><div class="bar-fill" style="width:25%;background:var(--bad);"></div></div>
+                    </div>
+                </div>
+
+                <div class="card-panel-note" style="margin-top:18px;">
+                    <i class="material-icons" style="font-size:18px;color:#0C6A70;">info</i>
+                    <span>QA Engineer and Marketing Lead are below target pace. Consider boosting visibility or widening the sourcing channels.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pipeline overview -->
+    <div class="panel">
+        <div class="panel-head">
+            <div>
+                <h5>Hiring Pipeline Overview</h5>
+                <div class="panel-sub">Candidates currently in each stage, across all open roles</div>
+            </div>
+            <a href="selection-process.html" class="link-more">Open pipeline</a>
+        </div>
+        <div class="row" style="margin-bottom:0;">
+            <div class="col s6 m4 l2" style="text-align:center;">
+                <div class="stat-value" style="font-size:22px;">86</div>
+                <div class="stat-label">Applied</div>
+            </div>
+            <div class="col s6 m4 l2" style="text-align:center;">
+                <div class="stat-value" style="font-size:22px;">54</div>
+                <div class="stat-label">Screening</div>
+            </div>
+            <div class="col s6 m4 l2" style="text-align:center;">
+                <div class="stat-value" style="font-size:22px;">21</div>
+                <div class="stat-label">Interviewing</div>
+            </div>
+            <div class="col s6 m4 l2" style="text-align:center;">
+                <div class="stat-value" style="font-size:22px;">9</div>
+                <div class="stat-label">Offer Stage</div>
+            </div>
+            <div class="col s6 m4 l2" style="text-align:center;">
+                <div class="stat-value" style="font-size:22px;color:var(--ok);">6</div>
+                <div class="stat-label">Hired</div>
+            </div>
+            <div class="col s6 m4 l2" style="text-align:center;">
+                <div class="stat-value" style="font-size:22px;color:var(--bad);">32</div>
+                <div class="stat-label">Rejected</div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer class="app-footer">
+    © 2026 HireDesk · Internal hiring workspace for Nova Bright Pvt Ltd
+</footer>
+<!-- Approve Offer / Hire Modal -->
+<div class="modal fade" id="hireCandidateModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius:16px;border:none;">
+      <div class="modal-header" style="background:#0E9AA3;color:#fff;border-radius:16px 16px 0 0;">
+        <h5 class="modal-title" style="font-weight:700;">
+          <i class="material-icons" style="vertical-align:middle;">check_circle</i>
+          Approve Offer
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" style="padding:24px;">
+        <p style="font-size:13.5px;color:#64748b;margin-bottom:18px;">
+          Confirm the offer details for <strong id="hireCandidateName">this candidate</strong>.
+        </p>
+
+        <div class="mb-3">
+          <label class="form-label" style="font-weight:600;font-size:13px;">Package Offered (LPA) *</label>
+          <input type="number" step="0.01" min="0" class="form-control" id="hirePackage" placeholder="e.g. 6.5" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" style="font-weight:600;font-size:13px;">Joining Date *</label>
+          <input type="date" class="form-control" id="hireJoiningDate" required>
+        </div>
+
+        <input type="hidden" id="hireApplicationId">
+      </div>
+      <div class="modal-footer" style="border-top:1px solid #eef2f7;">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn" id="confirmHireBtn" style="background:#0E9AA3;color:#fff;font-weight:600;">
+          <i class="material-icons" style="font-size:16px;vertical-align:middle;">check</i>
+          Confirm Hire
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> 
+<script src="../assets/js/company/config.js"></script>
+<script src="../assets/js/company/session.js"></script> 
+<script src="../assets/js/company/navbar.js"></script>
+<script src="../assets/js/company/applications.js"></script>
+</body>
+</html>

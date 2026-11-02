@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard | HireTrack</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../assets/css/student/student_dashboard.css">
+<link rel="stylesheet" href="../assets/css/student/search-jobs.css">
+<link rel="stylesheet" href="../assets/css/student/apply-job.css">
+
+<style>
+  /* ============ Dashboard-specific ============ */
+  .dash-banner {
+    background: linear-gradient(135deg, #0E9AA3 0%, #0C6A70 100%);
+    color: #fff;
+    border-radius: 16px;
+    padding: 22px 26px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    position: relative;
+    overflow: hidden;
+  }
+  .dash-banner::after {
+    content: '';
+    position: absolute;
+    right: -40px;
+    top: -40px;
+    width: 180px;
+    height: 180px;
+    background: rgba(255,255,255,.08);
+    border-radius: 50%;
+  }
+  .dash-banner-text { position: relative; z-index: 1; flex: 1; min-width: 200px; }
+  .dash-banner-text h3 { margin: 0 0 4px; font-size: 20px; font-weight: 700; color: #fff; }
+  .dash-banner-text p  { margin: 0; font-size: 13.5px; color: rgba(255,255,255,.9); }
+  .dash-banner-cta {
+    position: relative; z-index: 1;
+    background: rgba(255,255,255,.2);
+    border: 1px solid rgba(255,255,255,.35);
+    color: #fff;
+    padding: 9px 18px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: .15s;
+  }
+  .dash-banner-cta:hover { background: rgba(255,255,255,.3); color: #fff; }
+
+  /* Stat cards */
+  .dash-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .dash-stat {
+    background: #fff;
+    border: 1px solid #e6edf2;
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 1px 2px rgba(15,23,42,.04);
+    text-decoration: none;
+    color: inherit;
+    transition: .15s;
+  }
+  .dash-stat:hover { border-color: #cfe3ea; box-shadow: 0 4px 12px rgba(14,154,163,.08); transform: translateY(-1px); }
+  .dash-stat-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .dash-stat-icon.blue   { background: #eef2ff; color: #4338ca; }
+  .dash-stat-icon.green  { background: #dcfce7; color: #166534; }
+  .dash-stat-icon.orange { background: #fef3c7; color: #b45309; }
+  .dash-stat-icon.purple { background: #f3e8ff; color: #7c3aed; }
+  .dash-stat-value { font-size: 26px; font-weight: 800; color: #0f172a; line-height: 1; }
+  .dash-stat-label { font-size: 12px; color: #64748b; margin-top: 4px; }
+  .dash-stat-sub   { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+  /* Main grid */
+  .dash-grid-2 {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 980px) { .dash-grid-2 { grid-template-columns: 1fr; } }
+
+  .dash-card {
+    background: #fff;
+    border: 1px solid #e6edf2;
+    border-radius: 14px;
+    padding: 20px 22px;
+    box-shadow: 0 1px 2px rgba(15,23,42,.04);
+    display: flex;
+    flex-direction: column;
+  }
+  .dash-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    flex-shrink: 0;
+  }
+  .dash-card-head h5 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .dash-card-head a {
+    font-size: 12.5px;
+    color: #0E9AA3;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .dash-card-head a:hover { text-decoration: underline; }
+
+  /* Scrollable body inside cards */
+  .dash-scroll {
+    overflow-y: auto;
+    padding-right: 4px;
+    margin-right: -4px;
+  }
+  .dash-scroll::-webkit-scrollbar { width: 6px; }
+  .dash-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+  .dash-scroll.max-360 { max-height: 360px; }
+  .dash-scroll.max-280 { max-height: 280px; }
+
+  /* ============ Placement Journey — rich version ============ */
+.journey-list { display: flex; flex-direction: column; gap: 12px; }
+
+.journey-item {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  border: 1px solid #eef2f7;
+  border-radius: 12px;
+  background: #fff;
+  transition: .15s;
+  cursor: pointer;
+}
+.journey-item:hover {
+  border-color: #cfe3ea;
+  background: #fafcfd;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(14,154,163,.06);
+}
+
+.journey-avatar {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+  letter-spacing: .5px;
+  overflow: hidden;
+}
+.journey-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.journey-main { min-width: 0; }
+
+.journey-row-1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.journey-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.journey-company {
+  font-size: 12.5px;
+  color: #475569;
+  margin: 2px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.journey-company .dot { color: #cbd5e1; }
+.journey-company i { font-size: 11px; color: #94a3b8; }
+
+.journey-meta {
+  display: flex;
+  gap: 14px;
+  font-size: 11.5px;
+  color: #94a3b8;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+.journey-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.journey-meta i { color: #cbd5e1; }
+
+/* Progress track */
+.journey-track {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #eef2f7;
+}
+.j-track-step {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 8px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #cbd5e1;
+  white-space: nowrap;
+  position: relative;
+  min-width: 0;
+}
+.j-track-step .j-dot {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: #eef2f7;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #94a3b8;
+  flex-shrink: 0;
+  transition: .2s;
+}
+.j-track-step.done   { color: #166534; }
+.j-track-step.done   .j-dot { background: #dcfce7; color: #166534; }
+.j-track-step.active { color: #075985; }
+.j-track-step.active .j-dot { background: #0E9AA3; color: #fff; box-shadow: 0 0 0 3px rgba(14,154,163,.15); }
+.j-track-step.failed { color: #991b1b; }
+.j-track-step.failed .j-dot { background: #fee2e2; color: #991b1b; }
+
+.j-track-line {
+  flex: 1;
+  height: 2px;
+  background: #eef2f7;
+  margin: 0 6px;
+  border-radius: 1px;
+  min-width: 12px;
+}
+.j-track-line.done { background: #22c55e; }
+
+/* Right side status pill + CTA */
+.journey-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.journey-action {
+  font-size: 11px;
+  color: #0E9AA3;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.journey-action:hover { text-decoration: underline; }
+  .j-step {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    color: #64748b;
+    background: #eef2f7;
+    white-space: nowrap;
+  }
+  .j-step.done    { background: #dcfce7; color: #166534; }
+  .j-step.active  { background: #e0f2fe; color: #075985; }
+  .j-step.failed  { background: #fee2e2; color: #991b1b; }
+  .j-step i { font-size: 12px; }
+  .j-arrow {
+    color: #cbd5e1;
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  /* ============ Application Status — rich version ============ */
+.status-chart-wrap {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px;
+  align-items: center;
+  padding: 4px 0;
+}
+@media (max-width: 640px) {
+  .status-chart-wrap { grid-template-columns: 1fr; justify-items: center; }
+}
+
+.status-chart-svg {
+  filter: drop-shadow(0 4px 10px rgba(14,154,163,.08));
+}
+
+.status-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.status-legend-item {
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #f8fafc;
+  transition: .15s;
+  cursor: default;
+}
+.status-legend-item:hover { background: #f0fdfa; }
+.status-legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.status-legend-label {
+  font-size: 12.5px;
+  color: #334155;
+  font-weight: 500;
+}
+.status-legend-count {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+  min-width: 22px;
+  text-align: right;
+}
+.status-legend-item.empty { opacity: .55; }
+
+  /* Compact list rows (for schedules + recent apps) */
+  .mini-list { display: flex; flex-direction: column; gap: 12px; }
+  .mini-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .mini-row:last-child { border-bottom: none; }
+  .mini-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #fff;
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+  .mini-body { flex: 1; min-width: 0; }
+  .mini-title { font-size: 13.5px; font-weight: 600; color: #0f172a; margin: 0; }
+  .mini-sub   { font-size: 11.5px; color: #64748b; margin: 2px 0 0; }
+  .mini-date  { font-size: 11px; color: #94a3b8; text-align: right; flex-shrink: 0; }
+  .mini-pill  {
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+    white-space: nowrap;
+  }
+  .mini-pill.scheduled { background: #e0f2fe; color: #075985; }
+  .mini-pill.completed { background: #dcfce7; color: #166534; }
+  .mini-pill.under_review { background: #fef3c7; color: #92400e; }
+  .mini-pill.shortlisted { background: #dcfce7; color: #166534; }
+  .mini-pill.rejected { background: #fee2e2; color: #991b1b; }
+  .mini-pill.applied { background: #eef2f7; color: #475569; }
+  .mini-pill.hired { background: #dcfce7; color: #166534; }
+  .mini-pill.pending { background: #eef2f7; color: #475569; }
+
+  /* Recommended cards */
+  .rec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+  .rec-card {
+    border: 1px solid #e6edf2;
+    border-radius: 12px;
+    padding: 16px;
+    background: #fff;
+    transition: .15s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .rec-card:hover { border-color: #0E9AA3; box-shadow: 0 4px 12px rgba(14,154,163,.08); }
+  .rec-head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+  .rec-logo {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #fff;
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+  .rec-title { font-size: 14.5px; font-weight: 700; color: #0f172a; margin: 0; }
+  .rec-company { font-size: 12.5px; color: #64748b; margin: 2px 0 0; }
+  .rec-meta { font-size: 12px; color: #475569; display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+  .rec-meta span { display: inline-flex; align-items: center; gap: 4px; }
+
+  /* Empty state */
+  .dash-empty {
+    text-align: center;
+    padding: 24px 12px;
+    color: #94a3b8;
+    font-size: 13px;
+  }
+  .dash-empty i {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 8px;
+    color: #cbd5e1;
+  }
+
+  .loading-row {
+    padding: 16px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 13px;
+  }
+</style>
+</head>
+<body data-page="dashboard">
+
+<div class="app-shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon"><i class="bi bi-mortarboard-fill"></i></div>
+      <div class="brand-text">
+        <h1>HireTrack</h1>
+        <span>Student Dashboard</span>
+      </div>
+    </div>
+
+      <nav class="sidebar-nav">
+      <a href="student-dashboard.html" class="nav-link" data-page="dashboard">
+        <i class="bi bi-house-door-fill"></i><span>Dashboard</span>
+      </a>
+
+      <p class="nav-heading">Job Portal</p>
+      <a href="search-jobs.html" class="nav-link" data-page="search-jobs">
+        <i class="bi bi-search"></i><span>Search Jobs</span>
+      </a>
+      <a href="applications.html" class="nav-link" data-page="applications">
+        <i class="bi bi-briefcase-fill"></i><span>My Applications</span>
+      </a>
+      <a href="saved-jobs.html" class="nav-link" data-page="saved-jobs">
+        <i class="bi bi-bookmark-fill"></i><span>Saved Jobs</span>
+      </a>
+
+      <p class="nav-heading">Assessments</p>
+      <!-- <a href="aptitude-tests.html" class="nav-link" data-page="aptitude-tests">
+        <i class="bi bi-clipboard-check-fill"></i><span>Aptitude Tests</span>
+      </a> -->
+      <a href="test-schedule.html" class="nav-link" data-page="test-schedule">
+        <i class="bi bi-calendar3"></i><span>Test Schedule</span>
+      </a>
+      <!-- <a href="test-results.html" class="nav-link" data-page="test-results">
+        <i class="bi bi-bar-chart-fill"></i><span>Test Results</span>
+      </a> -->
+
+      <p class="nav-heading">Interviews</p>
+      <!-- <a href="interview-schedule.html" class="nav-link" data-page="interview-schedule">
+        <i class="bi bi-calendar-event-fill"></i><span>Interview Schedule</span>
+      </a> -->
+      <a href="my-interviews.html" class="nav-link active" data-page="my-interviews">
+        <i class="bi bi-people-fill"></i><span>My Interviews</span>
+      </a>
+      <a href="offer-letters.html" class="nav-link" data-page="offer-letters">
+        <i class="bi bi-envelope-fill"></i><span>Offer Letters</span>
+      </a>
+
+      <p class="nav-heading">Profile</p>
+      <a href="my-profile.html" class="nav-link" data-page="my-profile">
+        <i class="bi bi-person-fill"></i><span>My Profile</span>
+      </a>
+      <!-- <a href="resume.html" class="nav-link" data-page="resume">
+        <i class="bi bi-file-earmark-person-fill"></i><span>Resume</span>
+      </a>
+      <a href="skills.html" class="nav-link" data-page="skills">
+        <i class="bi bi-star-fill"></i><span>Skills</span>
+      </a> -->
+
+      <p class="nav-heading">More</p>
+      <a href="notifications.html" class="nav-link" data-page="notifications">
+        <i class="bi bi-bell-fill"></i><span>Notifications</span>
+        <span class="badge-count notif-badge-nav" style="display:none;">0</span>
+      </a>
+      <!-- <a href="help.html" class="nav-link" data-page="help">
+        <i class="bi bi-question-circle-fill"></i><span>Help &amp; Support</span>
+      </a> -->
+    </nav>
+
+    <div class="profile-progress-card">
+      <h6>Complete Your Profile</h6>
+      <p>Get more job recommendations</p>
+      <div class="progress-ring-wrap">
+        <svg class="progress-ring" width="64" height="64" viewBox="0 0 64 64">
+          <circle class="ring-bg" cx="32" cy="32" r="27"></circle>
+          <circle class="ring-fg" cx="32" cy="32" r="27"
+            id="sidebarRing" style="stroke-dasharray:169.6; stroke-dashoffset:169.6;"></circle>
+        </svg>
+        <span class="progress-ring-label" id="sidebarRingLabel">0%</span>
+      </div>
+      <a href="my-profile.html" class="btn-complete-profile">Complete Now <i class="bi bi-arrow-right"></i></a>
+    </div>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="topbar">
+      <button class="sidebar-toggle-btn" aria-label="Toggle menu">
+        <i class="bi bi-list"></i>
+      </button>
+      <div class="topbar-search">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="Search for jobs, companies, skills...">
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn notif-btn">
+          <i class="bi bi-bell"></i>
+          <span class="notif-dot" id="topbarNotifCount" style="display:none;">0</span>
+        </button>
+        <div class="profile-chip">
+          <img id="topbarAvatar" src="https://i.pravatar.cc/80?img=47" alt="Student">
+          <div class="profile-chip-text">
+            <strong id="topbarName">Loading…</strong>
+            <span id="topbarBranch">—</span>
+          </div>
+          <i class="bi bi-chevron-down"></i>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- ============ DYNAMIC WELCOME BANNER ============ -->
+      <div class="dash-banner">
+        <div class="dash-banner-text">
+          <h3 id="dashBannerTitle">Welcome back!</h3>
+          <p id="dashBannerSub">Loading your placement activity…</p>
+        </div>
+        <a href="search-jobs.html" class="dash-banner-cta">
+          <i class="bi bi-search"></i> Find Jobs
+        </a>
+      </div>
+
+      <!-- ============ STAT CARDS ============ -->
+      <section class="dash-stats" id="dashStats">
+        <a href="applications.html" class="dash-stat">
+          <div class="dash-stat-icon blue"><i class="bi bi-briefcase-fill"></i></div>
+          <div>
+            <div class="dash-stat-value" id="statApplications">—</div>
+            <div class="dash-stat-label">Applications</div>
+            <div class="dash-stat-sub" id="statApplicationsSub">—</div>
+          </div>
+        </a>
+        <a href="test-schedule.html" class="dash-stat">
+          <div class="dash-stat-icon green"><i class="bi bi-clipboard-check-fill"></i></div>
+          <div>
+            <div class="dash-stat-value" id="statTests">—</div>
+            <div class="dash-stat-label">Aptitude Tests</div>
+            <div class="dash-stat-sub" id="statTestsSub">—</div>
+          </div>
+        </a>
+        <a href="my-interviews.html" class="dash-stat">
+          <div class="dash-stat-icon orange"><i class="bi bi-people-fill"></i></div>
+          <div>
+            <div class="dash-stat-value" id="statInterviews">—</div>
+            <div class="dash-stat-label">Interviews</div>
+            <div class="dash-stat-sub" id="statInterviewsSub">—</div>
+          </div>
+        </a>
+        <a href="offer-letters.html" class="dash-stat">
+          <div class="dash-stat-icon purple"><i class="bi bi-envelope-fill"></i></div>
+          <div>
+            <div class="dash-stat-value" id="statOffers">—</div>
+            <div class="dash-stat-label">Offers</div>
+            <div class="dash-stat-sub" id="statOffersSub">—</div>
+          </div>
+        </a>
+      </section>
+
+      <!-- ============ JOURNEY + CHART ============ -->
+      <section class="dash-grid-2">
+
+        <!-- Placement Journey (per-job tracking) -->
+        <div class="dash-card">
+          <div class="dash-card-head">
+            <h5>Placement Journey</h5>
+            <a href="applications.html">View All <i class="bi bi-arrow-right"></i></a>
+          </div>
+          <div class="dash-scroll max-360">
+            <div class="journey-list" id="journeyList">
+              <div class="loading-row">Loading your applications…</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Application Status Chart -->
+        <div class="dash-card">
+          <div class="dash-card-head">
+            <h5>Application Status</h5>
+          </div>
+          <div class="status-chart-wrap">
+            <svg class="status-chart-svg" width="200" height="200" viewBox="0 0 200 200">
+  <g transform="rotate(-90 100 100)">
+    <circle cx="100" cy="100" r="70" fill="none" stroke="#eef2f7" stroke-width="22"/>
+    <circle id="donutSeg1" cx="100" cy="100" r="70" fill="none" stroke="#0E9AA3" stroke-width="22" stroke-linecap="butt" stroke-dasharray="0 999"/>
+    <circle id="donutSeg2" cx="100" cy="100" r="70" fill="none" stroke="#f59e0b" stroke-width="22" stroke-linecap="butt" stroke-dasharray="0 999"/>
+    <circle id="donutSeg3" cx="100" cy="100" r="70" fill="none" stroke="#22c55e" stroke-width="22" stroke-linecap="butt" stroke-dasharray="0 999"/>
+    <!-- NEW SEGMENT FOR SELECTED -->
+    <circle id="donutSeg5" cx="100" cy="100" r="70" fill="none" stroke="#3b82f6" stroke-width="22" stroke-linecap="butt" stroke-dasharray="0 999"/>
+    <circle id="donutSeg4" cx="100" cy="100" r="70" fill="none" stroke="#ef4444" stroke-width="22" stroke-linecap="butt" stroke-dasharray="0 999"/>
+  </g>
+  <text x="100" y="94" text-anchor="middle" font-size="12" fill="#94a3b8" font-family="Plus Jakarta Sans">TOTAL</text>
+  <text x="100" y="120" text-anchor="middle" font-size="28" font-weight="800" fill="#0f172a" font-family="Plus Jakarta Sans" id="donutTotal">0</text>
+</svg>
+            <div class="status-legend" id="statusLegend">
+  <div class="status-legend-item">
+    <span class="status-legend-dot" style="background:#0E9AA3;"></span>
+    <span class="status-legend-label">In Progress</span>
+    <span class="status-legend-count" id="legendInProgress">0</span>
+  </div>
+  <div class="status-legend-item">
+    <span class="status-legend-dot" style="background:#f59e0b;"></span>
+    <span class="status-legend-label">Under Review</span>
+    <span class="status-legend-count" id="legendUnderReview">0</span>
+  </div>
+  <div class="status-legend-item">
+    <span class="status-legend-dot" style="background:#22c55e;"></span>
+    <span class="status-legend-label">Shortlisted</span>
+    <span class="status-legend-count" id="legendShortlisted">0</span>
+  </div>
+  <div class="status-legend-item">
+    <span class="status-legend-dot" style="background:#ef4444;"></span>
+    <span class="status-legend-label">Not Selected</span>
+    <span class="status-legend-count" id="legendRejected">0</span>
+  </div>
+  <div class="status-legend-item">
+    <span class="status-legend-dot" style="background:#ef4444;"></span>
+    <span class="status-legend-label">Selected</span>
+    <span class="status-legend-count" id="legendRejected">0</span>
+  </div>
+</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ UPCOMING + RECENT ============ -->
+      <section class="dash-grid-2">
+
+        <div class="dash-card">
+          <div class="dash-card-head">
+            <h5>Upcoming Schedule</h5>
+            <a href="test-schedule.html">View All <i class="bi bi-arrow-right"></i></a>
+          </div>
+          <div class="dash-scroll max-280">
+            <div class="mini-list" id="upcomingList">
+              <div class="loading-row">Loading upcoming events…</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-card">
+          <div class="dash-card-head">
+            <h5>Recent Applications</h5>
+            <a href="applications.html">View All <i class="bi bi-arrow-right"></i></a>
+          </div>
+          <div class="dash-scroll max-280">
+            <div class="mini-list" id="recentAppsList">
+              <div class="loading-row">Loading applications…</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ RECOMMENDED ============ -->
+      <section class="dash-card" style="margin-bottom:20px;">
+        <div class="dash-card-head">
+          <h5>Recommended for You</h5>
+          <a href="search-jobs.html">View All Jobs <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="rec-grid" id="recJobsGrid">
+          <div class="loading-row">Loading recommendations…</div>
+        </div>
+      </section>
+<script src="../assets/js/student/sidebar.js"></script>
+<script src="../assets/js/student/student_dashboard.js"></script>
+    </main>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="../assets/js/student/config.js"></script> -->
+
+
+<script>
+(function () {
+  'use strict';
+
+  const API_BASE      = (window.API_BASE || 'http://127.0.0.1:8080');
+  const PROFILE_API   = API_BASE + '/api/students';
+  const JOBS_API      = API_BASE + '/api/jobs';
+  const APPS_API      = API_BASE + '/api/applications';
+  const INTERVIEW_API = API_BASE + '/api/interviews';
+  const APTITUDE_API  = API_BASE + '/api/aptitude';
+
+  const CLOSING_SOON_DAYS = 3;
+
+  document.addEventListener('DOMContentLoaded', boot);
+
+  async function boot() {
+    if (typeof Session !== 'undefined' && Session.requireSession) {
+      if (!Session.requireSession()) return;
+    }
+
+    // Fire all fetches in parallel
+    await Promise.allSettled([
+      loadProfile(),
+      loadApplications(),
+      loadInterviews(),
+      loadAptitudeTests(),
+      loadRecommendedJobs()
+    ]);
+
+    // Charts + journey need applications + interviews together
+    renderStatusChart();
+    renderJourney();
+  }
+
+  /* ============================================================
+     PROFILE
+     ============================================================ */
+  async function loadProfile() {
+    try {
+      const res = await fetch(`${PROFILE_API}/profile`, {
+        credentials: 'include',
+        cache: 'no-store'
+      });
+      if (!res.ok) throw new Error('profile ' + res.status);
+      const s = await res.json();
+
+      const name   = s.name || s.fullName || 'Student';
+      const branch = s.branch || s.department || '';
+
+      document.getElementById('topbarName').textContent   = name;
+      document.getElementById('topbarBranch').textContent = branch;
+      document.getElementById('dashBannerTitle').textContent = `Welcome back, ${name.split(' ')[0]}!`;
+
+      if (s.profilePhoto) {
+        document.getElementById('topbarAvatar').src =
+          API_BASE + '/uploads/student-photos/' + s.profilePhoto;
+      }
+
+      // Compute profile completeness (same fields the profile page uses)
+      const FIELDS = [
+        'gender', 'dateOfBirth', 'city', 'state', 'address',
+        'cgpa', 'activeBacklogs', 'graduationYear', 'courseDuration',
+        'resumeUrl', 'phone', 'prnNo'
+      ];
+      const filled = FIELDS.filter(k => s[k] !== null && s[k] !== undefined && s[k] !== '').length;
+      const pct    = Math.round((filled / FIELDS.length) * 100);
+
+      const ring = document.getElementById('sidebarRing');
+      const label = document.getElementById('sidebarRingLabel');
+      if (ring) {
+        const C = 2 * Math.PI * 27;   // r=27
+        ring.style.strokeDasharray  = `${C}`;
+        ring.style.strokeDashoffset = `${C - (C * pct) / 100}`;
+      }
+      if (label) label.textContent = `${pct}%`;
+
+      document.getElementById('dashBannerSub').textContent =
+        `Your profile is ${pct}% complete · ${branch || 'Add your branch'} · ${s.prnNo || ''}`;
+
+    } catch (e) {
+      console.warn('Profile load failed:', e);
+      document.getElementById('dashBannerSub').textContent =
+        'Please log in again to load your data.';
+    }
+  }
+
+  /* ============================================================
+     APPLICATIONS
+     ============================================================ */
+  let APPLICATIONS = [];
+
+  let ALL_JOBS_CACHE = [];
+
+async function loadApplications() {
+  const list = document.getElementById('recentAppsList');
+  try {
+    // ---- Fetch applications AND jobs in parallel ----
+    const [appsRes, jobsRes] = await Promise.all([
+      fetch(`${APPS_API}/me`, { credentials: 'include' }),
+      fetch(`${JOBS_API}/active`,           { credentials: 'include' })
+    ]);
+
+    if (!appsRes.ok) throw new Error('applications ' + appsRes.status);
+    APPLICATIONS = await appsRes.json();
+
+    // Build a lookup map of jobs (fallback source)
+    if (jobsRes.ok) {
+      const jobs = await jobsRes.json();
+      ALL_JOBS_CACHE = jobs;
+    }
+
+    const jobMap = new Map(
+      ALL_JOBS_CACHE.map(j => [String(j.id ?? j._id), j])
+    );
+
+    // ---- Enrich each application with job info (fallback) ----
+    APPLICATIONS = APPLICATIONS.map(a => {
+      const j = jobMap.get(String(a.jobId));
+      return {
+        ...a,
+        jobTitle:    a.jobTitle    || (j && j.title)        || 'Untitled Role',
+        companyName: a.companyName || (j && j.companyName)  || 'Unknown Company',
+        location:    a.location    || (j && j.location)     || '',
+        jobType:     a.jobType     || (j && j.jobType)      || '',
+        department:  a.department  || (j && j.department)   || '',
+        minSalary:   a.minSalary   ?? (j && j.minSalary),
+        maxSalary:   a.maxSalary   ?? (j && j.maxSalary),
+        deadline:    a.deadline    || (j && j.applicationDeadline),
+      };
+    });
+
+    console.log('Enriched applications:', APPLICATIONS);  // ← debug
+
+    // ---- Stats ----
+    const total   = APPLICATIONS.length;
+    const inProg  = APPLICATIONS.filter(a =>
+      ['SUBMITTED', 'UNDER_REVIEW'].includes((a.status || '').toUpperCase())
+    ).length;
+    const shortl  = APPLICATIONS.filter(a =>
+      (a.status || '').toUpperCase() === 'SHORTLISTED'
+    ).length;
+    const offers  = APPLICATIONS.filter(a =>
+      (a.status || '').toUpperCase() === 'HIRED'
+    ).length;
+
+    document.getElementById('statApplications').textContent    = total;
+    document.getElementById('statApplicationsSub').textContent = `${inProg} in progress`;
+    document.getElementById('statOffers').textContent          = offers;
+    document.getElementById('statOffersSub').textContent       = `${shortl} shortlisted`;
+
+    // ---- Recent apps list ----
+    const recent = [...APPLICATIONS]
+      .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+      .slice(0, 5);
+
+    list.innerHTML = recent.length
+      ? recent.map(renderRecentRow).join('')
+      : `<div class="dash-empty"><i class="bi bi-inbox"></i>No applications yet</div>`;
+
+    // ---- Charts + journey need this data ----
+    renderStatusChart();
+    renderJourney();
+
+  } catch (e) {
+    console.warn('Applications load failed:', e);
+    list.innerHTML = `<div class="dash-empty"><i class="bi bi-exclamation-triangle"></i>Couldn't load applications</div>`;
+  }
+}
+  function renderRecentRow(a) {
+    const status = (a.status || 'SUBMITTED').toUpperCase();
+    const pillClass = status.toLowerCase();
+    const statusLabel = status.replace(/_/g, ' ');
+    const color = pickColor(a.companyName || a.jobTitle || '?');
+
+    return `
+      <div class="mini-row">
+        <div class="mini-icon" style="background:${color};">${initials(a.companyName || a.jobTitle)}</div>
+        <div class="mini-body">
+          <p class="mini-title">${escapeHtml(a.jobTitle || 'Job')}</p>
+          <p class="mini-sub">${escapeHtml(a.companyName || '')} · Applied ${timeAgo(a.createdAt)}</p>
+        </div>
+        <span class="mini-pill ${pillClass}">${statusLabel}</span>
+      </div>`;
+  }
+
+  /* ============================================================
+     INTERVIEWS
+     ============================================================ */
+  let INTERVIEWS = [];
+
+  async function loadInterviews() {
+    const list = document.getElementById('upcomingList');
+    try {
+      const res = await fetch(`${INTERVIEW_API}/my-interviews`, { credentials: 'include' });
+      if (!res.ok) throw new Error('interviews ' + res.status);
+      INTERVIEWS = await res.json();
+
+      const upcoming = INTERVIEWS.filter(iv =>
+        (iv.status || '').toUpperCase() === 'SCHEDULED' && !isPast(iv)
+      );
+
+      document.getElementById('statInterviews').textContent    = INTERVIEWS.length;
+      document.getElementById('statInterviewsSub').textContent = `${upcoming.length} upcoming`;
+
+      // Merge with aptitude tests after we load those (see renderUpcoming)
+    } catch (e) {
+      console.warn('Interviews load failed:', e);
+      list.innerHTML = `<div class="dash-empty"><i class="bi bi-exclamation-triangle"></i>Couldn't load interviews</div>`;
+    }
+  }
+
+  /* ============================================================
+     APTITUDE TESTS
+     ============================================================ */
+  let APTITUDE_TESTS = [];
+
+  async function loadAptitudeTests() {
+    try {
+      // Use the same student-schedules endpoint test-schedule.js uses
+      const res = await fetch(`${APTITUDE_API}/student/my-tests`, { credentials: 'include' });
+      if (!res.ok) throw new Error('tests ' + res.status);
+      APTITUDE_TESTS = await res.json();
+
+      const upcoming = APTITUDE_TESTS.filter(t =>
+        !isPast(t) && !['SUBMITTED', 'AUTO_SUBMITTED'].includes((t.status || '').toUpperCase())
+      );
+
+      document.getElementById('statTests').textContent    = APTITUDE_TESTS.length;
+      document.getElementById('statTestsSub').textContent = `${upcoming.length} upcoming`;
+
+      // Now we have both interviews + tests → build the merged upcoming list
+      renderUpcomingList();
+
+    } catch (e) {
+      console.warn('Aptitude tests load failed:', e);
+      // Even if tests fail, still render interviews
+      renderUpcomingList();
+    }
+  }
+
+  function renderUpcomingList() {
+    const list = document.getElementById('upcomingList');
+
+    const items = [];
+
+    // Interviews
+    INTERVIEWS.forEach(iv => {
+      if ((iv.status || '').toUpperCase() !== 'SCHEDULED') return;
+      if (isPast(iv)) return;
+      items.push({
+        type: 'interview',
+        date: iv.interviewDate,
+        time: iv.startTime,
+        title: 'Interview',
+        company: iv.companyName || 'Company',
+        mode: iv.mode || '',
+        icon: 'bi-people-fill',
+        color: '#7c3aed',
+        status: 'SCHEDULED'
+      });
+    });
+
+    // Aptitude tests
+    APTITUDE_TESTS.forEach(t => {
+      if (isPast(t)) return;
+      if (['SUBMITTED', 'AUTO_SUBMITTED'].includes((t.status || '').toUpperCase())) return;
+      items.push({
+        type: 'test',
+        date: t.testDate,
+        time: t.startTime,
+        title: 'Aptitude Test',
+        company: t.companyName || t.title || 'Company',
+        mode: t.mode || 'Online Test',
+        icon: 'bi-clipboard-check-fill',
+        color: '#0E9AA3',
+        status: 'SCHEDULED'
+      });
+    });
+
+    // Sort ascending by datetime
+    items.sort((a, b) => {
+      const da = new Date(`${a.date}T${a.time || '00:00'}`).getTime();
+      const db = new Date(`${b.date}T${b.time || '00:00'}`).getTime();
+      return da - db;
+    });
+
+    if (!items.length) {
+      list.innerHTML = `<div class="dash-empty"><i class="bi bi-calendar-x"></i>No upcoming events</div>`;
+      return;
+    }
+
+    list.innerHTML = items.slice(0, 6).map(item => `
+      <div class="mini-row">
+        <div class="mini-icon" style="background:${item.color};">
+          <i class="bi ${item.icon}"></i>
+        </div>
+        <div class="mini-body">
+          <p class="mini-title">${escapeHtml(item.title)}</p>
+          <p class="mini-sub">${escapeHtml(item.company)} · ${escapeHtml(item.mode)}</p>
+        </div>
+        <div class="mini-date">
+          <strong>${formatShortDate(item.date)}</strong><br>
+          ${escapeHtml(item.time || '')}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('recJobsGrid').innerHTML = top.map(j => {
+  const color = pickColor(j.companyName || j.title);
+  const salary = formatSalary(j.minSalary, j.maxSalary);
+  const mode = j.jobType === 'REMOTE' ? 'Remote' : 'On-site';
+
+  return `
+    <a href="search-jobs.html" class="rec-card">
+      <div class="rec-head">
+        <div class="rec-logo" style="background:${color};">
+          ${initials(j.companyName)}
+        </div>
+        <div style="flex:1;min-width:0;">
+          <p class="rec-title">${escapeHtml(j.title || 'Job')}</p>
+          <p class="rec-company">${escapeHtml(j.companyName || '')}</p>
+        </div>
+        <i class="bi bi-bookmark" style="color:#94a3b8;"></i>
+      </div>
+      <div class="rec-meta">
+        <span><i class="bi bi-geo-alt"></i> ${escapeHtml(j.location || '—')}</span>
+        <span><i class="bi bi-building"></i> ${escapeHtml(mode)}</span>
+        ${salary ? `<span><i class="bi bi-cash-stack"></i> ${escapeHtml(salary)}</span>` : ''}
+      </div>
+    </a>`;
+}).join('');
+  /* ============================================================
+     RECOMMENDED JOBS
+     ============================================================ */
+  async function loadRecommendedJobs() {
+    const grid = document.getElementById('recJobsGrid');
+    try {
+      const res = await fetch(`${JOBS_API}/active`, { credentials: 'include' });
+      if (!res.ok) throw new Error('jobs ' + res.status);
+      const jobs = await res.json();
+
+      // Take first 3 active jobs
+      const top = jobs.slice(0, 3);
+      if (!top.length) {
+        grid.innerHTML = `<div class="dash-empty"><i class="bi bi-briefcase"></i>No jobs available right now</div>`;
+        return;
+      }
+
+      grid.innerHTML = top.map(j => {
+        const color = pickColor(j.companyName || j.title || '?');
+        const salary = formatSalary(j.minSalary, j.maxSalary);
+        return `
+          <a href="search-jobs.html" class="rec-card">
+            <div class="rec-head">
+              <div class="rec-logo" style="background:${color};">${initials(j.companyName)}</div>
+              <div style="flex:1;min-width:0;">
+                <p class="rec-title">${escapeHtml(j.title || 'Job')}</p>
+                <p class="rec-company">${escapeHtml(j.companyName || '')}</p>
+              </div>
+              <i class="bi bi-bookmark" style="color:#94a3b8;"></i>
+            </div>
+            <div class="rec-meta">
+              <span><i class="bi bi-geo-alt"></i> ${escapeHtml(j.location || '—')}</span>
+              ${salary ? `<span><i class="bi bi-cash-stack"></i> ${escapeHtml(salary)}</span>` : ''}
+            </div>
+          </a>`;
+      }).join('');
+    } catch (e) {
+      console.warn('Recommended jobs load failed:', e);
+      grid.innerHTML = `<div class="dash-empty"><i class="bi bi-exclamation-triangle"></i>Couldn't load recommendations</div>`;
+    }
+  }
+
+  /* ============================================================
+     STATUS CHART (SVG donut)
+     ============================================================ */
+  function renderStatusChart() {
+  const counts = { inProgress: 0, underReview: 0, shortlisted: 0, rejected: 0, hired: 0 };
+
+  APPLICATIONS.forEach(a => {
+    const s = (a.status || '').toUpperCase();
+    if (s === 'SUBMITTED')          counts.inProgress++;
+    else if (s === 'UNDER_REVIEW')  counts.underReview++;
+    else if (s === 'SHORTLISTED')   counts.shortlisted++;
+    else if (s === 'HIRED')         counts.hired++;
+    else if (s === 'REJECTED' || s === 'NOT_SHORTLISTED') counts.rejected++;
+  });
+
+  const total = counts.inProgress + counts.underReview + counts.shortlisted + counts.rejected + counts.hired;
+
+  const C = 2 * Math.PI * 60;
+
+  document.getElementById('donutTotal').textContent = total;
+  document.getElementById('legendInProgress').textContent  = counts.inProgress;
+  document.getElementById('legendUnderReview').textContent = counts.underReview;
+  document.getElementById('legendShortlisted').textContent = counts.shortlisted;
+  document.getElementById('legendRejected').textContent    = counts.rejected;
+
+  // Dim empty legend rows
+  const map = [
+    ['legendInProgress',  counts.inProgress],
+    ['legendUnderReview', counts.underReview],
+    ['legendShortlisted', counts.shortlisted],
+    ['legendRejected',    counts.rejected],
+  ];
+  map.forEach(([id, n]) => {
+    document.getElementById(id).closest('.status-legend-item')
+      ?.classList.toggle('empty', n === 0);
+  });
+
+  const segs = [
+    { id: 'donutSeg1', n: counts.inProgress },
+    { id: 'donutSeg2', n: counts.underReview },
+    { id: 'donutSeg3', n: counts.shortlisted },
+    { id: 'donutSeg4', n: counts.rejected },
+  ];
+
+  if (total === 0) {
+    segs.forEach(s => {
+      document.getElementById(s.id).setAttribute('stroke-dasharray', `0 ${C}`);
+    });
+    return;
+  }
+
+  let offset = 0;
+  segs.forEach(seg => {
+    const el = document.getElementById(seg.id);
+    const len = (seg.n / total) * C;
+    el.setAttribute('stroke-dasharray', `${len} ${C - len}`);
+    el.setAttribute('stroke-dashoffset', `${-offset}`);
+    offset += len;
+  });
+}
+  /* ============================================================
+     PLACEMENT JOURNEY (per-application timeline)
+     ============================================================ */
+ function renderJourney() {
+  const list = document.getElementById('journeyList');
+
+  if (!APPLICATIONS.length) {
+    list.innerHTML = `<div class="dash-empty"><i class="bi bi-signpost-split"></i>No applications yet</div>`;
+    return;
+  }
+
+  const sorted = [...APPLICATIONS].sort((a, b) => {
+    const order = { SUBMITTED: 0, UNDER_REVIEW: 1, SHORTLISTED: 2, INTERVIEW: 3, HIRED: 4, REJECTED: 9, NOT_SHORTLISTED: 9, WITHDRAWN: 9 };
+    const oa = order[(a.status || '').toUpperCase()] ?? 5;
+    const ob = order[(b.status || '').toUpperCase()] ?? 5;
+    if (oa !== ob) return oa - ob;
+    return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+  }).slice(0, 12);
+
+  list.innerHTML = sorted.map(a => {
+    const status = (a.status || 'SUBMITTED').toUpperCase();
+    const title   = a.jobTitle || 'Untitled Role';
+    const company = a.companyName || 'Unknown Company';
+    const color   = pickColor(company);
+    const stages  = computeStages(a);
+    const days    = daysSince(a.createdAt);
+
+    return `
+      <div class="journey-item" onclick="window.location.href='applications.html'">
+        <div class="journey-avatar" style="background:${color};">
+          ${initials(company)}
+        </div>
+
+        <div class="journey-main">
+          <div class="journey-row-1">
+            <div style="min-width:0;">
+              <p class="journey-title" title="${escapeHtml(title)}">${escapeHtml(title)}</p>
+              <p class="journey-company">
+                <i class="bi bi-building"></i>
+                ${escapeHtml(company)}
+                ${a.location ? `<span class="dot">•</span> <i class="bi bi-geo-alt"></i> ${escapeHtml(a.location)}` : ''}
+              </p>
+            </div>
+            <span class="mini-pill ${status.toLowerCase().replace(/_/g,'-')}">
+              ${status.replace(/_/g, ' ')}
+            </span>
+          </div>
+
+          <div class="journey-track">
+            ${stages.map((s, i) => `
+              <div class="j-track-step ${s.state}" title="${s.label}">
+                <span class="j-dot"><i class="bi ${s.icon}"></i></span>
+                <span>${s.label}</span>
+              </div>
+              ${i < stages.length - 1 ? `<div class="j-track-line ${stages[i].state === 'done' ? 'done' : ''}"></div>` : ''}
+            `).join('')}
+          </div>
+
+          <div class="journey-meta">
+            <span><i class="bi bi-calendar3"></i> Applied ${days === 0 ? 'today' : days + 'd ago'}</span>
+            ${a.minSalary != null || a.maxSalary != null
+              ? `<span><i class="bi bi-cash-stack"></i> ${formatSalary(a.minSalary, a.maxSalary)}</span>` : ''}
+            ${a.jobType ? `<span><i class="bi bi-briefcase"></i> ${formatJobType(a.jobType)}</span>` : ''}
+          </div>
+        </div>
+
+        <div class="journey-side">
+          <span class="journey-action">
+            View <i class="bi bi-arrow-right"></i>
+          </span>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function formatJobType(t) {
+  const m = { FULL_TIME: 'Full Time', PART_TIME: 'Part Time', INTERNSHIP: 'Internship', CONTRACT: 'Contract', REMOTE: 'Remote' };
+  return m[(t || '').toUpperCase()] || t;
+}
+
+function daysSince(iso) {
+  if (!iso) return 0;
+  return Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
+}
+  function computeStages(app) {
+  const s = (app.status || 'SUBMITTED').toUpperCase();
+  const iv = INTERVIEWS.find(i => String(i.jobId) === String(app.jobId));
+
+  const applied   = { label: 'Applied',   icon: 'bi-check-lg', state: 'done' };
+  const test      = { label: 'Aptitude',  icon: 'bi-hourglass', state: '' };
+  const interview = { label: 'Interview', icon: 'bi-hourglass', state: '' };
+  const offer     = { label: 'Offer',     icon: 'bi-hourglass', state: '' };
+
+  if (['SUBMITTED', 'UNDER_REVIEW'].includes(s)) {
+    test.state = 'active';
+  } else if (s === 'SHORTLISTED') {
+    test.state = 'done';   test.icon = 'bi-check-lg';
+    interview.state = 'active';
+  } else if (s === 'INTERVIEW' || (iv && (iv.status || '').toUpperCase() === 'COMPLETED')) {
+    test.state = 'done';   test.icon = 'bi-check-lg';
+    interview.state = 'done'; interview.icon = 'bi-check-lg';
+    offer.state = 'active';
+  } else if (s === 'HIRED') {
+    test.state = 'done';   test.icon = 'bi-check-lg';
+    interview.state = 'done'; interview.icon = 'bi-check-lg';
+    offer.state = 'done';  offer.icon = 'bi-trophy-fill';
+  } else if (s === 'REJECTED' || s === 'NOT_SHORTLISTED') {
+    // Where did it fail?
+    if (s === 'NOT_SHORTLISTED') {
+      test.state = 'failed'; test.icon = 'bi-x-lg';
+    } else {
+      test.state = 'done';   test.icon = 'bi-check-lg';
+      interview.state = 'failed'; interview.icon = 'bi-x-lg';
+    }
+  } else if (s === 'WITHDRAWN') {
+    applied.state = 'done';
+    test.state = 'failed'; test.icon = 'bi-dash';
+  }
+
+  return [applied, test, interview, offer];
+}
+
+  /* ============================================================
+     HELPERS
+     ============================================================ */
+  function initials(s) {
+    if (!s) return '?';
+    return s.split(/\s+/).filter(Boolean).slice(0, 2)
+      .map(w => w[0].toUpperCase()).join('') || '?';
+  }
+
+  function pickColor(seed) {
+    const palette = ['#0E9AA3', '#7c3aed', '#f59e0b', '#ef4444', '#22c55e', '#4338ca', '#ec4899', '#0ea5e9'];
+    let h = 0;
+    for (let i = 0; i < (seed || '').length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
+    return palette[h % palette.length];
+  }
+
+  function escapeHtml(s) {
+    return String(s ?? '').replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+
+  function timeAgo(dateStr) {
+    if (!dateStr) return 'recently';
+    const diff = Date.now() - new Date(dateStr).getTime();
+    const days = Math.floor(diff / 86400000);
+    if (days <= 0) return 'today';
+    if (days === 1) return 'yesterday';
+    if (days < 30) return `${days} days ago`;
+    const m = Math.floor(days / 30);
+    return `${m} month${m > 1 ? 's' : ''} ago`;
+  }
+
+  function formatShortDate(dateStr) {
+    if (!dateStr) return '';
+    try {
+      return new Date(dateStr + 'T00:00').toLocaleDateString('en-IN', {
+        day: '2-digit', month: 'short'
+      });
+    } catch { return dateStr; }
+  }
+
+  function formatSalary(min, max) {
+    if (min == null && max == null) return '';
+    const f = n => `₹${(Number(n) / 1000).toFixed(0)}k`;
+    if (min != null && max != null) return `${f(min)} – ${f(max)}`;
+    if (min != null) return `From ${f(min)}`;
+    return `Up to ${f(max)}`;
+  }
+
+  function isPast(item) {
+    const dateField = item.interviewDate || item.testDate || item.date;
+    const timeField = item.endTime || item.startTime || '23:59';
+    if (!dateField) return false;
+    return new Date(`${dateField}T${timeField}`).getTime() < Date.now();
+  }
+
+})();
+</script>
+
+</body>
+</html>

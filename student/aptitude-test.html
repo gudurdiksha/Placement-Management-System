@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aptitude Assessment | CampusConnect</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../assets/css/student/student_dashboard.css">
+<link rel="stylesheet" href="../assets/css/student/aptitude-test.css">
+</head>
+<body data-page="aptitude-test">
+
+<!-- ============ FIXED HEADER ============ -->
+<header class="exam-header">
+  <div class="eh-left">
+    <div class="eh-logo" id="eh-logo">A</div>
+    <div class="eh-titles">
+      <div class="eh-test-name" id="eh-test-name">Aptitude Assessment</div>
+      <div class="eh-sub" id="eh-sub">—</div>
+    </div>
+  </div>
+
+  <div class="eh-meta" id="eh-meta">
+    <div class="eh-chip"><span>Questions</span><strong id="eh-qcount">—</strong></div>
+    <div class="eh-chip"><span>Marks</span><strong id="eh-marks">—</strong></div>
+    <div class="eh-chip"><span>Duration</span><strong id="eh-duration">—</strong></div>
+  </div>
+
+  <div class="eh-timer" id="eh-timer-wrap">
+    <i class="bi bi-clock-history"></i>
+    <span id="eh-timer">--:--</span>
+  </div>
+</header>
+
+<!-- ============ LOADING ============ -->
+<div id="at-loading" class="at-state">
+  <div class="spinner-border"></div>
+  <p>Loading your test…</p>
+</div>
+
+<!-- ============ ERROR ============ -->
+<div id="at-error" class="at-state" hidden>
+  <i class="bi bi-exclamation-octagon-fill"></i>
+  <h3 id="at-error-title">Test unavailable</h3>
+  <p id="at-error-msg"></p>
+  <a href="test-schedule.html" class="ts-btn primary">
+    <i class="bi bi-arrow-left"></i> Back to Schedule
+  </a>
+</div>
+
+<!-- ============ PRE-TEST INTRO ============ -->
+<div id="at-intro" class="at-state" hidden>
+  <h2 id="at-title">Aptitude Assessment</h2>
+  <p id="at-company" class="at-company"></p>
+
+  <div class="at-intro-card">
+    <div class="at-intro-grid">
+      <div><span>Duration</span><strong id="at-duration">—</strong></div>
+      <div><span>Questions</span><strong id="at-qcount">—</strong></div>
+      <div><span>Total Marks</span><strong id="at-marks">—</strong></div>
+      <div><span>Passing</span><strong id="at-pass">—</strong></div>
+    </div>
+
+    <div class="at-instructions">
+      <h5>Instructions</h5>
+      <p id="at-instructions">—</p>
+      <ul>
+        <li>The timer starts the moment you click <b>Begin Test</b>.</li>
+        <li>Your answers auto-save on the server. You can revisit any question.</li>
+        <li>Use <b>Mark for Review</b> to flag questions you want to revisit.</li>
+        <li>The test will auto-submit when time runs out.</li>
+        <li>Do <b>not</b> refresh or close this tab — you will lose time.</li>
+      </ul>
+    </div>
+
+    <button id="at-begin" class="ts-btn primary at-begin-btn">
+      <i class="bi bi-play-fill"></i> Begin Test
+    </button>
+  </div>
+</div>
+
+<!-- ============ TEST UI ============ -->
+<div id="at-quiz" hidden>
+  <div class="exam-layout">
+
+    <!-- LEFT: question pane -->
+    <section class="exam-question-pane">
+      <div class="q-head">
+        <span class="q-num" id="at-qno">Question 1</span>
+        <span class="q-meta" id="at-qmeta"></span>
+      </div>
+
+      <div class="q-body">
+        <p class="q-text" id="at-qtext"></p>
+        <div class="q-image-wrap" id="at-qimage-wrap" hidden>
+          <img id="at-qimage" alt="Question image">
+        </div>
+        <div class="q-options" id="at-options"></div>
+      </div>
+
+      <footer class="q-footer">
+        <button id="at-prev" class="ts-btn ghost">
+          <i class="bi bi-arrow-left"></i> Previous
+        </button>
+        <button id="at-mark" class="ts-btn ghost">
+          <i class="bi bi-bookmark"></i> Mark for Review
+        </button>
+        <button id="at-clear" class="ts-btn ghost">
+          <i class="bi bi-eraser"></i> Clear Response
+        </button>
+        <button id="at-next" class="ts-btn primary">
+          Save &amp; Next <i class="bi bi-arrow-right"></i>
+        </button>
+      </footer>
+    </section>
+
+    <!-- RIGHT: palette + submit -->
+    <aside class="exam-palette">
+      <div class="pal-user">
+        <div class="pal-avatar" id="pal-avatar">S</div>
+        <div>
+          <div class="pal-name" id="pal-name">Student</div>
+          <div class="pal-role" id="pal-role">Candidate</div>
+        </div>
+      </div>
+
+      <div class="pal-legend">
+        <div><span class="dot st-answered"></span> Answered <b id="cnt-answered">0</b></div>
+        <div><span class="dot st-notanswered"></span> Not Answered <b id="cnt-notanswered">0</b></div>
+        <div><span class="dot st-notvisited"></span> Not Visited <b id="cnt-notvisited">0</b></div>
+        <div><span class="dot st-review"></span> Marked for Review <b id="cnt-review">0</b></div>
+      </div>
+
+      <div class="pal-grid" id="at-palette"></div>
+
+      <button id="at-submit-side" class="ts-btn primary pal-submit">
+        <i class="bi bi-send"></i> Submit Test
+      </button>
+    </aside>
+  </div>
+</div>
+
+<!-- ============ RESULT ============ -->
+<div id="at-result" class="at-state" hidden>
+  <div class="at-result-icon"><i class="bi bi-check2-circle"></i></div>
+  <h3 id="at-result-title">Test Submitted Successfully</h3>
+  <p id="at-result-msg"></p>
+  <a href="test-results.html" class="ts-btn primary">
+    <i class="bi bi-bar-chart"></i> View All Results
+  </a>
+</div>
+
+<!-- ============ SUBMIT CONFIRMATION MODAL ============ -->
+<div class="exam-modal-overlay" id="submit-modal" hidden>
+  <div class="exam-modal">
+    <h4>Submit your test?</h4>
+    <p>Once submitted you cannot return to this attempt.</p>
+
+    <div class="sub-stats">
+      <div><span>Answered</span><strong id="ms-answered">0</strong></div>
+      <div><span>Unanswered</span><strong id="ms-unanswered">0</strong></div>
+      <div><span>Marked for Review</span><strong id="ms-review">0</strong></div>
+      <div><span>Not Visited</span><strong id="ms-notvisited">0</strong></div>
+    </div>
+
+    <div class="exam-modal-actions">
+      <button class="ts-btn ghost" id="ms-cancel">Cancel</button>
+      <button class="ts-btn primary" id="ms-confirm">
+        <i class="bi bi-send"></i> Yes, Submit
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- No sidebar.js on this page — focused exam screen -->
+<script src="../assets/js/student/aptitude-test.js?v=100"></script>
+
+</body>
+</html>

@@ -1,0 +1,291 @@
+/* =====================================================================
+   Job Application Modal
+   ===================================================================== */
+.apply-modal {
+  border: none;
+  border-radius: 18px;
+  overflow: hidden;
+  max-height: calc(100vh - 40px);   /* cap modal height */
+  display: flex;                     /* required by modal-dialog-scrollable */
+  flex-direction: column;
+}
+/* The <form> is the flex child that should grow */
+#jobApplicationForm {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;              /* critical: lets the body shrink so it can scroll */
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+/* The scrollable middle section */
+.apply-modal-body {
+  overflow-y: auto;
+  min-height: 0;              /* critical: same reason */
+  flex: 1 1 auto;
+  padding: 24px 28px 8px;
+  background: #f8fafc;
+}
+
+/* Keep the footer pinned */
+.apply-modal-footer {
+  flex: 0 0 auto;
+}
+.apply-modal-header {
+  padding: 22px 28px;
+  background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+  color: #fff;
+  border-bottom: none;
+}
+.apply-modal-header .modal-title { font-weight: 700; letter-spacing: -0.01em; }
+.apply-modal-subtitle { opacity: 0.9; font-size: 0.85rem; }
+.apply-modal-header .btn-close { filter: invert(1); opacity: 0.9; }
+
+#applyJobModal .modal-dialog {
+  max-height: calc(100vh - 40px);
+  height: auto;
+}
+#applyJobModal .modal-dialog .modal-content {
+  max-height: calc(100vh - 40px);
+}
+/* .apply-modal-body { padding: 24px 28px 8px; background: #f8fafc; } */
+
+/* ---------- Profile gate ---------- */
+.apply-gate {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 18px;
+  align-items: start;
+  margin: 24px 28px;
+  padding: 22px;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 14px;
+}
+.apply-gate-icon {
+  width: 56px; height: 56px; border-radius: 14px;
+  background: #fef3c7; color: #b45309;
+  display: grid; place-items: center; font-size: 1.5rem;
+}
+.apply-gate-body h6 { margin: 0 0 6px; color: #92400e; font-weight: 700; }
+.apply-gate-body p { margin: 0 0 12px; color: #78350f; font-size: 0.9rem; }
+.apply-gate-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.apply-gate-bar {
+  flex: 1; height: 8px; border-radius: 999px; background: #fef3c7; overflow: hidden;
+}
+.apply-gate-bar span {
+  display: block; height: 100%;
+  background: linear-gradient(90deg, #f59e0b, #d97706);
+  transition: width 0.5s ease;
+}
+.apply-gate-missing {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.apply-gate-missing li {
+  background: #fff; border: 1px solid #fde68a; color: #92400e;
+  padding: 3px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 600;
+}
+.apply-gate-actions {
+  display: flex; flex-direction: column; gap: 8px; align-self: center;
+}
+.gate-action-primary { text-decoration: none; display: inline-block; text-align: center; }
+
+/* ---------- Job + company summary ---------- */
+.apply-summary {
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  gap: 18px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 20px;
+}
+.apply-summary-logo {
+  width: 72px; height: 72px; border-radius: 14px;
+  background: #ecfeff; color: #0f766e;
+  display: grid; place-items: center; font-size: 1.8rem;
+  overflow: hidden;
+}
+.apply-summary-logo img { width: 100%; height: 100%; object-fit: cover; }
+.apply-summary-main h5 { margin: 0 0 4px; font-weight: 700; color: #0f172a; }
+.apply-summary-company { color: #475569; margin: 0 0 8px; font-size: 0.9rem; }
+.apply-company-industry {
+  margin-left: 8px; padding: 2px 8px; border-radius: 999px;
+  background: #f1f5f9; color: #475569; font-size: 0.72rem;
+}
+.apply-summary-facts {
+  display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.82rem; color: #64748b;
+}
+.apply-summary-facts span { display: inline-flex; align-items: center; gap: 5px; }
+.apply-summary-deadline { margin-top: 8px; }
+.apply-summary-salary {
+  text-align: right; font-weight: 700; color: #0f766e; font-size: 1rem;
+  align-self: center;
+}
+.apply-company-strip {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px; margin-bottom: 24px;
+}
+.apply-company-strip .apply-strip-item {
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+  padding: 12px 14px; font-size: 0.82rem; color: #475569;
+}
+.apply-company-strip .apply-strip-item strong {
+  display: block; color: #0f172a; font-size: 0.72rem;
+  text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;
+  font-weight: 700;
+}
+.apply-company-strip .apply-strip-item a { color: #0f766e; text-decoration: none; }
+.apply-company-strip .apply-strip-item a:hover { text-decoration: underline; }
+
+/* ---------- Sections ---------- */
+.apply-section {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 20px 22px 4px;
+  margin-bottom: 18px;
+}
+.apply-section legend {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 700; color: #0f172a; font-size: 0.95rem;
+  padding: 0 4px; margin-bottom: 14px;
+}
+.apply-section legend i { color: #0f766e; font-size: 1.05rem; }
+.apply-section-hint {
+  margin-left: auto; font-weight: 500; color: #64748b; font-size: 0.75rem;
+  text-transform: none; letter-spacing: 0;
+}
+.apply-section-decl { padding-bottom: 20px; }
+
+/* ---------- Fields grid ---------- */
+.apply-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px 18px;
+  margin-bottom: 16px;
+}
+.apply-field { display: flex; flex-direction: column; gap: 6px; }
+.apply-field-wide { grid-column: 1 / -1; }
+.apply-field label {
+  font-size: 0.82rem; font-weight: 600; color: #334155;
+}
+.apply-field .req { color: #dc2626; }
+.apply-field input,
+.apply-field select,
+.apply-field textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #0f172a;
+  background: #fff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  font-family: inherit;
+}
+.apply-field input:focus,
+.apply-field select:focus,
+.apply-field textarea:focus {
+  outline: none;
+  border-color: #14b8a6;
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
+}
+.apply-field input[readonly] {
+  background: #f1f5f9; color: #64748b; cursor: not-allowed;
+}
+.apply-field input.is-invalid,
+.apply-field select.is-invalid,
+.apply-field textarea.is-invalid {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+.apply-input-wrap { position: relative; }
+.apply-source {
+  position: absolute; top: -8px; right: 10px;
+  background: #ecfeff; color: #0f766e;
+  font-size: 0.65rem; font-weight: 700;
+  padding: 2px 7px; border-radius: 999px;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  pointer-events: none;
+}
+.apply-source.empty { display: none; }
+.apply-help {
+  font-size: 0.72rem; color: #64748b; margin-top: -2px;
+}
+.field-error {
+  color: #dc2626; font-size: 0.76rem; min-height: 14px; font-weight: 500;
+}
+
+/* ---------- Resume row ---------- */
+.apply-resume-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; border-radius: 10px;
+  background: #f0fdfa; border: 1px solid #99f6e4;
+  margin-bottom: 10px; font-size: 0.88rem; color: #134e4a;
+}
+.apply-resume-row.empty {
+  background: #fef2f2; border-color: #fecaca; color: #991b1b;
+}
+.apply-resume-row i { font-size: 1.1rem; }
+.apply-resume-row a { color: #0f766e; font-weight: 600; text-decoration: none; }
+.apply-resume-row a:hover { text-decoration: underline; }
+
+.apply-file {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px; border: 1.5px dashed #cbd5e1;
+  border-radius: 12px; cursor: pointer; background: #f8fafc;
+  transition: border-color 0.15s, background 0.15s;
+  font-size: 0.85rem; color: #334155;
+}
+.apply-file:hover { border-color: #14b8a6; background: #f0fdfa; }
+.apply-file i { color: #0f766e; font-size: 1.1rem; }
+.apply-file small { color: #64748b; margin-left: auto; }
+
+/* ---------- Cover letter counter ---------- */
+.apply-char-count {
+  text-align: right; font-size: 0.72rem; color: #64748b; margin-top: 4px;
+}
+.apply-char-count.over { color: #dc2626; font-weight: 600; }
+
+/* ---------- Declaration checkboxes ---------- */
+.apply-check {
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-bottom: 12px; font-size: 0.85rem; color: #334155;
+  cursor: pointer; line-height: 1.4;
+}
+.apply-check input { margin-top: 3px; accent-color: #0f766e; }
+
+/* ---------- Global error ---------- */
+.apply-global-error {
+  margin: 8px 0 16px;
+  padding: 12px 16px; border-radius: 10px;
+  background: #fef2f2; border: 1px solid #fecaca; color: #991b1b;
+  font-size: 0.85rem;
+}
+
+/* ---------- Footer ---------- */
+.apply-modal-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 28px; border-top: 1px solid #e2e8f0; background: #fff;
+}
+.apply-footer-left {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.8rem; color: #64748b;
+}
+.apply-footer-right { display: flex; gap: 10px; }
+.apply-btn-label, .apply-btn-spinner {
+  display: inline-flex; align-items: center; gap: 8px;
+}
+
+/* Deadline badge inside apply modal (reuse from listing) */
+.apply-summary-deadline .deadline-badge { margin: 0; }
+
+@media (max-width: 720px) {
+  .apply-summary { grid-template-columns: 56px 1fr; }
+  .apply-summary-salary { grid-column: 1 / -1; text-align: left; }
+  .apply-gate { grid-template-columns: 1fr; }
+  .apply-gate-icon { width: 44px; height: 44px; font-size: 1.2rem; }
+}
